@@ -25,7 +25,9 @@ public class Booking {
 
     private boolean depositPaid;
     private int finalPrice;
+    private boolean touchUpMade;
     private LocalDateTime time;
+    private String notes;
 
     @OneToOne
     private TattooImage tattooImage;

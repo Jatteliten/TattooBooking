@@ -37,16 +37,19 @@ public class BookingService {
     }
 
     public BookingWithoutIdDto convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(
-            BookingCustomerDepositTimeDto booking){
-        Booking b = bookingRepo.findByCustomerAndDate(booking.getCustomer(), booking.getTime()).orElse(null);
+            BookingCustomerDepositTimeDto givenBookingDto){
+        Booking b = bookingRepo.findByCustomerAndDate(
+                givenBookingDto.getCustomer(), givenBookingDto.getTime()).orElse(null);
 
         if(b == null){
             return null;
         }
         return BookingWithoutIdDto.builder()
-                .depositPaid(booking.isDepositPaid())
+                .depositPaid(b.isDepositPaid())
+                .touchUpMade(b.isTouchUpMade())
                 .finalPrice(b.getFinalPrice())
                 .time(b.getTime())
+                .notes(b.getNotes())
                 .tattooImage(b.getTattooImage())
                 .date(b.getDate())
                 .customer(b.getCustomer())

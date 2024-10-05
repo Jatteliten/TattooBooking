@@ -18,8 +18,10 @@ import java.time.LocalDateTime;
 @Builder
 public class BookingWithoutIdDto {
     private boolean depositPaid;
+    private boolean touchUpMade;
     private int finalPrice;
     private LocalDateTime time;
+    private String notes;
 
     @OneToOne
     private TattooImage tattooImage;

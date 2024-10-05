@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Booking;
 import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CustomerService;

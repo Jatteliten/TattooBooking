@@ -1,5 +1,6 @@
-package com.example.demo.security;
+package com.example.demo.security.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,18 +17,22 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Role")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Role {
+@Table(name = "users")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID  )
+    @Column(name="id")
+    @GeneratedValue(strategy= GenerationType.UUID)
     private UUID id;
 
-    private String name;
+    private String username;
+    private String password;
+    private boolean enabled;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    List<User> users;
+    private List<Role> roles;
+
 }

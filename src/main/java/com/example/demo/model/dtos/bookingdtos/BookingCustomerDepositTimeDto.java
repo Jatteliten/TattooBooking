@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 @Builder
 public class BookingCustomerDepositTimeDto {
     private boolean depositPaid;
-    private LocalDateTime time;
+    private LocalDateTime date;
     private Customer customer;
 }

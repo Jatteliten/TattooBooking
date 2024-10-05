@@ -1,4 +1,4 @@
-package com.example.demo.security;
+package com.example.demo.security.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,21 +16,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "Role")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Role {
     @Id
-    @GeneratedValue(strategy= GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
-    private String username;
-    private String password;
-    private boolean enabled;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
-
-
+    List<User> users;
 }

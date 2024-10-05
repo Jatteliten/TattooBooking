@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Application</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:fragment="header">
+  <header>
+    <h1>My Website</h1>
+    <nav>
+      <ul>
+        <li><a th:href="@{/index.html}">Home</a></li>
+        <li><a th:href="@{/book-tattoo.html}">About</a></li>
+        <li><a th:href="@{/bookings.html}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
+<!-- Section that will be filled by other pages -->
+<div th:fragment="content">
+  hej
+  <!-- This is where the content will be injected -->
+</div>
+
+<!-- Common footer -->
+<footer>
+  <p>&copy; 2024 My Application</p>
+</footer>
+</body>
+</html>

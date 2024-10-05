@@ -32,14 +32,14 @@ public class BookingService {
         return BookingCustomerDepositTimeDto.builder()
                 .depositPaid(booking.isDepositPaid())
                 .customer(booking.getCustomer())
-                .time(booking.getTime())
+                .date(booking.getDate())
                 .build();
     }
 
     public BookingWithoutIdDto convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(
             BookingCustomerDepositTimeDto givenBookingDto){
         Booking b = bookingRepo.findByCustomerAndDate(
-                givenBookingDto.getCustomer(), givenBookingDto.getTime()).orElse(null);
+                givenBookingDto.getCustomer(), givenBookingDto.getDate()).orElse(null);
 
         if(b == null){
             return null;
@@ -48,10 +48,9 @@ public class BookingService {
                 .depositPaid(b.isDepositPaid())
                 .touchUpMade(b.isTouchUpMade())
                 .finalPrice(b.getFinalPrice())
-                .time(b.getTime())
+                .date(b.getDate())
                 .notes(b.getNotes())
                 .tattooImage(b.getTattooImage())
-                .date(b.getDate())
                 .customer(b.getCustomer())
                 .build();
     }

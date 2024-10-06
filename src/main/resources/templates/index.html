@@ -4,15 +4,10 @@
     <title>Home</title>
 </head>
 <body>
-<div th:replace="admin-layout :: header">
-    <h2>Welcome to the Home Page</h2>
-    <p>This is the content of the home page.</p>
+<div th:replace="~{admin-layout :: header}">
 </div>
 hej1
-<!-- Use the layout and replace the content fragment -->
-<div th:replace="admin-layout :: content">
-    <h2>Welcome to the Home Page</h2>
-    <p>This is the content of the home page.</p>
+<div th:replace="~{admin-layout :: content}">
 </div>
 hallå2
 </body>

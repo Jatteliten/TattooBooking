@@ -25,7 +25,7 @@ public class AddAdmin implements CommandLineRunner {
     @Value("${admin.password}")
     private String adminPassword;
 
-    private final String adminString = "admin";
+    private final String adminString = "Admin";
 
     public AddAdmin(RoleService roleService, UserService userService){
         this.roleService = roleService;

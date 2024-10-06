@@ -20,7 +20,10 @@ public class TattooImage {
     @GeneratedValue
     private Long id;
 
+    private String name;
+    private String contentType;
     private String url;
+    private long size;
     private boolean frontPage;
 
     @OneToOne

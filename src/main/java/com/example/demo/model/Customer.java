@@ -27,6 +27,7 @@ public class Customer {
     private String name;
     private String instagram;
     private String phone;
+    private String email;
 
     @OneToMany
     private List<Booking> bookings;

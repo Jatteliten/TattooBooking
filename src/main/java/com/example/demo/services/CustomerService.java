@@ -12,7 +12,29 @@ public class CustomerService {
         this.customerRepo = customerRepo;
     }
 
-    public Customer findCustomerByPhoneOrInstagram(String phone, String instagram) {
-        return customerRepo.findByPhoneOrInstagram(phone, instagram).orElse(null);
+    public Customer findCustomerByPhone(String phone) {
+        return customerRepo.findByPhone(phone).orElse(null);
+    }
+
+    public Customer findCustomerByInstagram(String instagram) {
+        return customerRepo.findByInstagram(instagram).orElse(null);
+    }
+
+    public Customer findCustomerByEmail(String email) {
+        return customerRepo.findByEmail(email).orElse(null);
+    }
+
+    public Customer findCustomerByPhoneInstagramOrEmail(String input){
+        Customer customer = findCustomerByPhone(input);
+        if(customer != null){
+            return customer;
+        }
+
+        customer = findCustomerByEmail(input);
+        if(customer != null){
+            return customer;
+        }
+
+        return findCustomerByInstagram(input);
     }
 }

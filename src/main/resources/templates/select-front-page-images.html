@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Image Upload</title>
 </head>
 <body>
+<h1>Upload an Image</h1>
+<form method="post" enctype="multipart/form-data" action="/admin/upload">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="file" name="file" required />
+    <button type="submit">Upload</button>
+</form>
 
+<h2>Uploaded Images</h2>
+<ul>
+    <li th:each="image : ${images}">
+        <img th:src="@{/admin/images/{id}(id=${image.id})}" th:alt="${image.name}" width="150" height="150" />
+    </li>
+</ul>
 </body>
 </html>

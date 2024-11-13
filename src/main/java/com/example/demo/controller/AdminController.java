@@ -77,7 +77,15 @@ public class AdminController {
     public String setFrontPageImage(Model model){
         model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
         model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
-        model.addAttribute("images", tattooImageService.getAllImages());
+        return "select-front-page-images";
+    }
+
+    @RequestMapping("/changeImageState")
+    public String changeFrontPageState(@RequestParam String url, Model model){
+        tattooImageService.changeTattooImageStateToOppositeByUrl(url);
+
+        model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
+        model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
         return "select-front-page-images";
     }
 

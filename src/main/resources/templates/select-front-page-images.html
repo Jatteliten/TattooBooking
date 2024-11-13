@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Image Upload</title>
 </head>
@@ -11,10 +11,21 @@
     <button type="submit">Upload</button>
 </form>
 
-<h2>Uploaded Images</h2>
+<h2>Front Page Images</h2>
 <ul>
-    <li th:each="image : ${images}">
-        <img th:src="@{/admin/images/{id}(id=${image.id})}" th:alt="${image.name}" width="150" height="150" />
+    <li th:each="image : ${imagesOnFrontPage}">
+        <a th:href="'/admin/changeImageState?url=' + ${image.url}">
+            <img th:src="@{/admin/images/{id}(id=${image.id})}" th:alt="${image.name}" width="150" height="150" />
+        </a>
+    </li>
+</ul>
+
+<h2>Non Front page Images</h2>
+<ul>
+    <li th:each="image : ${imagesNotOnFrontPage}">
+        <a th:href="'/admin/changeImageState?url=' + ${image.url}">
+            <img th:src="@{/admin/images/{id}(id=${image.id})}" th:alt="${image.name}" width="150" height="150" />
+        </a>
     </li>
 </ul>
 </body>

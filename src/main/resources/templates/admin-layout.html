@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Application</title>
+  <title>Admin layout</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div th:fragment="header">
@@ -26,13 +25,11 @@
 </div>
 <!-- Section that will be filled by other pages -->
 <div th:fragment="content">
-  hej
   <!-- This is where the content will be injected -->
 </div>
 
-<!-- Common footer -->
 <footer>
-  <p>&copy; 2024 My Application</p>
+  <p>2024 My Application</p>
 </footer>
 </body>
 </html>

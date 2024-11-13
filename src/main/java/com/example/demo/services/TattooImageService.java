@@ -37,9 +37,13 @@ public class TattooImageService {
     public List<TattooImage> getAllNonFrontPageImages(){
         return tattooImageRepo.findByFrontPageFalse();
     }
+    public TattooImage findImageByUrl(String url){return tattooImageRepo.findByUrl(url);}
 
     public TattooImageUrlDto convertTattooImageToTattooImageUrlDto(TattooImage tattooImage){
-        return TattooImageUrlDto.builder().url(tattooImage.getUrl()).build();
+        return TattooImageUrlDto.builder()
+                .url(tattooImage.getUrl())
+                .name(tattooImage.getName())
+                .build();
     }
 
     public List<TattooImageUrlDto> getAllFrontPageImagesUrls(){
@@ -66,4 +70,11 @@ public class TattooImageService {
     public TattooImage getImage(Long id) {
         return tattooImageRepo.findById(id).orElseThrow(() -> new RuntimeException("Image not found"));
     }
+
+    public void changeTattooImageStateToOppositeByUrl(String url) {
+        TattooImage image = findImageByUrl(url);
+        image.setFrontPage(!image.isFrontPage());
+        tattooImageRepo.save(image);
+    }
+
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface TattooImageRepo extends JpaRepository<TattooImage, Long> {
     List<TattooImage> findByFrontPageTrue();
     List<TattooImage> findByFrontPageFalse();
+    TattooImage findByUrl(String url);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Lev i Buet</title>
@@ -15,18 +15,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav justify-content-between w-100">
-                <a class="nav-item nav-link active" href="/">Hem</a>
-                <a class="nav-item nav-link" href="/about-me">Om mig</a>
+                <a class="nav-item nav-link" href="/">Hem</a>
+                <a class="nav-item nav-link active" href="/about-me">Om mig</a>
                 <a class="nav-item nav-link" href="#">Pricing</a>
             </div>
         </div>
     </nav>
 </div>
+<p class="centered">JAG HETER TANA</p>
 
-<div class="front-page-images">
-    <div class="front-page-image" th:each="image : ${images}">
-        <img th:src="'images/' + ${image.name}" alt="Image could not load" width="150" height="250"/>
-    </div>
-</div>
 </body>
 </html>

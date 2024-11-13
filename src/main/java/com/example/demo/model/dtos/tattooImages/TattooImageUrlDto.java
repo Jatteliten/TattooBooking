@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TattooImageUrlDto {
     private String url;
+    private String name;
 }

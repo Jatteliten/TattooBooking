@@ -2,25 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin layout</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
 <div th:fragment="header">
   <header>
-    <h1>My Website</h1>
-    <nav>
-      <ul>
-        <li><a th:href="@{/admin/book-tattoo}">Book Tattoo</a></li>
-        <li><a th:href="@{/admin/bookings}">View Bookings</a></li>
-        <li><a th:href="@{/admin/adjust-booking}">Adjust Booking</a></li>
-        <li><a th:href="@{/admin/set-front-page-images}">Set Front Page Images</a></li>
-        <li><a th:href="@{/admin/customer}">Customer Information</a></li>
-        <li><a th:href="@{/index.html}">Home</a></li>
-        <li><a th:href="@{/about.html}">About</a></li>
-        <li><a th:href="@{/contact.html}">Contact</a></li>
-      </ul>
-    </nav>
+    <div class="container">
+      <nav class="navbar navbar-expand-sm navbar-light bg-light front-page-navbar">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav justify-content-between w-100">
+            <a class="nav-item nav-link active" th:href="@{/}">Home</a>
+            <a class="nav-item nav-link active" th:href="@{/admin/book-tattoo}">Book Tattoo</a>
+            <a class="nav-item nav-link active" th:href="@{/admin/bookings}">View Bookings</a>
+            <a class="nav-item nav-link active" th:href="@{/admin/adjust-booking}">Adjust Booking</a>
+            <a class="nav-item nav-link active" th:href="@{/admin/set-front-page-images}">Set Front Page Images</a>
+            <a class="nav-item nav-link active" th:href="@{/admin/customer}">Customer Information</a>
+          </div>
+        </div>
+      </nav>
+    </div>
   </header>
 </div>
 <!-- Section that will be filled by other pages -->

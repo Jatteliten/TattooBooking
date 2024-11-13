@@ -5,6 +5,7 @@ import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CustomerService;
 import com.example.demo.services.TattooImageService;
+import com.example.demo.util.calendar.CalendarService;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,22 +34,30 @@ public class AdminController {
     private final BookingService bookingService;
     private final CustomerService customerService;
     private final TattooImageService tattooImageService;
+    private final CalendarService calendarService;
 
-    public AdminController(BookingService bookingService, CustomerService customerService, TattooImageService tattooImageService) {
+    public AdminController(BookingService bookingService, CustomerService customerService,
+                           TattooImageService tattooImageService, CalendarService calendarService) {
         this.bookingService = bookingService;
         this.customerService = customerService;
         this.tattooImageService = tattooImageService;
+        this.calendarService = calendarService;
     }
 
+    @RequestMapping("/admin-landing-page")
+    public String loginSuccess(){
+        return "admin-landing-page";
+    }
     @RequestMapping("/book-tattoo")
-    public String bookTattoo(){
+    public String bookTattoo(Model model){
+        model.addAttribute("weeks", calendarService.getNextTwentyEightDates());
         return "book-tattoo";
     }
 
     @RequestMapping("/bookings")
     public String displayBookingsForAdmin(Model model){
         model.addAttribute("upcomingBookings",
-                bookingService.getBookingsFromThisDateToFourWeeksForward().stream()
+                bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
                         .toList());
         return "bookings";
@@ -100,15 +109,8 @@ public class AdminController {
                 .body(resource);
     }
 
-    @GetMapping("/uploads")
-    public String viewUploadsPage(Model model) {
-        model.addAttribute("images", tattooImageService.getAllImages());
-        return "uploads";
-    }
-
     @RequestMapping("/customer")
-    public String customerInformation(@RequestParam String searchWord, Model model){
-        model.addAttribute("customer", customerService.findCustomerByPhoneInstagramOrEmail(searchWord));
+    public String customerInformation(){
         return "customer";
     }
 }

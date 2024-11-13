@@ -2,8 +2,6 @@ package com.example.demo.model.dtos.bookingdtos;
 
 import com.example.demo.model.Customer;
 import com.example.demo.model.TattooImage;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +19,6 @@ public class BookingWithoutIdDto {
     private int finalPrice;
     private LocalDateTime date;
     private String notes;
-
-    @OneToOne
     private TattooImage tattooImage;
-
-    @ManyToOne
     private Customer customer;
 }

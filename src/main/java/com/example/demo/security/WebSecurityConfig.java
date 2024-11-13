@@ -45,7 +45,7 @@ public class WebSecurityConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .defaultSuccessUrl("/admin/admin-landing-page", true)
                         .permitAll()
                 )
                 .logout((logout) -> {

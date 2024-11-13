@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="nav-bar">
+  <div class="container">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light front-page-navbar">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav justify-content-between w-100">
+          <a class="nav-item nav-link" href="/">Hem</a>
+          <a class="nav-item nav-link active" href="/about-me">Om mig</a>
+          <a class="nav-item nav-link" href="#">Pricing</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<!-- Section that will be filled by other pages -->
+<div th:fragment="content">
+  <!-- This is where the content will be injected -->
+</div>
+
+<footer>
+  <p>2024 My Application</p>
+</footer>
+</body>
+</html>

@@ -1,11 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Book Tattoo</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<div th:replace="admin-layout :: header"></div>
+<br><br>
+<table class="calendar centered">
+    <thead>
+    <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+    </tr>
+    <tr>
+        <th colspan="7" style="height: 20px;"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="week : ${weeks}">
+        <td th:each="day : ${week}">
+            <div th:if="${day != null}" class="calendar-date">
+                <p th:with="formattedDate=${day.date.dayOfMonth}"
+                   th:text="${formattedDate}"
+                   th:style="'color:' + ${day.color}">
+                </p>
+            </div>
+            <div th:if="${day == null}" class="empty-date"></div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-hejehejej
+
 </body>
 </html>

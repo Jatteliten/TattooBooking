@@ -18,14 +18,22 @@ public class BookingService {
         this.bookingRepo = bookingRepo;
     }
 
+    public List<Booking> getBookingsByDate(LocalDateTime date){
+        return bookingRepo.findByDate(date);
+    }
+
     public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {
         return bookingRepo.findByCustomerAndDate(customer, dateTime).orElse(null);
     }
 
-    public List<Booking> getBookingsFromThisDateToFourWeeksForward() {
+    public List<Booking> getBookingsFromTodayToFourWeeksForward() {
         LocalDateTime fromDateTime = LocalDateTime.now();
         LocalDateTime toDateTime = fromDateTime.plusWeeks(4);
         return bookingRepo.findByDateBetween(fromDateTime, toDateTime);
+    }
+
+    public List<Booking> getBookingsBetweenTwoGivenDates(LocalDateTime fromDate, LocalDateTime toDate){
+        return bookingRepo.findByDateBetween(fromDate, toDate);
     }
 
     public BookingCustomerDepositTimeDto convertBookingToBookingCustomerDepositTimeDto(Booking booking){
@@ -35,6 +43,19 @@ public class BookingService {
                 .date(booking.getDate())
                 .build();
     }
+
+    public BookingWithoutIdDto convertBookingToBookingWithoutIdDto(Booking booking){
+        return BookingWithoutIdDto.builder()
+                .depositPaid(booking.isDepositPaid())
+                .touchUpMade(booking.isTouchUpMade())
+                .finalPrice(booking.getFinalPrice())
+                .date(booking.getDate())
+                .notes(booking.getNotes())
+                .tattooImage(booking.getTattooImage())
+                .customer(booking.getCustomer())
+                .build();
+    }
+
 
     public BookingWithoutIdDto convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(
             BookingCustomerDepositTimeDto givenBookingDto){

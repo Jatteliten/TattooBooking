@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface BookingRepo extends JpaRepository<Booking, Long> {
     List<Booking> findByDateBetween(LocalDateTime fromDateTime, LocalDateTime toDateTime);
     Optional<Booking> findByCustomerAndDate(Customer customer, LocalDateTime dateTime);
+    List<Booking> findByDate(LocalDateTime date);
 }

@@ -9,7 +9,7 @@
 <body>
 <div th:replace="admin-layout :: header"></div>
 <br><br>
-<table class="calendar centered">
+<table class="centered">
     <thead>
     <tr>
         <th>Mon</th>
@@ -28,10 +28,11 @@
     <tr th:each="week : ${weeks}">
         <td th:each="day : ${week}">
             <div th:if="${day != null}" class="calendar-date">
-                <p th:with="formattedDate=${day.date.dayOfMonth}"
+                <a th:href="@{/admin/book-tattoo-at-date(date=${day.date})}"
+                   th:with="formattedDate=${day.date.dayOfMonth}"
                    th:text="${formattedDate}"
                    th:style="'color:' + ${day.color}">
-                </p>
+                </a>
             </div>
             <div th:if="${day == null}" class="empty-date"></div>
         </td>

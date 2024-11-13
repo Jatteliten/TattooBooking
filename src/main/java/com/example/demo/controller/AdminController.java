@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/admin")
@@ -112,5 +113,11 @@ public class AdminController {
     @RequestMapping("/customer")
     public String customerInformation(){
         return "customer";
+    }
+
+    @RequestMapping("/book-tattoo-at-date")
+    public String bookTattooWithgivenDate(@RequestParam LocalDate date, Model model){
+        model.addAttribute("date", date);
+        return "book-tattoo-with-date";
     }
 }

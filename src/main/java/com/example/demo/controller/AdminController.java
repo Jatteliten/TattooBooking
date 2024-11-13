@@ -116,8 +116,8 @@ public class AdminController {
     }
 
     @RequestMapping("/book-tattoo-at-date")
-    public String bookTattooWithgivenDate(@RequestParam LocalDate date, Model model){
-        model.addAttribute("date", date);
+    public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
+        model.addAttribute("selectedDate", date);
         return "book-tattoo-with-date";
     }
 }

@@ -12,16 +12,20 @@ public class CustomerService {
         this.customerRepo = customerRepo;
     }
 
+    public void saveCustomer(Customer customer){
+        customerRepo.save(customer);
+    }
+
     public Customer findCustomerByPhone(String phone) {
-        return customerRepo.findByPhone(phone).orElse(null);
+        return customerRepo.findByPhoneContains(phone).orElse(null);
     }
 
     public Customer findCustomerByInstagram(String instagram) {
-        return customerRepo.findByInstagram(instagram).orElse(null);
+        return customerRepo.findByInstagramContains(instagram).orElse(null);
     }
 
     public Customer findCustomerByEmail(String email) {
-        return customerRepo.findByEmail(email).orElse(null);
+        return customerRepo.findByEmailContains(email).orElse(null);
     }
 
     public Customer findCustomerByPhoneInstagramOrEmail(String input){

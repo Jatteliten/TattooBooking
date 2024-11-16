@@ -28,7 +28,7 @@
     <tr th:each="week : ${weeks}">
         <td th:each="day : ${week}">
             <div th:if="${day != null}" class="calendar-date">
-                <a th:href="@{/admin/book-tattoo-at-date(date=${day.date})}"
+                <a th:href="@{/booking/book-tattoo-at-date(date=${day.date})}"
                    th:with="formattedDate=${day.date.dayOfMonth}"
                    th:text="${formattedDate}"
                    th:style="'color:' + ${day.color}">

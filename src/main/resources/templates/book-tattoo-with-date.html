@@ -2,15 +2,96 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Book Tattoo at date</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div th:replace="~{admin-layout :: header}"></div>
 
-<div class="container centered top-padded-body">
-    <h2>Book Tattoo on - <span th:text="${selectedDate}"></span></h2>
+<div th:if="${successCustomer != null}">
+    <p th:text="'Booked ' + ${successCustomer.name} + ' at ' + ${successTime} + ' on ' + ${successDate}"></p>
+</div>
+<div th:if="${successCustomer == null}">
+    <div class="container centered top-padded-body">
+        <h2>Book Tattoo on - <span th:text="${selectedDate}"></span></h2>
+    </div>
+
+    <div class="container customer-entry">
+        <h3>Find Customer</h3>
+        <form th:action="@{/booking/search-customer}" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchInput" placeholder="Search by email, instagram or phone number" required>
+                <input type="hidden" name="date" th:value="${selectedDate}">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+
+        <div th:if="${searchResult == 'No customer found'}">
+            <p class="text-danger">No customer found. You can create a new customer below.</p>
+        </div>
+
+        <div th:if="${searchResult != null && searchResult != 'No customer found'}">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="info-item">
+                            <strong th:text="${searchResult.name}" style="font-size:30px"></strong>
+                        </div>
+
+                        <div>
+                            <i class="fa fa-envelope info-item" style="font-size:22px;"></i>
+                            <span th:text="${searchResult.email}"></span>
+                        </div>
+
+                        <div>
+                            <i class="fa fa-instagram info-item" style="font-size:24px;"></i>
+                            <span th:text="${searchResult.instagram}"></span>
+                        </div>
+
+                        <div>
+                            <i class="fa fa-phone info-item" style="font-size:26px;"></i>
+                            <span th:text="${searchResult.phone}"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <form th:action="@{/booking/book-tattoo-with-customer}" method="post">
+                <input type="time" name="time" required>
+                <input type="hidden" name="date" th:value="${selectedDate}">
+                <input type="hidden" name="customerEmail" th:value="${searchResult.email}">
+                <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
+                <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
+                <button type="submit" class="btn btn-success">Book Customer</button>
+            </form>
+        </div>
+
+        <div th:if="${searchResult == null || searchResult == 'No customer found'}">
+            <h3>Create New Customer</h3>
+            <form th:action="@{/booking/create-customer}" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="instagram" class="form-label">Instagram</label>
+                    <input type="text" class="form-control" id="instagram" name="instagram">
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <input type="hidden" name="date" th:value="${selectedDate}">
+                <button type="submit" class="btn btn-success">Create Customer</button>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

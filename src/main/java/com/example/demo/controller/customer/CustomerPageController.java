@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.customer;
 
 import com.example.demo.services.TattooImageService;
 import org.springframework.stereotype.Controller;

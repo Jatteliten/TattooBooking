@@ -24,3 +24,11 @@
 .logo{
     padding-top:20px;
 }
+.image-select{
+    display: inline-block;
+    margin: 5px;
+}
+.info-item{
+    margin-right: 8px;
+    margin-bottom: 10px;
+}

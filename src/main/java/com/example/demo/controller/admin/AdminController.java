@@ -1,5 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controller.admin;
 
+import com.example.demo.model.Booking;
+import com.example.demo.model.Customer;
 import com.example.demo.model.TattooImage;
 import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.services.BookingService;
@@ -26,50 +28,25 @@ import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasAuthority('Admin')")
 public class AdminController {
 
-    private final BookingService bookingService;
-    private final CustomerService customerService;
     private final TattooImageService tattooImageService;
-    private final CalendarService calendarService;
 
-    public AdminController(BookingService bookingService, CustomerService customerService,
-                           TattooImageService tattooImageService, CalendarService calendarService) {
-        this.bookingService = bookingService;
-        this.customerService = customerService;
+    public AdminController(TattooImageService tattooImageService) {
         this.tattooImageService = tattooImageService;
-        this.calendarService = calendarService;
     }
 
-    @RequestMapping("/admin-landing-page")
+    @RequestMapping("/")
     public String loginSuccess(){
         return "admin-landing-page";
     }
-    @RequestMapping("/book-tattoo")
-    public String bookTattoo(Model model){
-        model.addAttribute("weeks", calendarService.getNextTwentyEightDates());
-        return "book-tattoo";
-    }
 
-    @RequestMapping("/bookings")
-    public String displayBookingsForAdmin(Model model){
-        model.addAttribute("upcomingBookings",
-                bookingService.getBookingsFromTodayToFourWeeksForward().stream()
-                        .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
-                        .toList());
-        return "bookings";
-    }
 
-    @RequestMapping("/adjust-booking")
-    public String adjustBooking(BookingCustomerDepositTimeDto booking, Model model){
-        model.addAttribute("booking",
-                bookingService.convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(booking));
-        return "adjust-booking";
-    }
 
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file, Model model) {
@@ -115,9 +92,4 @@ public class AdminController {
         return "customer";
     }
 
-    @RequestMapping("/book-tattoo-at-date")
-    public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
-        model.addAttribute("selectedDate", date);
-        return "book-tattoo-with-date";
-    }
 }

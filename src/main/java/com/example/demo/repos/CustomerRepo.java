@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
-    Optional<Customer> findByPhone(String phone);
-    Optional<Customer> findByInstagram(String instagram);
-    Optional<Customer> findByEmail(String email);
+    Optional<Customer> findByPhoneContains(String phone);
+    Optional<Customer> findByInstagramContains(String instagram);
+    Optional<Customer> findByEmailContains(String email);
 }

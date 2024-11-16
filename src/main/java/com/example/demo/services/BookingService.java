@@ -22,6 +22,14 @@ public class BookingService {
         return bookingRepo.findByDate(date);
     }
 
+    public void saveBooking(Booking booking){
+        bookingRepo.save(booking);
+    }
+
+    public List<Booking> getAllBookings(){
+        return bookingRepo.findAll();
+    }
+
     public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {
         return bookingRepo.findByCustomerAndDate(customer, dateTime).orElse(null);
     }

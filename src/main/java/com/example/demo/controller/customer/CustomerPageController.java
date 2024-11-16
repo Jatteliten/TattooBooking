@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CustomerPageController {
 
-    TattooImageService tattooImageService;
+    private final TattooImageService tattooImageService;
 
     public CustomerPageController(TattooImageService tattooImageService){
         this.tattooImageService = tattooImageService;

@@ -1,13 +1,7 @@
 package com.example.demo.controller.admin;
 
-import com.example.demo.model.Booking;
-import com.example.demo.model.Customer;
 import com.example.demo.model.TattooImage;
-import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
-import com.example.demo.services.BookingService;
-import com.example.demo.services.CustomerService;
 import com.example.demo.services.TattooImageService;
-import com.example.demo.util.calendar.CalendarService;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +21,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/admin")

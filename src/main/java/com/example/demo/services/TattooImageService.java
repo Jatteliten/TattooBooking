@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TattooImageService {
-    TattooImageRepo tattooImageRepo;
+    private final TattooImageRepo tattooImageRepo;
 
     @Value("${image.file.upload.dir}")
     private String imagesDirectory;

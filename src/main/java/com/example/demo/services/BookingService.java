@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public class BookingService {
-    BookingRepo bookingRepo;
+    private final BookingRepo bookingRepo;
 
     public BookingService(BookingRepo bookingRepo){
         this.bookingRepo = bookingRepo;

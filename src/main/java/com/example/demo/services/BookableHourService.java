@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 @Service
 public class BookableHourService {
-    BookableHourRepo bookableHourRepo;
+    private final BookableHourRepo bookableHourRepo;
 
     public BookableHourService(BookableHourRepo bookableHourRepo){
         this.bookableHourRepo = bookableHourRepo;

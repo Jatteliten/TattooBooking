@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookableDateService {
 
-    BookableDateRepo bookableDateRepo;
+    private final BookableDateRepo bookableDateRepo;
 
     public BookableDateService(BookableDateRepo bookableDateRepo){
         this.bookableDateRepo = bookableDateRepo;
     }
 
-    public void saveAvailableDate(BookableDate bookableDate){
+    public void saveBookableDate(BookableDate bookableDate){
         bookableDateRepo.save(bookableDate);
     }
 }

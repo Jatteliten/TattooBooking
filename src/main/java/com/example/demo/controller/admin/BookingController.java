@@ -26,12 +26,11 @@ import java.util.List;
 @RequestMapping("/booking")
 @PreAuthorize("hasAuthority('Admin')")
 public class BookingController {
-
-    CalendarService calendarService;
-    BookingService bookingService;
-    CustomerService customerService;
-    BookableHourService bookableHourService;
-    BookableDateService bookableDateService;
+    private final CalendarService calendarService;
+    private final BookingService bookingService;
+    private final CustomerService customerService;
+    private final BookableHourService bookableHourService;
+    private final BookableDateService bookableDateService;
     public BookingController(CalendarService calendarService, BookingService bookingService,
                              CustomerService customerService, BookableHourService bookableHourService,
                              BookableDateService bookableDateService){
@@ -103,11 +102,13 @@ public class BookingController {
                         .instagram(customerInstagram)
                         .build());
 
-        Booking booking = Booking.builder()
-                .date(date.atTime(time))
-                .customer(findCustomerByAllParameters(customerToBook))
-                .build();
-        bookingService.saveBooking(booking);
+        if(customerToBook != null) {
+            Booking booking = Booking.builder()
+                    .date(date.atTime(time))
+                    .customer(findCustomerByAllParameters(customerToBook))
+                    .build();
+            bookingService.saveBooking(booking);
+        }
 
         for(Booking b: bookingService.getAllBookings()){
             System.out.println(b.getDate());

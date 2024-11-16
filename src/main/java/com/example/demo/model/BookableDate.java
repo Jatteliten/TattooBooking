@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Builder
-public class AvailableDate {
+public class BookableDate {
 
     @Id
     @GeneratedValue

@@ -1,11 +1,9 @@
 package com.example.demo.controller.admin;
 
-import com.example.demo.model.AvailableDate;
-import com.example.demo.model.BookableHour;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
 import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
-import com.example.demo.services.AvailableDateService;
+import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookableHourService;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CustomerService;
@@ -33,15 +31,15 @@ public class BookingController {
     BookingService bookingService;
     CustomerService customerService;
     BookableHourService bookableHourService;
-    AvailableDateService availableDateService;
+    BookableDateService bookableDateService;
     public BookingController(CalendarService calendarService, BookingService bookingService,
                              CustomerService customerService, BookableHourService bookableHourService,
-                             AvailableDateService availableDateService){
+                             BookableDateService bookableDateService){
         this.calendarService = calendarService;
         this.bookingService = bookingService;
         this.customerService = customerService;
         this.bookableHourService = bookableHourService;
-        this.availableDateService = availableDateService;
+        this.bookableDateService = bookableDateService;
     }
 
 

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class BookingWithoutIdDto {
     private boolean depositPaid;
-    private boolean touchUpMade;
+    private boolean touchUp;
     private int finalPrice;
     private LocalDateTime date;
     private String notes;

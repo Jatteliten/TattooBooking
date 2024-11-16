@@ -25,14 +25,17 @@ public class Booking {
 
     private boolean depositPaid;
     private int finalPrice;
-    private boolean touchUpMade;
     private LocalDateTime date;
     private String notes;
+    private boolean touchUp;
 
     @OneToOne
     private TattooImage tattooImage;
 
     @ManyToOne
     private Customer customer;
+
+    @OneToOne
+    Booking previousBooking;
 
 }

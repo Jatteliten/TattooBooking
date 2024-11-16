@@ -47,7 +47,7 @@ public class BookingService {
     public BookingWithoutIdDto convertBookingToBookingWithoutIdDto(Booking booking){
         return BookingWithoutIdDto.builder()
                 .depositPaid(booking.isDepositPaid())
-                .touchUpMade(booking.isTouchUpMade())
+                .touchUp(booking.isTouchUp())
                 .finalPrice(booking.getFinalPrice())
                 .date(booking.getDate())
                 .notes(booking.getNotes())
@@ -67,7 +67,7 @@ public class BookingService {
         }
         return BookingWithoutIdDto.builder()
                 .depositPaid(b.isDepositPaid())
-                .touchUpMade(b.isTouchUpMade())
+                .touchUp(b.isTouchUp())
                 .finalPrice(b.getFinalPrice())
                 .date(b.getDate())
                 .notes(b.getNotes())

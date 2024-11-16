@@ -2,12 +2,10 @@
     padding-top: 5px;
 }
 .front-page-images{
+    padding-top:10px;
     display: flex;
     margin: auto;
     width: 50%;
-}
-.front-page-image{
-    border: 3px solid #3a0080;
 }
 .centered{
     margin: auto;
@@ -18,4 +16,11 @@
 .front-page-navbar{
     padding-left: 50px;
     padding-right: 50px;
+}
+.navbar
+{
+    border:1px solid #000000;
+}
+.logo{
+    padding-top:20px;
 }

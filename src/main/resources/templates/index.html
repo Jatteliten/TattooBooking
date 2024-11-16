@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="top-padded-body">
-<h2 class="centered">Lev i Buet</h2>
 <div th:replace="~{customer-layout :: nav-bar}"></div>
-<div class="front-page-images">
-    <div class="front-page-image" th:each="image : ${images}">
+<div class="front-page-images centered">
+    <div th:each="image : ${images}">
         <img th:src="'images/' + ${image.name}" alt="Image could not load" width="150" height="250"/>
     </div>
 </div>

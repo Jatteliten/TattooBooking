@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Dates</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{admin-layout :: header}"></div>
+<form th:action="@{/booking/confirm-dates}" id="timeForm">
+  <div id="dateInputs">
+    <div class="form-group">
+      <label for="fromDate">From Date:</label>
+      <input type="date" id="fromDate" name="fromDate" class="form-control w-25" required>
+    </div>
+    <div class="form-group">
+      <label for="toDate">To Date:</label>
+      <input type="date" id="toDate" name="toDate" class="form-control w-25" required>
+    </div>
+  </div>
+
+  <div id="timeInputs">
+    <div class="time-group">
+      <input type="time" name="time" required>
+      <button type="button" class="btn btn-danger remove-time" onclick="removeTimeInput(this)">Remove</button>
+    </div>
+    <div class="time-group">
+      <input type="time" name="time" required>
+      <button type="button" class="btn btn-danger remove-time" onclick="removeTimeInput(this)">Remove</button>
+    </div>
+  </div>
+  <button type="button" class="btn btn-warning" onclick="addTimeInput()">Add Time</button>
+  <br>
+  <button type="submit" class="btn btn-success confirm-date-button">Confirm</button>
+</form>
+<script src="/js/add-or-remove-hours.js"></script>
+</body>
+</html>

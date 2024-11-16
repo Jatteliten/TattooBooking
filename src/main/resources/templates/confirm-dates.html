@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Dates</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:replace="~{admin-layout :: header}"></div>
+<div class="container mt-4">
+    <h1>Confirm Dates</h1>
+    <form th:action="@{/booking/submit-dates}" method="post">
+        <ul class="list-group">
+            <li class="list-group-item" th:each="date : ${dates}">
+                <div>
+                    <strong th:text="${date.dayOfWeek} + ' - ' + ${date}"></strong>
+                    <div th:each="time : ${times}">
+                        <input type="checkbox" th:name="'selected[' + ${date} + '][' + ${time} + ']'"
+                               th:checked="${date.dayOfWeek != T(java.time.DayOfWeek).SATURDAY}" />
+                        <label th:text="${time}"></label>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button type="submit" class="btn btn-success mt-3">Submit</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,8 +1,12 @@
 package com.example.demo.controller.admin;
 
+import com.example.demo.model.AvailableDate;
+import com.example.demo.model.BookableHour;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
 import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
+import com.example.demo.services.AvailableDateService;
+import com.example.demo.services.BookableHourService;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CustomerService;
 import com.example.demo.util.calendar.CalendarService;
@@ -14,8 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/booking")
@@ -25,10 +32,16 @@ public class BookingController {
     CalendarService calendarService;
     BookingService bookingService;
     CustomerService customerService;
-    public BookingController(CalendarService calendarService, BookingService bookingService, CustomerService customerService){
+    BookableHourService bookableHourService;
+    AvailableDateService availableDateService;
+    public BookingController(CalendarService calendarService, BookingService bookingService,
+                             CustomerService customerService, BookableHourService bookableHourService,
+                             AvailableDateService availableDateService){
         this.calendarService = calendarService;
         this.bookingService = bookingService;
         this.customerService = customerService;
+        this.bookableHourService = bookableHourService;
+        this.availableDateService = availableDateService;
     }
 
 
@@ -107,6 +120,39 @@ public class BookingController {
         model.addAttribute("successTime", time);
         return "book-tattoo-with-date";
     }
+
+    @RequestMapping("/add-dates")
+    public String addDates(){
+        return "add-available-dates";
+    }
+
+    @RequestMapping("/confirm-dates")
+    public String confirmDatesToAdd(@RequestParam List<String> time, @RequestParam String fromDate,
+                                    @RequestParam String toDate, Model model){
+        List<LocalDate> availableDates = new ArrayList<>();
+
+        for (LocalDate date = LocalDate.parse(fromDate); !date.isAfter(LocalDate.parse(toDate));
+             date = date.plusDays(1)) {
+            if (date.getDayOfWeek() != DayOfWeek.SUNDAY) {
+                availableDates.add(date);
+            }
+        }
+        model.addAttribute("dates", availableDates);
+        model.addAttribute("times", time);
+        return "confirm-dates";
+    }
+
+
+    //for (LocalDate date = LocalDate.parse(fromDate); !date.isAfter(LocalDate.parse(toDate));
+    //     date = date.plusDays(1)) {
+    //    AvailableDate availableDateToSave = new AvailableDate();
+    //    availableDateToSave.setDate(date);
+    //    List<BookableHour> hours = new ArrayList<>();
+    //    for(String hour: time){
+    //        LocalTime tempTime = LocalTime.parse(hour);
+    //        hours.add(bookableHourService.findBookableHourOrCreateBookableHourIfItDoesNotAlreadyExist(tempTime));
+    //    }
+    //}
 
     private Customer findCustomerByAllParameters(Customer customer){
         if(customer.getEmail() != null){

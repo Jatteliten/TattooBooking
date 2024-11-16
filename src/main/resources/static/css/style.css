@@ -32,3 +32,12 @@
     margin-right: 8px;
     margin-bottom: 10px;
 }
+.time-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.confirm-date-button{
+    margin-top: 20px;
+}

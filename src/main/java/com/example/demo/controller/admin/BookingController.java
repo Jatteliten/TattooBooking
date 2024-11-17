@@ -122,6 +122,7 @@ public class BookingController {
 
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
         if(bookableDate != null){
+            int count = 0;
             for(BookableHour bookableHour: bookableDate.getBookableHours()){
                 if(bookableHour.isBooked()){
                     model.addAttribute("doubleBookError", "Can't book at already booked times");
@@ -131,8 +132,16 @@ public class BookingController {
                         && bookableHour.getHour().isBefore(endTime)){
                     bookableHour.setBooked(true);
                 }
+                if(bookableHour.isBooked()){
+                    count++;
+                }
             }
             bookableHourService.saveAllBookableHours(bookableDate.getBookableHours());
+
+            if(count == bookableDate.getBookableHours().size()){
+                bookableDate.setFullyBooked(true);
+                bookableDateService.saveBookableDate(bookableDate);
+            }
         }
 
 

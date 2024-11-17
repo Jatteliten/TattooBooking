@@ -1,8 +1,10 @@
 package com.example.demo.controller.admin;
 
+import com.example.demo.model.BookableDate;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
 import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
+import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CustomerService;
 import com.example.demo.util.calendar.CalendarService;
@@ -24,12 +26,14 @@ public class BookingController {
     private final CalendarService calendarService;
     private final BookingService bookingService;
     private final CustomerService customerService;
+    private final BookableDateService bookableDateService;
 
     public BookingController(CalendarService calendarService, BookingService bookingService,
-                             CustomerService customerService){
+                             CustomerService customerService, BookableDateService bookableDateService){
         this.calendarService = calendarService;
         this.bookingService = bookingService;
         this.customerService = customerService;
+        this.bookableDateService = bookableDateService;
     }
 
 
@@ -58,6 +62,10 @@ public class BookingController {
     @RequestMapping("/book-tattoo-at-date")
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
+        BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
+        if(bookableDate != null) {
+            model.addAttribute("bookableHours", bookableDateService.findBookableDateByDate(date).getBookableHours());
+        }
         return "book-tattoo-with-date";
     }
 

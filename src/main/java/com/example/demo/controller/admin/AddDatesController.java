@@ -45,7 +45,7 @@ public class AddDatesController {
 
         List<LocalDate> availableDates = new ArrayList<>();
 
-        for (LocalDate date = from; !date.isAfter(from);
+        for (LocalDate date = from; !date.isAfter(to);
              date = date.plusDays(1)) {
             if (date.getDayOfWeek() != DayOfWeek.SUNDAY) {
                 availableDates.add(date);

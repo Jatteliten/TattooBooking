@@ -5,6 +5,7 @@ import com.example.demo.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,5 +36,9 @@ public class BookableDateService {
     public List<BookableDate> sortBookableDateListByDate(List<BookableDate> listToSort){
         listToSort.sort(Comparator.comparing(BookableDate::getDate));
         return listToSort;
+    }
+
+    public BookableDate findBookableDateByDate(LocalDate date){
+        return bookableDateRepo.findByDate(date);
     }
 }

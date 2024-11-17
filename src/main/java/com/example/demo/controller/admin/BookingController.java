@@ -86,7 +86,7 @@ public class BookingController {
     public String createNewCustomer(@RequestParam LocalDate date, Model model, Customer customer){
         customerService.saveCustomer(customer);
         model.addAttribute("selectedDate", date);
-        model.addAttribute("searchResult", findCustomerByAllParameters(customer));
+        model.addAttribute("searchResult", customerService.findCustomerIfAtLeastOneContactMethodExists(customer));
 
         return "book-tattoo-with-date";
     }
@@ -95,7 +95,7 @@ public class BookingController {
     public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime time,
                                           @RequestParam String customerEmail, @RequestParam String customerInstagram,
                                           @RequestParam String customerPhone, Model model){
-        Customer customerToBook = findCustomerByAllParameters(
+        Customer customerToBook = customerService.findCustomerIfAtLeastOneContactMethodExists(
                 Customer.builder()
                         .email(customerEmail)
                         .phone(customerPhone)
@@ -105,7 +105,7 @@ public class BookingController {
         if(customerToBook != null) {
             Booking booking = Booking.builder()
                     .date(date.atTime(time))
-                    .customer(findCustomerByAllParameters(customerToBook))
+                    .customer(customerService.findCustomerIfAtLeastOneContactMethodExists(customerToBook))
                     .build();
             bookingService.saveBooking(booking);
         }
@@ -188,15 +188,4 @@ public class BookingController {
         return datesWithHours;
     }
 
-
-    private Customer findCustomerByAllParameters(Customer customer){
-        if(customer.getEmail() != null){
-            return customerService.findCustomerByPhoneInstagramOrEmail(customer.getEmail());
-        }else if(customer.getInstagram() != null){
-            return  customerService.findCustomerByPhoneInstagramOrEmail(customer.getInstagram());
-        }else if(customer.getPhone() != null){
-            return customerService.findCustomerByPhoneInstagramOrEmail(customer.getPhone());
-        }
-        return null;
-    }
 }

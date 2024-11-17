@@ -28,12 +28,22 @@ public class CustomerService {
         return customerRepo.findByEmailContains(email).orElse(null);
     }
 
+    public Customer findCustomerIfAtLeastOneContactMethodExists(Customer customer){
+        if(customer.getEmail() != null){
+            return findCustomerByPhoneInstagramOrEmail(customer.getEmail());
+        }else if(customer.getInstagram() != null){
+            return findCustomerByPhoneInstagramOrEmail(customer.getInstagram());
+        }else if(customer.getPhone() != null){
+            return findCustomerByPhoneInstagramOrEmail(customer.getPhone());
+        }
+        return null;
+    }
+
     public Customer findCustomerByPhoneInstagramOrEmail(String input){
         Customer customer = findCustomerByPhone(input);
         if(customer != null){
             return customer;
         }
-
         customer = findCustomerByEmail(input);
         if(customer != null){
             return customer;

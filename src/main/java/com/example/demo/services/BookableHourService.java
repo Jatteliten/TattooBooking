@@ -20,7 +20,7 @@ public class BookableHourService {
     }
 
     public void saveAllBookableHours(List<BookableHour> hourList){
-
+        bookableHourRepo.saveAll(hourList);
     }
 
     public BookableHour getBookableHourByHour(LocalTime hour){

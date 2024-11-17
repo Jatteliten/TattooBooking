@@ -33,6 +33,12 @@
             <p class="text-danger">No customer found. You can create a new customer below.</p>
         </div>
 
+        <p>
+            <span th:each="time : ${bookableHours}"
+                  th:text="${time.hour} + ' '"
+                  th:classappend="${time.booked} ? 'text-danger' : 'text-success'"></span>
+        </p>
+
         <div th:if="${searchResult != null && searchResult != 'No customer found'}">
             <div>
                 <ul class="list-group">
@@ -60,20 +66,15 @@
             </div>
 
             <form th:action="@{/booking/book-tattoo-with-customer}" method="post">
-                <input type="time" name="time" required>
                 <input type="hidden" name="date" th:value="${selectedDate}">
                 <input type="hidden" name="customerEmail" th:value="${searchResult.email}">
                 <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
                 <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
+                <input type="time" name="startTime" required><input type="time" name="endTime" required>
                 <button type="submit" class="btn btn-success">Book Customer</button>
             </form>
         </div>
 
-        <p>
-            <span th:each="time : ${bookableHours}"
-                  th:text="${time.hour} + ' '"
-                  th:classappend="${time.booked} ? 'text-danger' : 'text-success'"></span>
-        </p>
 
         <div th:if="${searchResult == null || searchResult == 'No customer found'}">
             <h3>Create New Customer</h3>

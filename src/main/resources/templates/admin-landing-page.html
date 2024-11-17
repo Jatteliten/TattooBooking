@@ -6,10 +6,20 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="container">
 <div th:replace="~{admin-layout :: header}"></div>
+
 <div th:if="${datesAdded != null}">
     <p th:text="${datesAdded}"></p>
 </div>
+
+<div th:if="${bookingAdded != null}">
+    <p th:text="${bookingAdded}"></p>
+</div>
+
+<div th:if="${doubleBookError != null}">
+    <p class="text-danger" th:text="${doubleBookError}"></p>
+</div>
+
 </body>
 </html>

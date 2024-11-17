@@ -5,6 +5,8 @@ import com.example.demo.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,5 +30,10 @@ public class BookableDateService {
 
     public List<BookableDate> getAllCurrentlyAvailableBookableDates(){
         return bookableDateRepo.findByFullyBookedFalse();
+    }
+
+    public List<BookableDate> sortBookableDateListByDate(List<BookableDate> listToSort){
+        listToSort.sort(Comparator.comparing(BookableDate::getDate));
+        return listToSort;
     }
 }

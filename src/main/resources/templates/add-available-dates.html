@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="container">
+
 <div th:replace="~{admin-layout :: header}"></div>
 <form th:action="@{/add-dates/confirm-dates}" id="timeForm">
   <div id="dateInputs">
@@ -19,6 +20,10 @@
       <label for="toDate">To Date:</label>
       <input type="date" id="toDate" name="toDate" class="form-control w-25" required>
     </div>
+  </div>
+
+  <div th:if="${errorMessage != null}">
+    <p th:text="${errorMessage}" class="text-danger"></p>
   </div>
 
   <div id="timeInputs">

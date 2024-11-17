@@ -35,9 +35,17 @@ public class AddDatesController {
     @RequestMapping("/confirm-dates")
     public String confirmDatesToAdd(@RequestParam List<String> time, @RequestParam String fromDate,
                                     @RequestParam String toDate, Model model){
+        LocalDate from = LocalDate.parse(fromDate);
+        LocalDate to = LocalDate.parse(toDate);
+
+        if(!from.isBefore(to)){
+            model.addAttribute("errorMessage", "From date must be before To date");
+            return "add-available-dates";
+        }
+
         List<LocalDate> availableDates = new ArrayList<>();
 
-        for (LocalDate date = LocalDate.parse(fromDate); !date.isAfter(LocalDate.parse(toDate));
+        for (LocalDate date = from; !date.isAfter(from);
              date = date.plusDays(1)) {
             if (date.getDayOfWeek() != DayOfWeek.SUNDAY) {
                 availableDates.add(date);

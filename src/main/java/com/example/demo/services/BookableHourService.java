@@ -5,6 +5,7 @@ import com.example.demo.repos.BookableHourRepo;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class BookableHourService {
@@ -18,17 +19,12 @@ public class BookableHourService {
         bookableHourRepo.save(bookableHour);
     }
 
+    public void saveAllBookableHours(List<BookableHour> hourList){
+
+    }
+
     public BookableHour getBookableHourByHour(LocalTime hour){
         return bookableHourRepo.findByHour(hour);
     }
 
-    public BookableHour findBookableHourOrCreateBookableHourIfItDoesNotAlreadyExist(LocalTime hour){
-        BookableHour bookableHour = getBookableHourByHour(hour);
-        if(bookableHour != null){
-            return bookableHour;
-        }
-        BookableHour bookableHourToSave = BookableHour.builder().hour(hour).build();
-        saveBookableHour(bookableHourToSave);
-        return bookableHourToSave;
-    }
 }

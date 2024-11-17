@@ -3,6 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,8 @@ public class BookableHour {
     private Long id;
 
     LocalTime hour;
+    boolean booked;
+
+    @ManyToOne
+    BookableDate date;
 }

@@ -16,7 +16,6 @@ import java.util.List;
 public class AddAdmin implements CommandLineRunner {
 
     RoleService roleService;
-
     UserService userService;
 
     @Value("${admin.username}")
@@ -25,7 +24,7 @@ public class AddAdmin implements CommandLineRunner {
     @Value("${admin.password}")
     private String adminPassword;
 
-    private final String adminString = "Admin";
+    private final static String ROLE_NAME_ADMIN = "Admin";
 
     public AddAdmin(RoleService roleService, UserService userService){
         this.roleService = roleService;
@@ -34,7 +33,7 @@ public class AddAdmin implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        roleService.saveRoleByGivenName(adminString);
+        roleService.saveRoleByGivenName(ROLE_NAME_ADMIN);
         addAdminUser();
     }
 
@@ -45,7 +44,7 @@ public class AddAdmin implements CommandLineRunner {
                 .enabled(true)
                 .password(encoder.encode(adminPassword))
                 .username(adminUsername)
-                .roles(List.of(roleService.findRoleByName(adminString)))
+                .roles(List.of(roleService.findRoleByName(ROLE_NAME_ADMIN)))
                 .build()));
     }
 

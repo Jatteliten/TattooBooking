@@ -8,5 +8,8 @@
 </head>
 <body>
 <div th:replace="~{admin-layout :: header}"></div>
+<div th:if="${datesAdded != null}">
+    <p th:text="${datesAdded}"></p>
+</div>
 </body>
 </html>

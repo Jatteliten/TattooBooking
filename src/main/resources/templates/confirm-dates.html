@@ -11,21 +11,24 @@
 <div th:replace="~{admin-layout :: header}"></div>
 <div class="container mt-4">
     <h1>Confirm Dates</h1>
-    <form th:action="@{/booking/submit-dates}" method="post">
-        <ul class="list-group">
-            <li class="list-group-item" th:each="date : ${dates}">
-                <div>
-                    <strong th:text="${date.dayOfWeek} + ' - ' + ${date}"></strong>
-                    <div th:each="time : ${times}">
-                        <input type="checkbox" th:name="'selected[' + ${date} + '][' + ${time} + ']'"
-                               th:checked="${date.dayOfWeek != T(java.time.DayOfWeek).SATURDAY}" />
-                        <label th:text="${time}"></label>
-                    </div>
+    <form th:action="@{/booking/save-dates}" method="post">
+        <div th:each="date : ${dates}">
+            <fieldset>
+                <legend th:text="${date}">Date</legend>
+                <div th:each="time : ${times}">
+                    <label>
+                        <input type="checkbox" th:name="dates" th:value="${date} + '=' + ${time}" />
+                        <span th:text="${time}"></span>
+                    </label>
                 </div>
-            </li>
-        </ul>
-        <button type="submit" class="btn btn-success mt-3">Submit</button>
+            </fieldset>
+        </div>
+
+        <button type="submit">Submit</button>
     </form>
+
+
+
 </div>
 </body>
 </html>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="container">
-<div th:replace="~{admin-layout :: header}"></div>
+<div th:replace="~{layouts/admin-layout :: header}"></div>
 <div class="container mt-4">
     <h1>Confirm Dates</h1>
     <form th:action="@{/add-dates/save-dates}" method="post">

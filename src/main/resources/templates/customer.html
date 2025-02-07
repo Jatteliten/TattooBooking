@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div th:replace="~{admin-layout :: header}"></div>
+<div th:replace="~{layouts/admin-layout :: header}"></div>
 <div th:each="customer: ${customers}">
     <p th:text="${customer.name}"></p>
 </div>

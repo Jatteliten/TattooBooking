@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="container">
-<div th:replace="~{customer-layout :: nav-bar}"></div>
+<div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 
 <div th:each="date : ${bookableDates}">
     <p>

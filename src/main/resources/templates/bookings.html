@@ -8,5 +8,8 @@
 </head>
 <body>
 <div th:replace="~{layouts/admin-layout :: header}"></div>
+<div th:each="booking:${upcomingBookings}">
+    <p th:text="${#temporals.format(booking.date, 'dd/MM-yy | HH:mm')} + ' - ' + ${booking.customer.name}"></p>
+</div>
 </body>
 </html>

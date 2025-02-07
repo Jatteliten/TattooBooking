@@ -51,6 +51,8 @@ public class BookingController {
 
     @RequestMapping("/bookings")
     public String displayBookings(Model model){
+        List<Booking> bookings = bookingService.getAllBookings();
+        bookings.forEach(b -> System.out.println(b.getCustomer().getName()));
         model.addAttribute("upcomingBookings",
                 bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)

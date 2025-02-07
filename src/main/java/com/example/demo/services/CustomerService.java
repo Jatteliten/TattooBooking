@@ -4,6 +4,8 @@ import com.example.demo.model.Customer;
 import com.example.demo.repos.CustomerRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
     private final CustomerRepo customerRepo;
@@ -12,43 +14,33 @@ public class CustomerService {
         this.customerRepo = customerRepo;
     }
 
+    public List<Customer> getAllCustomers(){
+        return customerRepo.findAll();
+    }
+
     public void saveCustomer(Customer customer){
         customerRepo.save(customer);
     }
-
-    public Customer findCustomerByPhone(String phone) {
-        return customerRepo.findByPhoneContains(phone).orElse(null);
+    public void deleteAllCustomers(){
+        customerRepo.deleteAll();
     }
 
-    public Customer findCustomerByInstagram(String instagram) {
-        return customerRepo.findByInstagramContains(instagram).orElse(null);
-    }
-
-    public Customer findCustomerByEmail(String email) {
-        return customerRepo.findByEmailContains(email).orElse(null);
-    }
-
-    public Customer findCustomerIfAtLeastOneContactMethodExists(Customer customer){
-        if(customer.getEmail() != null){
-            return findCustomerByPhoneInstagramOrEmail(customer.getEmail());
-        }else if(customer.getInstagram() != null){
-            return findCustomerByPhoneInstagramOrEmail(customer.getInstagram());
-        }else if(customer.getPhone() != null){
-            return findCustomerByPhoneInstagramOrEmail(customer.getPhone());
+    public Customer findCustomerIfAtLeastOneContactMethodExists(Customer customer) {
+        if (customer.getPhone() != null && !customer.getPhone().isEmpty()) {
+            Customer foundCustomer = findCustomerByAnyField(customer.getPhone());
+            if (foundCustomer != null) return foundCustomer;
+        }
+        if (customer.getInstagram() != null && !customer.getInstagram().isEmpty()) {
+            Customer foundCustomer = findCustomerByAnyField(customer.getInstagram());
+            if (foundCustomer != null) return foundCustomer;
+        }
+        if (customer.getEmail() != null && !customer.getEmail().isEmpty()) {
+            return findCustomerByAnyField(customer.getEmail());
         }
         return null;
     }
 
-    public Customer findCustomerByPhoneInstagramOrEmail(String input){
-        Customer customer = findCustomerByPhone(input);
-        if(customer != null){
-            return customer;
-        }
-        customer = findCustomerByEmail(input);
-        if(customer != null){
-            return customer;
-        }
-
-        return findCustomerByInstagram(input);
+    public Customer findCustomerByAnyField(String input) {
+        return customerRepo.findByAnyContactMethod(input).orElse(null);
     }
 }

@@ -77,15 +77,17 @@ public class BookingController {
         return "book-tattoo-with-date";
     }
 
+
     @GetMapping("/search-customer")
     public String searchCustomer(@RequestParam String searchInput, @RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
-        Customer customer = customerService.findCustomerByPhoneInstagramOrEmail(searchInput);
+        Customer customer = customerService.findCustomerByAnyField(searchInput);
 
         if(customer == null){
             model.addAttribute("searchResult", "No customer found");
         }else {
-            model.addAttribute("searchResult", customerService.findCustomerByPhoneInstagramOrEmail(searchInput));
+            model.addAttribute("searchResult",
+                    customerService.findCustomerByAnyField(searchInput));
         }
 
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
@@ -96,13 +98,29 @@ public class BookingController {
     }
 
     @PostMapping("/create-customer")
-    public String createNewCustomer(@RequestParam LocalDate date, Model model, Customer customer){
-        customerService.saveCustomer(customer);
-        model.addAttribute("selectedDate", date);
-        model.addAttribute("searchResult", customerService.findCustomerIfAtLeastOneContactMethodExists(customer));
+    public String createNewCustomer(@RequestParam LocalDate date, Model model, Customer customer) {
+        if (customer.getPhone() != null && customer.getPhone().isEmpty()) {
+            customer.setPhone(null);
+        }
+        if (customer.getEmail() != null && customer.getEmail().isEmpty()) {
+            customer.setEmail(null);
+        }
+        if (customer.getInstagram() != null && customer.getInstagram().isEmpty()) {
+            customer.setInstagram(null);
+        }
 
+        Customer existingCustomer = customerService.findCustomerIfAtLeastOneContactMethodExists(customer);
+        if (existingCustomer == null) {
+            customerService.saveCustomer(customer);
+            model.addAttribute("searchResult", customer);
+        } else {
+            model.addAttribute("searchResult", existingCustomer);
+        }
+
+        model.addAttribute("selectedDate", date);
         return "book-tattoo-with-date";
     }
+
 
     @PostMapping("/book-tattoo-with-customer")
     public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime startTime,

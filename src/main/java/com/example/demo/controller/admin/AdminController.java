@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.model.TattooImage;
+import com.example.demo.services.CustomerService;
 import com.example.demo.services.TattooImageService;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -29,9 +30,11 @@ import java.util.UUID;
 public class AdminController {
 
     private final TattooImageService tattooImageService;
+    private final CustomerService customerService;
 
-    public AdminController(TattooImageService tattooImageService) {
+    public AdminController(TattooImageService tattooImageService, CustomerService customerService) {
         this.tattooImageService = tattooImageService;
+        this.customerService = customerService;
     }
 
     @RequestMapping("/")
@@ -81,7 +84,14 @@ public class AdminController {
     }
 
     @RequestMapping("/customer")
-    public String customerInformation(){
+    public String customerInformation(Model model){
+        model.addAttribute("customers", customerService.getAllCustomers());
+        return "customer";
+    }
+
+    @RequestMapping("/delete-all-customers")
+    public String deleteAllCustomers(){
+        customerService.deleteAllCustomers();
         return "customer";
     }
 

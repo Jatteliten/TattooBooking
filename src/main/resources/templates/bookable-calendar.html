@@ -13,7 +13,7 @@
     <p>
         <span th:text="${date.date} + ' - '"></span>
         <span th:each="time : ${date.bookableHours}"
-              th:text="${time.hour} + ' '"
+              th:text="${time.hour} + '  '"
               th:classappend="${time.booked} ? 'text-danger' : 'text-success'"></span>
     </p>
 </div>

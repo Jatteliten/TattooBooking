@@ -32,6 +32,13 @@ public class AddDatesController {
         return "add-available-dates";
     }
 
+    @RequestMapping("/removeAllBookableDates")
+    public String removeAllBookableDates(Model model){
+        bookableDateService.deleteAllBookableDates();
+        model.addAttribute("errorMessage", "All bookable dates deleted");
+        return "add-available-dates";
+    }
+
     @RequestMapping("/confirm-dates")
     public String confirmDatesToAdd(@RequestParam List<String> time, @RequestParam String fromDate,
                                     @RequestParam String toDate, Model model){

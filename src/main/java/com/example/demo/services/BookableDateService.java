@@ -24,6 +24,9 @@ public class BookableDateService {
     public void saveBookableDate(BookableDate bookableDate){
         bookableDateRepo.save(bookableDate);
     }
+    public void deleteAllBookableDates(){
+        bookableDateRepo.deleteAll();
+    }
 
     @Transactional
     public void saveAllBookableDatesAndAssociatedHours(List<BookableDate> dateList){

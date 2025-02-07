@@ -4,7 +4,7 @@ function addTimeInput() {
     timeGroup.className = 'time-group';
     timeGroup.innerHTML = `
     <input type="time" name="time" required>
-    <button type="button" class="btn btn-danger remove-time" onclick="removeTimeInput(this)">Remove</button>
+    <button type="button" class="btn btn-danger btn-sm remove-time" onclick="removeTimeInput(this)">Remove</button>
   `;
     timeInputs.appendChild(timeGroup);
 }

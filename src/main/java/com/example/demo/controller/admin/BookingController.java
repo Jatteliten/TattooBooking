@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.List;
 
 @Controller
 @RequestMapping("/booking")
@@ -48,7 +50,7 @@ public class BookingController {
     }
 
     @RequestMapping("/bookings")
-    public String displayBookingsForAdmin(Model model){
+    public String displayBookings(Model model){
         model.addAttribute("upcomingBookings",
                 bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
@@ -68,7 +70,9 @@ public class BookingController {
         model.addAttribute("selectedDate", date);
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
         if(bookableDate != null) {
-            model.addAttribute("bookableHours", bookableDateService.findBookableDateByDate(date).getBookableHours());
+            List<BookableHour> bookableHourList = bookableDateService.findBookableDateByDate(date).getBookableHours();
+            bookableHourList.sort(Comparator.comparing(BookableHour::getHour));
+            model.addAttribute("bookableHours", bookableHourList);
         }
         return "book-tattoo-with-date";
     }

@@ -17,7 +17,7 @@
                 <legend th:text="${date}">Date</legend>
                 <div th:each="time : ${times}">
                     <label>
-                        <input type="checkbox" th:name="dates" th:value="${date} + '=' + ${time}" />
+                        <input type="checkbox" th:name="dates" th:value="${date} + '=' + ${time}" th:checked=true/>
                         <span th:text="${time}"></span>
                     </label>
                 </div>

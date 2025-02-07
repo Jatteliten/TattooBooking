@@ -32,10 +32,8 @@ public class CalendarService {
                     .build();
 
             if (bookingService.getBookingsByDate(currentDate.atStartOfDay()).isEmpty()) {
-                System.out.println("hej");
                 calendarDate.setColor("green");
             } else {
-                System.out.println("hallå");
                 calendarDate.setColor("red");
             }
 

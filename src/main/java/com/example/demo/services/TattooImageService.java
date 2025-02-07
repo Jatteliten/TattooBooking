@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +68,7 @@ public class TattooImageService {
                 .build());
     }
 
-    public TattooImage getImage(Long id) {
+    public TattooImage getImage(UUID id) {
         return tattooImageRepo.findById(id).orElseThrow(() -> new RuntimeException("Image not found"));
     }
 

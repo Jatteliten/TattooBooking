@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.model.BookableDate;
+import com.example.demo.model.BookableHour;
 import com.example.demo.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class BookableDateService {
 
     @Transactional
     public void saveAllBookableDatesAndAssociatedHours(List<BookableDate> dateList){
+        //implementera så att man inte kan skapa flera av samma bokningstid
         bookableDateRepo.saveAll(dateList);
     }
 
@@ -40,5 +42,12 @@ public class BookableDateService {
 
     public BookableDate findBookableDateByDate(LocalDate date){
         return bookableDateRepo.findByDate(date);
+    }
+
+    public List<BookableDate> sortHoursInBookableHourListByHour(List<BookableDate> bookableDateList){
+        for(BookableDate bookableDate: bookableDateList){
+            bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
+        }
+        return bookableDateList;
     }
 }

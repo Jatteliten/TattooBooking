@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -69,7 +70,7 @@ public class AdminController {
     }
 
     @GetMapping("/images/{id}")
-    public ResponseEntity<Resource> viewImage(@PathVariable Long id) throws MalformedURLException {
+    public ResponseEntity<Resource> viewImage(@PathVariable UUID id) throws MalformedURLException {
         TattooImage image = tattooImageService.getImage(id);
         Path imagePath = Paths.get(image.getUrl());
         Resource resource = new UrlResource(imagePath.toUri());

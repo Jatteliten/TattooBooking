@@ -30,8 +30,10 @@ public class CustomerPageController {
 
     @RequestMapping("/booking-calendar")
     public String getAllBookableDates(Model model){
-        model.addAttribute("bookableDates", bookableDateService.sortBookableDateListByDate(
-                bookableDateService.getAllCurrentlyAvailableBookableDates()));
+        model.addAttribute("bookableDates",
+                bookableDateService.sortHoursInBookableHourListByHour(
+                        bookableDateService.sortBookableDateListByDate(
+                                bookableDateService.getAllCurrentlyAvailableBookableDates())));
         return "bookable-calendar";
     }
 }

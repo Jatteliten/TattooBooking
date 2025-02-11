@@ -46,7 +46,7 @@ public class BookingController {
     @RequestMapping("/book-tattoo")
     public String bookTattoo(Model model){
         model.addAttribute("weeks", calendarService.getNextTwentyEightDates());
-        return "book-tattoo";
+        return "admin/book-tattoo";
     }
 
     @RequestMapping("/bookings")
@@ -57,14 +57,14 @@ public class BookingController {
                 bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
                         .toList());
-        return "bookings";
+        return "admin/bookings";
     }
 
     @RequestMapping("/adjust-booking")
     public String adjustBooking(BookingCustomerDepositTimeDto booking, Model model){
         model.addAttribute("booking",
                 bookingService.convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(booking));
-        return "adjust-booking";
+        return "admin/adjust-booking";
     }
 
     @RequestMapping("/book-tattoo-at-date")
@@ -76,7 +76,7 @@ public class BookingController {
             bookableHourList.sort(Comparator.comparing(BookableHour::getHour));
             model.addAttribute("bookableHours", bookableHourList);
         }
-        return "book-tattoo-with-date";
+        return "admin/book-tattoo-with-date";
     }
 
 
@@ -96,7 +96,7 @@ public class BookingController {
         if(bookableDate != null) {
             model.addAttribute("bookableHours", bookableDateService.findBookableDateByDate(date).getBookableHours());
         }
-        return "book-tattoo-with-date";
+        return "admin/book-tattoo-with-date";
     }
 
     @PostMapping("/create-customer")
@@ -111,7 +111,7 @@ public class BookingController {
             customer.setInstagram(null);
         }
 
-        Customer existingCustomer = customerService.findCustomerIfAtLeastOneContactMethodExists(customer);
+        Customer existingCustomer = customerService.findCustomerIfAtLeastOneContactMethodMatches(customer);
         if (existingCustomer == null) {
             customerService.saveCustomer(customer);
             model.addAttribute("searchResult", customer);
@@ -120,7 +120,7 @@ public class BookingController {
         }
 
         model.addAttribute("selectedDate", date);
-        return "book-tattoo-with-date";
+        return "admin/book-tattoo-with-date";
     }
 
 
@@ -129,7 +129,7 @@ public class BookingController {
                                           @RequestParam LocalTime endTime, @RequestParam String customerEmail,
                                           @RequestParam String customerInstagram, @RequestParam String customerPhone,
                                           Model model){
-        Customer customerToBook = customerService.findCustomerIfAtLeastOneContactMethodExists(
+        Customer customerToBook = customerService.findCustomerIfAtLeastOneContactMethodMatches(
                 Customer.builder()
                         .email(customerEmail)
                         .phone(customerPhone)
@@ -139,7 +139,7 @@ public class BookingController {
         if(customerToBook != null) {
             Booking booking = Booking.builder()
                     .date(date.atTime(startTime))
-                    .customer(customerService.findCustomerIfAtLeastOneContactMethodExists(customerToBook))
+                    .customer(customerService.findCustomerIfAtLeastOneContactMethodMatches(customerToBook))
                     .build();
             bookingService.saveBooking(booking);
         }
@@ -172,7 +172,7 @@ public class BookingController {
         model.addAttribute("bookingAdded", customerToBook.getName()
                 + " booked at " + startTime.toString()
                 + " on " + date.toString());
-        return "admin-landing-page";
+        return "admin/admin-landing-page";
     }
 
 }

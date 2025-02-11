@@ -29,14 +29,14 @@ public class AddDatesController {
     }
     @RequestMapping("/")
     public String addDates(){
-        return "add-available-dates";
+        return "admin/add-available-dates";
     }
 
     @RequestMapping("/removeAllBookableDates")
     public String removeAllBookableDates(Model model){
         bookableDateService.deleteAllBookableDates();
         model.addAttribute("errorMessage", "All bookable dates deleted");
-        return "add-available-dates";
+        return "admin/add-available-dates";
     }
 
     @RequestMapping("/confirm-dates")
@@ -47,7 +47,7 @@ public class AddDatesController {
 
         if(!from.isBefore(to)){
             model.addAttribute("errorMessage", "From date must be before To date");
-            return "add-available-dates";
+            return "admin/add-available-dates";
         }
 
         List<LocalDate> availableDates = new ArrayList<>();
@@ -60,7 +60,7 @@ public class AddDatesController {
         }
         model.addAttribute("dates", availableDates);
         model.addAttribute("times", time);
-        return "confirm-dates";
+        return "admin/confirm-dates";
     }
 
     @PostMapping("/save-dates")
@@ -87,7 +87,7 @@ public class AddDatesController {
         bookableDateService.saveAllBookableDatesAndAssociatedHours(datesToSave);
 
         model.addAttribute("datesAdded", datesToSave.size() + " dates added");
-        return "admin-landing-page";
+        return "admin/admin-landing-page";
     }
 
     private static Map<String, List<String>> createDatesWithHoursMap(List<String> dates) {

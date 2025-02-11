@@ -25,7 +25,7 @@ public class CustomerPageController {
 
     @RequestMapping("/about-me")
     public String aboutMe(){
-        return "about-me";
+        return "customer/about-me";
     }
 
     @RequestMapping("/booking-calendar")
@@ -34,6 +34,6 @@ public class CustomerPageController {
                 bookableDateService.sortHoursInBookableHourListByHour(
                         bookableDateService.sortBookableDateListByDate(
                                 bookableDateService.getAllCurrentlyAvailableBookableDates())));
-        return "bookable-calendar";
+        return "customer/bookable-calendar";
     }
 }

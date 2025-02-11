@@ -25,14 +25,18 @@ public class CustomerService {
         customerRepo.deleteAll();
     }
 
-    public Customer findCustomerIfAtLeastOneContactMethodExists(Customer customer) {
+    public Customer findCustomerIfAtLeastOneContactMethodMatches(Customer customer) {
         if (customer.getPhone() != null && !customer.getPhone().isEmpty()) {
             Customer foundCustomer = findCustomerByAnyField(customer.getPhone());
-            if (foundCustomer != null) return foundCustomer;
+            if (foundCustomer != null){
+                return foundCustomer;
+            }
         }
         if (customer.getInstagram() != null && !customer.getInstagram().isEmpty()) {
             Customer foundCustomer = findCustomerByAnyField(customer.getInstagram());
-            if (foundCustomer != null) return foundCustomer;
+            if (foundCustomer != null){
+                return foundCustomer;
+            }
         }
         if (customer.getEmail() != null && !customer.getEmail().isEmpty()) {
             return findCustomerByAnyField(customer.getEmail());

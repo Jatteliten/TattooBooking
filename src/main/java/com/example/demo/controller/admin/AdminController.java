@@ -39,7 +39,7 @@ public class AdminController {
 
     @RequestMapping("/")
     public String loginSuccess(){
-        return "admin-landing-page";
+        return "admin/admin-landing-page";
     }
 
 
@@ -60,7 +60,7 @@ public class AdminController {
     public String setFrontPageImage(Model model){
         model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
         model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
-        return "select-front-page-images";
+        return "admin/select-front-page-images";
     }
 
     @RequestMapping("/changeImageState")
@@ -69,7 +69,7 @@ public class AdminController {
 
         model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
         model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
-        return "select-front-page-images";
+        return "admin/select-front-page-images";
     }
 
     @GetMapping("/images/{id}")
@@ -86,13 +86,13 @@ public class AdminController {
     @RequestMapping("/customer")
     public String customerInformation(Model model){
         model.addAttribute("customers", customerService.getAllCustomers());
-        return "customer";
+        return "admin/customer";
     }
 
     @RequestMapping("/delete-all-customers")
     public String deleteAllCustomers(){
         customerService.deleteAllCustomers();
-        return "customer";
+        return "admin/customer";
     }
 
 }

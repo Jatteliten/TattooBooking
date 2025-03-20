@@ -6,6 +6,8 @@ import com.example.demo.services.BookableDateService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,19 +29,19 @@ public class AddDatesController {
     public AddDatesController(BookableDateService bookableDateService){
         this.bookableDateService = bookableDateService;
     }
-    @RequestMapping("/")
+    @GetMapping("/")
     public String addDates(){
         return "admin/add-available-dates";
     }
 
-    @RequestMapping("/removeAllBookableDates")
+    @DeleteMapping("/removeAllBookableDates")
     public String removeAllBookableDates(Model model){
         bookableDateService.deleteAllBookableDates();
         model.addAttribute("errorMessage", "All bookable dates deleted");
         return "admin/add-available-dates";
     }
 
-    @RequestMapping("/confirm-dates")
+    @GetMapping("/confirm-dates")
     public String confirmDatesToAdd(@RequestParam List<String> time, @RequestParam String fromDate,
                                     @RequestParam String toDate, Model model){
         LocalDate from = LocalDate.parse(fromDate);

@@ -4,7 +4,7 @@ import com.example.demo.services.BookableDateService;
 import com.example.demo.services.TattooImageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CustomerPageController {
@@ -17,18 +17,18 @@ public class CustomerPageController {
         this.bookableDateService = bookableDateService;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String frontPage(Model model){
         model.addAttribute("images", tattooImageService.getAllFrontPageImagesUrls());
         return "index";
     }
 
-    @RequestMapping("/about-me")
+    @GetMapping("/about-me")
     public String aboutMe(){
         return "customer/about-me";
     }
 
-    @RequestMapping("/booking-calendar")
+    @GetMapping("/booking-calendar")
     public String getAllBookableDates(Model model){
         model.addAttribute("bookableDates",
                 bookableDateService.sortHoursInBookableHourListByHour(

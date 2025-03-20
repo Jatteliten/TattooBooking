@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class AdminController {
         this.customerService = customerService;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String loginSuccess(){
         return "admin/admin-landing-page";
     }
@@ -56,14 +57,14 @@ public class AdminController {
         return "redirect:/admin/set-front-page-images";
     }
 
-    @RequestMapping("/set-front-page-images")
+    @GetMapping("/set-front-page-images")
     public String setFrontPageImage(Model model){
         model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
         model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
         return "admin/select-front-page-images";
     }
 
-    @RequestMapping("/changeImageState")
+    @PostMapping("/changeImageState")
     public String changeFrontPageState(@RequestParam String url, Model model){
         tattooImageService.changeTattooImageStateToOppositeByUrl(url);
 
@@ -89,7 +90,7 @@ public class AdminController {
         return "admin/customer";
     }
 
-    @RequestMapping("/delete-all-customers")
+    @DeleteMapping("/delete-all-customers")
     public String deleteAllCustomers(){
         customerService.deleteAllCustomers();
         return "admin/customer";

@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/booking")
@@ -43,13 +44,13 @@ public class BookingController {
     }
 
 
-    @RequestMapping("/book-tattoo")
+    @GetMapping("/book-tattoo")
     public String bookTattoo(Model model){
         model.addAttribute("weeks", calendarService.getNextTwentyEightDates());
         return "admin/book-tattoo";
     }
 
-    @RequestMapping("/bookings")
+    @GetMapping("/bookings")
     public String displayBookings(Model model){
         List<Booking> bookings = bookingService.getAllBookings();
         bookings.forEach(b -> System.out.println(b.getCustomer().getName()));
@@ -60,14 +61,14 @@ public class BookingController {
         return "admin/bookings";
     }
 
-    @RequestMapping("/adjust-booking")
+    @GetMapping("/adjust-booking")
     public String adjustBooking(BookingCustomerDepositTimeDto booking, Model model){
         model.addAttribute("booking",
                 bookingService.convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(booking));
         return "admin/adjust-booking";
     }
 
-    @RequestMapping("/book-tattoo-at-date")
+    @GetMapping("/book-tattoo-at-date")
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
@@ -94,22 +95,16 @@ public class BookingController {
 
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
         if(bookableDate != null) {
-            model.addAttribute("bookableHours", bookableDateService.findBookableDateByDate(date).getBookableHours());
+            model.addAttribute("bookableHours", bookableDate.getBookableHours());
         }
         return "admin/book-tattoo-with-date";
     }
 
     @PostMapping("/create-customer")
     public String createNewCustomer(@RequestParam LocalDate date, Model model, Customer customer) {
-        if (customer.getPhone() != null && customer.getPhone().isEmpty()) {
-            customer.setPhone(null);
-        }
-        if (customer.getEmail() != null && customer.getEmail().isEmpty()) {
-            customer.setEmail(null);
-        }
-        if (customer.getInstagram() != null && customer.getInstagram().isEmpty()) {
-            customer.setInstagram(null);
-        }
+        customer.setPhone(Optional.ofNullable(customer.getPhone()).filter(s -> !s.isEmpty()).orElse(null));
+        customer.setEmail(Optional.ofNullable(customer.getEmail()).filter(s -> !s.isEmpty()).orElse(null));
+        customer.setInstagram(Optional.ofNullable(customer.getInstagram()).filter(s -> !s.isEmpty()).orElse(null));
 
         Customer existingCustomer = customerService.findCustomerIfAtLeastOneContactMethodMatches(customer);
         if (existingCustomer == null) {
@@ -150,7 +145,7 @@ public class BookingController {
             for(BookableHour bookableHour: bookableDate.getBookableHours()){
                 if(bookableHour.isBooked()){
                     model.addAttribute("doubleBookError", "Can't book at already booked times");
-                    return "admin-landing-page";
+                    return "admin/admin-landing-page";
                 }
                 if(bookableHour.getHour().isAfter(startTime.minusMinutes(1))
                         && bookableHour.getHour().isBefore(endTime)){

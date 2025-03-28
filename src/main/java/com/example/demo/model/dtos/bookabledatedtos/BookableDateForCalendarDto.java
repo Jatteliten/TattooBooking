@@ -14,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class BookableDateForCalendarDto {
-    LocalDate date;
-    List<BookableHourForCalendarDto> hours;
-    boolean currentMonth;
-    boolean fullyBooked;
-    boolean dropIn;
+    private LocalDate date;
+    private List<BookableHourForCalendarDto> hours;
+    private boolean currentMonth;
+    private boolean fullyBooked;
+    private boolean touchUp;
+    private boolean dropIn;
 }

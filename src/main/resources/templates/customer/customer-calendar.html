@@ -45,9 +45,10 @@
             th:with="day=${days[week * 7 + i]}"
             th:text="${day.date.dayOfMonth}"
             th:class="${day.currentMonth ?
-                (day.date.dayOfWeek == T(java.time.DayOfWeek).TUESDAY ? 'touch-up' :
+                (day.touchUp ? 'touch-up' :
                     (day.fullyBooked ? 'no-available-hours' :
-                        (day.dropIn ? 'drop-in' : 'available-hours')))
+                        (day.dropIn ? 'drop-in' :
+                         'available-hours')))
                             : 'not-current-month'}"
         >
         </td>

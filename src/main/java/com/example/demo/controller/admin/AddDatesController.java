@@ -75,6 +75,7 @@ public class AddDatesController {
                 datesToSave.add(BookableDate.builder()
                         .date(LocalDate.parse(key.substring(key.indexOf("_") + 1)))
                         .dropIn(true)
+                        .fullyBooked(false)
                         .build());
             }
         }
@@ -89,15 +90,13 @@ public class AddDatesController {
                         .booked(false)
                         .build());
             }
-            boolean isDropIn = dropinMap.containsKey("dropin_" + entry.getKey());
 
-            BookableDate dateToSave = BookableDate.builder()
+            datesToSave.add(BookableDate.builder()
                     .date(LocalDate.parse(entry.getKey()))
                     .bookableHours(hoursToSave)
                     .fullyBooked(false)
-                    .dropIn(isDropIn)
-                    .build();
-            datesToSave.add(dateToSave);
+                    .dropIn(false)
+                    .build());
         }
 
         bookableDateService.saveAllBookableDatesAndAssociatedHours(datesToSave);

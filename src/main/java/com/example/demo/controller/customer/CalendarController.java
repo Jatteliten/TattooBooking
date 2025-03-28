@@ -68,6 +68,9 @@ public class CalendarController {
             BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
             if(bookableDate != null){
                 bookableDate.setCurrentMonth(isCurrentMonth);
+                if(bookableDate.getDate().getDayOfWeek().equals(DayOfWeek.TUESDAY)){
+                    bookableDate.setTouchUp(true);
+                }
                 days.add(bookableDate);
             }else{
                 days.add(BookableDateForCalendarDto.builder()

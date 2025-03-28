@@ -9,26 +9,41 @@
     <img src="/images/Lev_i_buet_Logo.PNG" class="img-fluid w-75 logo" alt="Lev i buet logo">
   </div>
   <div class="container">
-    <nav style="background-color: #f1d7fa;" class="navbar navbar-expand-sm navbar-light front-page-navbar w-100 centered" >
-
-        <div class="navbar-nav justify-content-between w-100">
-          <a class="nav-item nav-link" href="/">Hem</a>
-          <a class="nav-item nav-link" href="/booking-calendar">Bokningskalender</a>
-          <a class="nav-item nav-link" href="#">Lediga flash</a>
-          <a class="nav-item nav-link" href="#">Portfolio</a>
-          <a class="nav-item nav-link" href="/about-me">Om mig</a>
+    <nav class="navbar navbar-expand-sm navbar-light front-page-navbar w-100 centered navbar-pink">
+      <div class="navbar-nav justify-content-between w-100">
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Hem
+          </a>
+          <ul class="dropdown-menu navbar-dropdown-pink" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="/">Välkommen</a></li>
+            <li><a class="dropdown-item" href="#">Kontakt</a></li>
+            <li><a class="dropdown-item" href="#">Vanliga frågor</a></li>
+          </ul>
         </div>
-
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Bokningskalender
+          </a>
+          <ul class="dropdown-menu navbar-dropdown-pink" aria-labelledby="dropdownMenuButton2">
+            <li><a class="dropdown-item" href="/calendar">Lediga datum</a></li>
+            <li><a class="dropdown-item" href="#">Bokningsformulär</a></li>
+          </ul>
+        </div>
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Lediga Flash
+          </a>
+          <ul class="dropdown-menu navbar-dropdown-pink" aria-labelledby="dropdownMenuButton2">
+            <li><a class="dropdown-item" href="#">Lediga motiv</a></li>
+            <li><a class="dropdown-item" href="#">Koncept/Idéer</a></li>
+          </ul>
+        </div>
+        <a class="nav-item nav-link" href="#">Portfolio</a>
+        <a class="nav-item nav-link" href="/about-me">Om mig</a>
+      </div>
     </nav>
   </div>
 </div>
-
-<div th:fragment="content">
-
-</div>
-
-<footer>
-  <p>2024 My Application</p>
-</footer>
 </body>
 </html>

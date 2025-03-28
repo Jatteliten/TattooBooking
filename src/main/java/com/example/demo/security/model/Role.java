@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Role")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "Role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID  )

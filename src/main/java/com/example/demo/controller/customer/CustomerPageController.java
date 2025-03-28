@@ -5,6 +5,7 @@ import com.example.demo.services.TattooImageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CustomerPageController {
@@ -28,12 +29,4 @@ public class CustomerPageController {
         return "customer/about-me";
     }
 
-    @GetMapping("/booking-calendar")
-    public String getAllBookableDates(Model model){
-        model.addAttribute("bookableDates",
-                bookableDateService.sortHoursInBookableHourListByHour(
-                        bookableDateService.sortBookableDateListByDate(
-                                bookableDateService.getAllCurrentlyAvailableBookableDates())));
-        return "customer/bookable-calendar";
-    }
 }

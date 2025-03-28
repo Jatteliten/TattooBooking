@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calendar</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 14%;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        .gray { color: rgb(189, 189, 189); }
+        .black { color: black; }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .nav a {
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        th{
+            text-align: center;
+        }
+    </style>
+</head>
+<div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
+<body class="container">
+
+<div class="nav">
+    <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}">&lt;</a>
+    <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
+    <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}">&gt;</a>
+</div>
+
+<table>
+    <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+    </tr>
+    <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
+        <td th:each="i : ${#numbers.sequence(0, 6)}"
+            th:with="day=${days[week * 7 + i]}"
+            th:text="${day.date.dayOfMonth}"
+            th:class="${day.currentMonth} ? 'black' : 'gray'">
+        </td>
+    </tr>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

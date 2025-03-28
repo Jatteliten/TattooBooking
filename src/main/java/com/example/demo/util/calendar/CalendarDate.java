@@ -13,5 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class CalendarDate {
     LocalDate date;
+    boolean currentMonth;
     String color;
+
 }

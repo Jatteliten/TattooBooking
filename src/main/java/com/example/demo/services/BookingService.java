@@ -38,6 +38,10 @@ public class BookingService {
         bookingRepo.deleteAll(bookings);
     }
 
+    public void deleteAllBookings(){
+        bookingRepo.deleteAll();
+    }
+
     public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {
         return bookingRepo.findByCustomerAndDate(customer, dateTime).orElse(null);
     }

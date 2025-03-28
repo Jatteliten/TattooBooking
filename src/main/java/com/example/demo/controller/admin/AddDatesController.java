@@ -34,7 +34,7 @@ public class AddDatesController {
         return "admin/add-available-dates";
     }
 
-    @DeleteMapping("/removeAllBookableDates")
+    @PostMapping("/remove-all-bookable-dates")
     public String removeAllBookableDates(Model model){
         bookableDateService.deleteAllBookableDates();
         model.addAttribute("errorMessage", "All bookable dates deleted");

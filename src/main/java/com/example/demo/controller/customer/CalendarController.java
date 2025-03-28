@@ -1,5 +1,7 @@
 package com.example.demo.controller.customer;
 
+import com.example.demo.model.BookableDate;
+import com.example.demo.services.BookableDateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,11 @@ import java.util.List;
 
 @Controller
 public class CalendarController {
+    BookableDateService bookableDateService;
+
+    public CalendarController(BookableDateService bookableDateService){
+        this.bookableDateService = bookableDateService;
+    }
 
     @GetMapping("/calendar")
     public String getCalendar(@RequestParam(name = "year", required = false) Integer year,
@@ -37,7 +44,7 @@ public class CalendarController {
         return "customer/customer-calendar";
     }
 
-    private static List<CalendarDay> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
+    private List<CalendarDay> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
         LocalDate firstDayOfMonth = selectedDate.withDayOfMonth(1);
         LocalDate firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY);
         LocalDate lastDayOfMonth = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth());
@@ -45,13 +52,19 @@ public class CalendarController {
 
         List<CalendarDay> days = new ArrayList<>();
         LocalDate date = firstDayOfCalendar;
+        List<BookableDate> bookableDateList = bookableDateService.getAllCurrentlyAvailableBookableDates();
         while (!date.isAfter(lastDayOfCalendar)) {
             boolean isCurrentMonth = date.getMonth() == selectedDate.getMonth();
-            days.add(new CalendarDay(date, isCurrentMonth));
+            BookableDate bookableDate = bookableDateService.getBookableDateFromBookableDateListByDate(bookableDateList, date);
+            if(bookableDate != null){
+                days.add(new CalendarDay(date, isCurrentMonth, false));
+            }else{
+                days.add(new CalendarDay(date, isCurrentMonth, true));
+            }
             date = date.plusDays(1);
         }
         return days;
     }
 
-    public record CalendarDay(LocalDate date, boolean currentMonth) { }
+    public record CalendarDay(LocalDate date, boolean currentMonth, boolean fullyBooked) { }
 }

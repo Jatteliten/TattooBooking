@@ -13,6 +13,7 @@ import com.example.demo.util.calendar.CalendarService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,9 +51,15 @@ public class BookingController {
         return "admin/book-tattoo";
     }
 
+    @PostMapping("/remove-all-bookings")
+    public String removeAllBookings(Model model){
+        bookingService.deleteBookings(bookingService.getAllBookings());
+        model.addAttribute("errorMessage", "All bookable dates deleted");
+        return "admin/bookings";
+    }
+
     @GetMapping("/bookings")
     public String displayBookings(Model model){
-        List<Booking> bookings = bookingService.getAllBookings();
         model.addAttribute("upcomingBookings",
                 bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)

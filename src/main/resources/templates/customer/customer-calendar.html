@@ -15,8 +15,6 @@
             text-align: center;
             border: 1px solid #ccc;
         }
-        .gray { color: rgb(189, 189, 189); }
-        .black { color: black; }
         .nav {
             display: flex;
             justify-content: space-between;
@@ -57,7 +55,7 @@
         <td th:each="i : ${#numbers.sequence(0, 6)}"
             th:with="day=${days[week * 7 + i]}"
             th:text="${day.date.dayOfMonth}"
-            th:class="${day.currentMonth} ? 'black' : 'gray'">
+            th:class="${day.currentMonth ? (day.fullyBooked ? 'no-available-hours' : 'available-hours') : 'not-current-month'}">
         </td>
     </tr>
 </table>

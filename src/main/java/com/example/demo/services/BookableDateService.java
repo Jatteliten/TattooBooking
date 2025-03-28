@@ -7,10 +7,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookableDateService {
@@ -36,6 +34,14 @@ public class BookableDateService {
 
     public List<BookableDate> getAllCurrentlyAvailableBookableDates(){
         return bookableDateRepo.findByFullyBookedFalse();
+    }
+
+    public BookableDate getBookableDateFromBookableDateListByDate(List<BookableDate> bookableDateList, LocalDate date){
+        try {
+            return bookableDateList.stream().filter(b -> b.getDate().equals(date)).toList().get(0);
+        } catch(IndexOutOfBoundsException e){
+            return null;
+        }
     }
 
     public List<BookableDate> sortBookableDateListByDate(List<BookableDate> listToSort){

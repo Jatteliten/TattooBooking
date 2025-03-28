@@ -41,11 +41,17 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-
 .navbar-pink{
     background-color: #f1d7fa;
 }
-
 .navbar-dropdown-pink{
     background-color: #fbf4ff;
 }
+.no-available-hours {
+    color: rgb(154, 146, 146);
+}
+.available-hours {
+    color: #3a8600;
+    background-color: #d6fabc;
+}
+.not-current-month { color: #e8e8e8; }

@@ -23,6 +23,11 @@ public class CustomerPageController {
         return "index";
     }
 
+    @GetMapping("/contact")
+    public String contact(){
+        return "customer/contact";
+    }
+
     @GetMapping("/about-me")
     public String aboutMe(){
         return "customer/about-me";

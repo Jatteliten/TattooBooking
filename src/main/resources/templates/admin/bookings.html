@@ -8,8 +8,18 @@
 </head>
 <body>
 <div th:replace="~{layouts/admin-layout :: header}"></div>
+<div th:if="${errorMessage != null}">
+    <p th:text="${errorMessage}" class="text-danger"></p>
+</div>
 <div th:each="booking:${upcomingBookings}">
     <p th:text="${#temporals.format(booking.date, 'dd/MM-yy | HH:mm')} + ' - ' + ${booking.customer.name}"></p>
 </div>
+
+
+<form action="/booking/remove-all-bookings" method="post" style="position:absolute; bottom: 0; right: 0;">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit" class="btn btn-danger">Remove all bookings</button>
+</form>
+
 </body>
 </html>

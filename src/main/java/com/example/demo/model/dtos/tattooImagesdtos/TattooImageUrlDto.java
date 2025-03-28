@@ -1,4 +1,4 @@
-package com.example.demo.model.dtos.tattooImages;
+package com.example.demo.model.dtos.tattooImagesdtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

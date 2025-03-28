@@ -1,18 +1,15 @@
 package com.example.demo.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -20,15 +17,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class BookableDate {
+public class CustomerPageText {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
-    LocalDate date;
-    boolean fullyBooked;
-    boolean dropIn;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    List<BookableHour> bookableHours;
+    String text;
+    String page;
+    String section;
+    LocalDateTime created;
 }

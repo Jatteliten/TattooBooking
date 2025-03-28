@@ -2,11 +2,14 @@ package com.example.demo.services;
 
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
+import com.example.demo.model.dtos.bokablehourdtos.BookableHourForCalendarDto;
+import com.example.demo.model.dtos.bookabledatedtos.BookableDateForCalendarDto;
 import com.example.demo.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,9 +17,11 @@ import java.util.List;
 public class BookableDateService {
 
     private final BookableDateRepo bookableDateRepo;
+    private final BookableHourService bookableHourService;
 
-    public BookableDateService(BookableDateRepo bookableDateRepo){
+    public BookableDateService(BookableDateRepo bookableDateRepo, BookableHourService bookableHourService){
         this.bookableDateRepo = bookableDateRepo;
+        this.bookableHourService = bookableHourService;
     }
 
     public void saveBookableDate(BookableDate bookableDate){
@@ -26,9 +31,32 @@ public class BookableDateService {
         bookableDateRepo.deleteAll();
     }
 
+    public List<BookableDate> findBookableDatesBetweenTwoGivenDates(LocalDate startDate, LocalDate endDate){
+        return bookableDateRepo.findByDateBetween(startDate, endDate);
+    }
+
+    public BookableDateForCalendarDto convertBookableDateToBookableDateForCalendarDto(BookableDate bookableDate){
+        List<BookableHourForCalendarDto> bookableHoursForCalendarList = new ArrayList<>();
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            bookableHoursForCalendarList.add(
+                    bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHour));
+        }
+        return BookableDateForCalendarDto.builder()
+                .date(bookableDate.getDate())
+                .hours(bookableHoursForCalendarList)
+                .currentMonth(true)
+                .fullyBooked(bookableDate.isFullyBooked())
+                .dropIn(bookableDate.isDropIn())
+                .build();
+    }
+
+    public List<BookableDateForCalendarDto> convertListOfBookableDatesToBookableDateForCalendarDto(
+            List<BookableDate> bookableDateList){
+        return bookableDateList.stream().map(this::convertBookableDateToBookableDateForCalendarDto).toList();
+    }
+
     @Transactional
     public void saveAllBookableDatesAndAssociatedHours(List<BookableDate> dateList){
-        //implementera så att man inte kan skapa flera av samma bokningstid
         bookableDateRepo.saveAll(dateList);
     }
 

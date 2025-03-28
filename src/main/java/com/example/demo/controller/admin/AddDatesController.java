@@ -64,33 +64,47 @@ public class AddDatesController {
         model.addAttribute("times", time);
         return "admin/confirm-dates";
     }
-
     @PostMapping("/save-dates")
-    public String saveDates(@RequestParam List<String> dates, Model model) {
+    public String saveDates(@RequestParam List<String> dates,
+                            @RequestParam Map<String, String> dropinMap,
+                            Model model) {
+        List<BookableDate> datesToSave = new ArrayList<>();
+
+        for (String key : dropinMap.keySet()) {
+            if (key.startsWith("dropin_")) {
+                datesToSave.add(BookableDate.builder()
+                        .date(LocalDate.parse(key.substring(key.indexOf("_") + 1)))
+                        .dropIn(true)
+                        .build());
+            }
+        }
+
         Map<String, List<String>> datesWithHours = createDatesWithHoursMap(dates);
 
-        List<BookableDate> datesToSave = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : datesWithHours.entrySet()) {
             List<BookableHour> hoursToSave = new ArrayList<>();
-            for(String s: entry.getValue()){
+            for (String s : entry.getValue()) {
                 hoursToSave.add(BookableHour.builder()
                         .hour(LocalTime.parse(s))
                         .booked(false)
                         .build());
             }
+            boolean isDropIn = dropinMap.containsKey("dropin_" + entry.getKey());
+
             BookableDate dateToSave = BookableDate.builder()
                     .date(LocalDate.parse(entry.getKey()))
                     .bookableHours(hoursToSave)
                     .fullyBooked(false)
+                    .dropIn(isDropIn)
                     .build();
             datesToSave.add(dateToSave);
         }
 
         bookableDateService.saveAllBookableDatesAndAssociatedHours(datesToSave);
-
         model.addAttribute("datesAdded", datesToSave.size() + " dates added");
         return "admin/admin-landing-page";
     }
+
 
     private static Map<String, List<String>> createDatesWithHoursMap(List<String> dates) {
         String oldValue = "nothing";

@@ -15,6 +15,7 @@
         <div th:each="date : ${dates}">
             <fieldset>
                 <legend th:text="${date}">Date</legend>
+                <input type="checkbox" th:name="'dropin_' + ${date}" th:value="true"/> Drop in
                 <div th:each="time : ${times}">
                     <label>
                         <input type="checkbox" th:name="dates" th:value="${date} + '=' + ${time}" th:checked=true/>

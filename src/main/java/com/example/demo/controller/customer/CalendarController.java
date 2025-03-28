@@ -1,6 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.model.BookableDate;
+import com.example.demo.model.dtos.bookabledatedtos.BookableDateForCalendarDto;
 import com.example.demo.services.BookableDateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class CalendarController {
@@ -31,7 +35,7 @@ public class CalendarController {
                 1
         );
 
-        List<CalendarDay> days = createDaysInMonthFromSelectedDate(selectedDate);
+        List<BookableDateForCalendarDto> days = createDaysInMonthFromSelectedDate(selectedDate);
 
         model.addAttribute("days", days);
         model.addAttribute("month", selectedDate.getMonthValue());
@@ -44,27 +48,37 @@ public class CalendarController {
         return "customer/customer-calendar";
     }
 
-    private List<CalendarDay> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
+    private List<BookableDateForCalendarDto> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
         LocalDate firstDayOfMonth = selectedDate.withDayOfMonth(1);
         LocalDate firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY);
         LocalDate lastDayOfMonth = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth());
         LocalDate lastDayOfCalendar = lastDayOfMonth.with(DayOfWeek.SUNDAY);
 
-        List<CalendarDay> days = new ArrayList<>();
+        List<BookableDateForCalendarDto> days = new ArrayList<>();
         LocalDate date = firstDayOfCalendar;
-        List<BookableDate> bookableDateList = bookableDateService.getAllCurrentlyAvailableBookableDates();
+        Map<LocalDate, BookableDateForCalendarDto> dateToBookableDateForCalendarDto =
+                bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(
+                        bookableDateService.findBookableDatesBetweenTwoGivenDates(firstDayOfMonth, lastDayOfMonth))
+                        .stream()
+                        .collect(Collectors
+                                .toMap(BookableDateForCalendarDto::getDate, dto -> dto));
+
         while (!date.isAfter(lastDayOfCalendar)) {
             boolean isCurrentMonth = date.getMonth() == selectedDate.getMonth();
-            BookableDate bookableDate = bookableDateService.getBookableDateFromBookableDateListByDate(bookableDateList, date);
+            BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
             if(bookableDate != null){
-                days.add(new CalendarDay(date, isCurrentMonth, false));
+                bookableDate.setCurrentMonth(isCurrentMonth);
+                days.add(bookableDate);
             }else{
-                days.add(new CalendarDay(date, isCurrentMonth, true));
+                days.add(BookableDateForCalendarDto.builder()
+                        .currentMonth(isCurrentMonth)
+                        .date(date)
+                        .fullyBooked(true)
+                        .build());
             }
             date = date.plusDays(1);
         }
         return days;
     }
 
-    public record CalendarDay(LocalDate date, boolean currentMonth, boolean fullyBooked) { }
 }

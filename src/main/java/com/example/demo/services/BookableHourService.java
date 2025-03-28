@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.model.BookableHour;
+import com.example.demo.model.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.repos.BookableHourRepo;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,13 @@ public class BookableHourService {
 
     public BookableHour getBookableHourByHour(LocalTime hour){
         return bookableHourRepo.findByHour(hour);
+    }
+
+    public BookableHourForCalendarDto convertBookableHourToBookableHourForCalendarDto(BookableHour bookableHour){
+        return BookableHourForCalendarDto.builder()
+                .hour(bookableHour.getHour())
+                .booked(bookableHour.isBooked())
+                .build();
     }
 
 }

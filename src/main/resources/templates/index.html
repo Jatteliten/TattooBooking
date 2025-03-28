@@ -8,11 +8,17 @@
 </head>
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <body class="container">
-<div class="front-page-images centered">
-    <div th:each="image : ${images}">
-        <img th:src="'images/' + ${image.name}" alt="Image could not load" width="150" height="250"/>
+
+<div class="front-page-container">
+    <div class="card front-page-card">
+        <div class="card-body">
+            <h5 class="card-title">Senaste nytt</h5>
+            <p class="card-text" th:text="${frontPageText}">Default text here...</p>
+        </div>
     </div>
+    hejhejhej här är framsidan. till vänster är ett kort. kul kul kul
 </div>
+
 
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>

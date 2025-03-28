@@ -19,7 +19,7 @@ public class CustomerPageController {
 
     @GetMapping("/")
     public String frontPage(Model model){
-        model.addAttribute("images", tattooImageService.getAllFrontPageImagesUrls());
+        model.addAttribute("frontPageText", "hej Jag heter Tana och jag är en liten apa. Det här är min hemsida hejhej");
         return "index";
     }
 

@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface BookableDateRepo extends JpaRepository<BookableDate, UUID> {
     List<BookableDate> findByFullyBookedFalse();
     BookableDate findByDate(LocalDate date);
+    List<BookableDate> findByDateBetween(LocalDate startDate, LocalDate endDate);
 }

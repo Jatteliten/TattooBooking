@@ -16,6 +16,15 @@
 .front-page-navbar{
     padding-left: 50px;
     padding-right: 50px;
+    margin-bottom: 20px;
+}
+.front-page-container {
+    display: flex;
+    align-items: flex-start;
+}
+.front-page-card{
+    width: 20%;
+    margin-right: 20px;
 }
 .logo{
     padding-top:20px;
@@ -55,3 +64,36 @@
     background-color: #d6fabc;
 }
 .not-current-month { color: #e8e8e8; }
+
+.drop-in{
+    color: #92169b;
+    background-color: #fabcf7;
+}
+
+.touch-up{
+    color: #7e811a;
+    background-color: #f9ffc2;
+}
+
+.month-picker {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.month-picker a {
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.calendar-bottom-table-container{
+    padding-bottom: 20px;
+    padding-top: 20px;
+    width: 42.9%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -47,7 +47,7 @@ public class AddDatesController {
         LocalDate from = LocalDate.parse(fromDate);
         LocalDate to = LocalDate.parse(toDate);
 
-        if(!from.isBefore(to)){
+        if(!from.isBefore(to) && !from.isEqual(to)){
             model.addAttribute("errorMessage", "From date must be before To date");
             return "admin/add-available-dates";
         }

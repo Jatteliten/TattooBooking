@@ -53,7 +53,6 @@ public class BookingController {
     @GetMapping("/bookings")
     public String displayBookings(Model model){
         List<Booking> bookings = bookingService.getAllBookings();
-        bookings.forEach(b -> System.out.println(b.getCustomer().getName()));
         model.addAttribute("upcomingBookings",
                 bookingService.getBookingsFromTodayToFourWeeksForward().stream()
                         .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
@@ -131,19 +130,13 @@ public class BookingController {
                         .instagram(customerInstagram)
                         .build());
 
-        if(customerToBook != null) {
-            Booking booking = Booking.builder()
-                    .date(date.atTime(startTime))
-                    .customer(customerService.findCustomerIfAtLeastOneContactMethodMatches(customerToBook))
-                    .build();
-            bookingService.saveBooking(booking);
-        }
-
         BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
         if(bookableDate != null){
             int count = 0;
             for(BookableHour bookableHour: bookableDate.getBookableHours()){
-                if(bookableHour.isBooked()){
+                if(bookableHour.isBooked() &&
+                        ((bookableHour.getHour().isBefore(endTime) && bookableHour.getHour().isAfter(startTime)) ||
+                                bookableHour.getHour().equals(startTime))){
                     model.addAttribute("doubleBookError", "Can't book at already booked times");
                     return "admin/admin-landing-page";
                 }
@@ -163,6 +156,13 @@ public class BookingController {
             }
         }
 
+        if(customerToBook != null) {
+            Booking booking = Booking.builder()
+                    .date(date.atTime(startTime))
+                    .customer(customerToBook)
+                    .build();
+            bookingService.saveBooking(booking);
+        }
 
         model.addAttribute("bookingAdded", customerToBook.getName()
                 + " booked at " + startTime.toString()

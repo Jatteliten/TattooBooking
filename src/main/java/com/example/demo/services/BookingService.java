@@ -30,6 +30,14 @@ public class BookingService {
         return bookingRepo.findAll();
     }
 
+    public void deleteBooking(Booking booking){
+        bookingRepo.delete(booking);
+    }
+
+    public void deleteBookings(List<Booking> bookings){
+        bookingRepo.deleteAll(bookings);
+    }
+
     public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {
         return bookingRepo.findByCustomerAndDate(customer, dateTime).orElse(null);
     }

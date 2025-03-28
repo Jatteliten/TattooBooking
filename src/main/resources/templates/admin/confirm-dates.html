@@ -12,18 +12,35 @@
 <div class="container mt-4">
     <h1>Confirm Dates</h1>
     <form th:action="@{/add-dates/save-dates}" method="post">
-        <div th:each="date : ${dates}">
-            <fieldset>
-                <legend th:text="${date}">Date</legend>
-                <input type="checkbox" th:name="'dropin_' + ${date}" th:value="true"/> Drop in
-                <div th:each="time : ${times}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Drop in</th>
+                <th scope="col">Times</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="date : ${dates}">
+                <td>
+                    <span th:text="${date}"></span>
+                </td>
+                <td>
                     <label>
-                        <input type="checkbox" th:name="dates" th:value="${date} + '=' + ${time}" th:checked=true/>
-                        <span th:text="${time}"></span>
+                        <input type="checkbox" th:name="'dropin_' + ${date}" th:value="true"/>
                     </label>
-                </div>
-            </fieldset>
-        </div>
+                </td>
+                <td>
+                    <div th:each="time : ${times}">
+                        <label>
+                            <input type="checkbox" th:name="'dates[' + ${date} + ']' + ${time}" th:value="${date} + '=' + ${time}" th:checked="true"/>
+                            <span th:text="${time}"></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <button type="submit" class="btn btn-success">Submit</button>
     </form>

@@ -1,5 +1,14 @@
+:root {
+    --primary-pink: #f1d7fa;
+    --secondary-pink: #fbf4ff;
+}
+
 .top-padded-body{
     padding-top: 5px;
+}
+.customer-page-margin{
+    margin-right: 12px;
+    margin-left: 12px;
 }
 .front-page-images{
     padding-top:10px;
@@ -24,10 +33,15 @@
 }
 .front-page-card{
     width: 20%;
+    margin-left: 12px;
     margin-right: 20px;
 }
 .front-page-card-text {
     white-space: pre-line;
+}
+.front-page-card-header{
+    border-radius: 0;
+    background-color: var(--secondary-pink);
 }
 .logo{
     padding-top:20px;
@@ -35,6 +49,21 @@
 .image-select{
     display: inline-block;
     margin: 5px;
+}
+.booking-form-card{
+    width:50%;
+    display: flex;
+    margin-bottom: 20px;
+}
+.booking-form-header{
+    background-color: var(--secondary-pink);
+}
+.booking-form-body{
+    text-align: left;
+    padding: 10px;
+}
+.booking-information-header{
+    background-color: var(--secondary-pink);
 }
 .info-item{
     margin-right: 8px;
@@ -54,10 +83,10 @@
     margin-bottom: 20px;
 }
 .navbar-pink{
-    background-color: #f1d7fa;
+    background-color: var(--primary-pink);
 }
 .navbar-dropdown-pink{
-    background-color: #fbf4ff;
+    background-color: var(--secondary-pink);
 }
 .no-available-hours {
     color: rgb(154, 146, 146);

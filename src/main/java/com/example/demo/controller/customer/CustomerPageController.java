@@ -44,4 +44,9 @@ public class CustomerPageController {
         return "customer/about-me";
     }
 
+    @GetMapping("/booking-form")
+    public String bookingForm(){
+        return "customer/booking-form";
+    }
+
 }

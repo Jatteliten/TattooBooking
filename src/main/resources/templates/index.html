@@ -10,9 +10,11 @@
 <body class="container">
 
 <div class="front-page-container">
-    <div class="card front-page-card">
+    <div class="card bg-light mb-3 front-page-card">
+        <div class="card-header front-page-card-header">
+            Senaste nytt
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Senaste nytt</h5>
             <p class="front-page-card-text" th:utext="${frontPageNews}">Default text here...</p>
         </div>
     </div>

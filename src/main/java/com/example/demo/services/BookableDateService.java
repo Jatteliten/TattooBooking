@@ -47,6 +47,7 @@ public class BookableDateService {
                 .currentMonth(true)
                 .fullyBooked(bookableDate.isFullyBooked())
                 .dropIn(bookableDate.isDropIn())
+                .touchUp(bookableDate.isTouchUp())
                 .build();
     }
 

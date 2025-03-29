@@ -71,9 +71,6 @@ public class CalendarController {
                 if(bookableDate.isFullyBooked()){
                     bookableDate.setFullyBooked(true);
                 }
-                if(bookableDate.getDate().getDayOfWeek().equals(DayOfWeek.TUESDAY)){
-                    bookableDate.setTouchUp(true);
-                }
                 days.add(bookableDate);
             }else{
                 days.add(BookableDateForCalendarDto.builder()

@@ -15,7 +15,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +29,12 @@ public class AddDatesController {
     }
     @GetMapping("/")
     public String addDates(){
+        for(BookableDate b: bookableDateService.getAllCurrentlyAvailableBookableDates()){
+            System.out.println(b.getDate() + " | dropin: " + b.isDropIn() + " | touchup: " + b.isTouchUp());
+            for(BookableHour bh: b.getBookableHours()){
+                System.out.println(bh.getHour());
+            }
+        }
         return "admin/add-available-dates";
     }
 
@@ -64,64 +69,38 @@ public class AddDatesController {
         return "admin/confirm-dates";
     }
     @PostMapping("/save-dates")
-    public String saveDates(@RequestParam List<String> dates,
-                            @RequestParam Map<String, String> dropinMap,
-                            Model model) {
-        List<BookableDate> datesToSave = new ArrayList<>();
-
-        for (String key : dropinMap.keySet()) {
-            if (key.startsWith("dropin_")) {
-                datesToSave.add(BookableDate.builder()
-                        .date(LocalDate.parse(key.substring(key.indexOf("_") + 1)))
-                        .dropIn(true)
-                        .fullyBooked(false)
-                        .build());
-            }
-        }
-
-        Map<String, List<String>> datesWithHours = createDatesWithHoursMap(dates);
-
-        for (Map.Entry<String, List<String>> entry : datesWithHours.entrySet()) {
-            List<BookableHour> hoursToSave = new ArrayList<>();
-            for (String s : entry.getValue()) {
-                hoursToSave.add(BookableHour.builder()
-                        .hour(LocalTime.parse(s))
-                        .booked(false)
-                        .build());
-            }
-
-            datesToSave.add(BookableDate.builder()
-                    .date(LocalDate.parse(entry.getKey()))
-                    .bookableHours(hoursToSave)
-                    .fullyBooked(false)
-                    .dropIn(false)
-                    .build());
-        }
-
+    public String saveDates(@RequestParam Map<String, String> datesMap, Model model) {
+        List<BookableDate> datesToSave = createDatesWithTypeAndHoursFromDateInformationMap(datesMap);
         bookableDateService.saveAllBookableDatesAndAssociatedHours(datesToSave);
-        model.addAttribute("datesAdded", datesToSave.size() + " dates added");
+        model.addAttribute("datesAdded", "dates added successfully!");
+
         return "admin/admin-landing-page";
     }
 
 
-    private static Map<String, List<String>> createDatesWithHoursMap(List<String> dates) {
-        String oldValue = "nothing";
-        Map<String, List<String>> datesWithHours = new HashMap<>();
+    private static List<BookableDate> createDatesWithTypeAndHoursFromDateInformationMap(Map<String, String> datesMap) {
+        List<BookableDate> datesWithTypeAndHours = new ArrayList<>();
+        BookableDate bookableDate = new BookableDate();
 
-        for(String s: dates){
-            String date = s.split("=")[0];
-            String time = s.split("=")[1];
-            if(date.equals(oldValue)){
-                List<String> times = datesWithHours.get(date);
-                times.add(time);
-            }else{
-                List<String> newTimesList = new ArrayList<>();
-                newTimesList.add(time);
-                datesWithHours.put(date, newTimesList);
+        for(String dateInformationKey: datesMap.keySet()){
+            if(dateInformationKey.startsWith("type_")){
+                bookableDate = BookableDate.builder()
+                        .bookableHours(new ArrayList<>())
+                        .date(LocalDate.parse(dateInformationKey.substring(dateInformationKey.indexOf("_") + 1)))
+                        .build();
+                String type = datesMap.get(dateInformationKey);
+                bookableDate.setDropIn(type.equals("dropin"));
+                bookableDate.setTouchUp(type.equals("touchup"));
+                datesWithTypeAndHours.add(bookableDate);
+            }else if(dateInformationKey.startsWith("dates")){
+                bookableDate.getBookableHours().add(BookableHour.builder()
+                        .hour(LocalTime.parse(dateInformationKey.substring(dateInformationKey.indexOf("]") + 1)))
+                        .date(bookableDate)
+                        .build());
             }
-            oldValue = date;
         }
-        return datesWithHours;
+
+        return datesWithTypeAndHours;
     }
 
 }

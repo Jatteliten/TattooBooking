@@ -27,6 +27,7 @@ public class BookableDate {
 
     LocalDate date;
     boolean fullyBooked;
+    boolean touchUp;
     boolean dropIn;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

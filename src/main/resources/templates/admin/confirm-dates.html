@@ -16,7 +16,7 @@
             <thead>
             <tr>
                 <th scope="col">Date</th>
-                <th scope="col">Drop in</th>
+                <th scope="col">Type</th>
                 <th scope="col">Times</th>
             </tr>
             </thead>
@@ -24,10 +24,23 @@
             <tr th:each="date : ${dates}">
                 <td>
                     <span th:text="${date}"></span>
+                    <br>
+                    <span th:text="${#temporals.dayOfWeekName(date)}"></span>
                 </td>
                 <td>
                     <label>
-                        <input type="checkbox" th:name="'dropin_' + ${date}" th:value="true"/>
+                        <input type="radio" th:name="'type_' + ${date}" th:value="standard" th:id="'standard-' + ${date}" />
+                        Standard
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" th:name="'type_' + ${date}" th:value="dropin" th:id="'dropin-' + ${date}" />
+                        Drop-in
+                    </label>
+                    <br>
+                    <label>
+                        <input type="radio" th:name="'type_' + ${date}" th:value="touchup" th:id="'touchup-' + ${date}" />
+                        Touch-up
                     </label>
                 </td>
                 <td>
@@ -44,8 +57,8 @@
 
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
-
 </div>
 </body>
-<script src="/js/check-if-saturday.js"></script>
+<script src="/js/pre-select-radiobutton-depending-on-day.js"></script>
+<script src="/js/uncheck-time-boxes-if-saturday.js"></script>
 </html>

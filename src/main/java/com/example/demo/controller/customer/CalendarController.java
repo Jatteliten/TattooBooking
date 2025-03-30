@@ -1,6 +1,5 @@
 package com.example.demo.controller.customer;
 
-import com.example.demo.model.BookableDate;
 import com.example.demo.model.dtos.bookabledatedtos.BookableDateForCalendarDto;
 import com.example.demo.services.BookableDateService;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

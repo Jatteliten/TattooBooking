@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,15 +36,18 @@ public class BookableDateService {
     }
 
     public BookableDateForCalendarDto convertBookableDateToBookableDateForCalendarDto(BookableDate bookableDate){
-        List<BookableHourForCalendarDto> bookableHoursForCalendarList = new ArrayList<>();
+        List<String> bookableHoursStringsForCalendarList = new ArrayList<>();
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
-            bookableHoursForCalendarList.add(
-                    bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHour));
+            BookableHourForCalendarDto bookableHourForCalendarDto =
+                    bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHour);
+            bookableHoursStringsForCalendarList.add(bookableHourForCalendarDto.getHour() + "-"
+                    + bookableHourForCalendarDto.isBooked());
         }
+        Collections.sort(bookableHoursStringsForCalendarList);
         return BookableDateForCalendarDto.builder()
                 .date(bookableDate.getDate())
                 .bookable(true)
-                .hours(bookableHoursForCalendarList)
+                .hours(bookableHoursStringsForCalendarList)
                 .currentMonth(true)
                 .fullyBooked(bookableDate.isFullyBooked())
                 .dropIn(bookableDate.isDropIn())
@@ -54,7 +57,9 @@ public class BookableDateService {
 
     public List<BookableDateForCalendarDto> convertListOfBookableDatesToBookableDateForCalendarDto(
             List<BookableDate> bookableDateList){
-        return bookableDateList.stream().map(this::convertBookableDateToBookableDateForCalendarDto).toList();
+        return bookableDateList.stream()
+                .map(this::convertBookableDateToBookableDateForCalendarDto)
+                .toList();
     }
 
     @Transactional

@@ -9,11 +9,13 @@
             padding: 10px;
             text-align: center;
             border: 1px solid #ccc;
+            position: relative;
         }
-        th{
+        th {
             text-align: center;
         }
     </style>
+
     <table>
         <tr>
             <th>Mon</th>
@@ -35,7 +37,10 @@
                                 (day.bookable ? 'available-hours':
                                     'not-bookable'))))
                                         : 'not-current-month'}"
-                th:attr="data-date=${day.date}"
+                th:attr="data-date=${day.date}, data-hours=${day.hours}"
+                onmouseover="showTooltip(event, this)"
+                onmousemove="moveTooltip(event)"
+                onmouseout="hideTooltip()"
             >
             </td>
         </tr>
@@ -51,4 +56,8 @@
             </tr>
         </table>
     </div>
+
+    <div id="hoursDisplay"></div>
+
+    <script src="/js/show-hours-tooltip-on-date-mouseover.js"></script>
 </div>

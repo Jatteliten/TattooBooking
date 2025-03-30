@@ -129,3 +129,16 @@
     align-items: center;
     justify-content: center;
 }
+
+#hoursDisplay {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #444444;
+    z-index: 1000;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 20px;
+    padding:10px;
+    color: #333;
+    border-radius: 5px;
+}

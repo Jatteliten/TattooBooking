@@ -24,11 +24,12 @@ import java.util.List;
 @RequestMapping("/add-dates")
 @PreAuthorize("hasAuthority('Admin')")
 public class AddDatesController {
-
     private final BookableDateService bookableDateService;
+
     public AddDatesController(BookableDateService bookableDateService){
         this.bookableDateService = bookableDateService;
     }
+
     @GetMapping("/")
     public String addDates(){
         return "admin/add-available-dates";
@@ -53,13 +54,22 @@ public class AddDatesController {
         }
 
         List<LocalDate> availableDates = new ArrayList<>();
+        List<BookableDate> alreadyExistingBookableDateList =
+                bookableDateService.findBookableDatesBetweenTwoGivenDates(
+                        LocalDate.parse(fromDate), LocalDate.parse(toDate));
 
         for (LocalDate date = from; !date.isAfter(to);
              date = date.plusDays(1)) {
-            if (date.getDayOfWeek() != DayOfWeek.SUNDAY && bookableDateService.findBookableDateByDate(date) == null) {
+            LocalDate currentDateInIteration = date;
+
+            if (date.getDayOfWeek() != DayOfWeek.SUNDAY && alreadyExistingBookableDateList.stream()
+                    .filter(bookableDate -> bookableDate.getDate().equals(currentDateInIteration))
+                    .toList()
+                    .isEmpty()) {
                 availableDates.add(date);
             }
         }
+
         model.addAttribute("dates", availableDates);
         model.addAttribute("times", time);
         return "admin/confirm-dates";
@@ -88,9 +98,7 @@ public class AddDatesController {
                         .hour(LocalTime.of(12, 0))
                         .build()));
             }
-            System.out.println("Date: " + entry.getDate());
-            System.out.println("Type: " + entry.getType());
-            System.out.println("Times: " + entry.getHours());
+
             bookableDatesToSaveList.add(bookableDate);
         }
 

@@ -1,10 +1,11 @@
 package com.example.demo.controller.admin;
 
-import com.example.demo.dtos.calendardtos.DateEntry;
-import com.example.demo.dtos.calendardtos.DateForm;
+import com.example.demo.dtos.bookabledatedtos.DateEntry;
+import com.example.demo.dtos.bookabledatedtos.DateForm;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.services.BookableDateService;
+import com.example.demo.util.calendar.CalendarService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,15 +24,20 @@ import java.util.List;
 @Controller
 @RequestMapping("/add-dates")
 @PreAuthorize("hasAuthority('Admin')")
-public class AddDatesController {
+public class BookableDatesController {
     private final BookableDateService bookableDateService;
+    private final CalendarService calendarService;
 
-    public AddDatesController(BookableDateService bookableDateService){
+    public BookableDatesController(BookableDateService bookableDateService, CalendarService calendarService){
         this.bookableDateService = bookableDateService;
+        this.calendarService = calendarService;
     }
 
     @GetMapping("/")
-    public String addDates(){
+    public String addDates(@RequestParam(name = "year", required = false) Integer year,
+                           @RequestParam(name = "month", required = false) Integer month,
+                           Model model){
+        calendarService.createCalendarModel(model, year, month);
         return "admin/add-available-dates";
     }
 
@@ -55,11 +61,9 @@ public class AddDatesController {
 
         List<LocalDate> availableDates = new ArrayList<>();
         List<BookableDate> alreadyExistingBookableDateList =
-                bookableDateService.findBookableDatesBetweenTwoGivenDates(
-                        from, to);
+                bookableDateService.findBookableDatesBetweenTwoGivenDates(from, to);
 
-        for (LocalDate date = from; !date.isAfter(to);
-             date = date.plusDays(1)) {
+        for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
             LocalDate currentDateInIteration = date;
 
             if (date.getDayOfWeek() != DayOfWeek.SUNDAY && alreadyExistingBookableDateList.stream()
@@ -81,25 +85,33 @@ public class AddDatesController {
         for (DateEntry entry : dateForm.getDateList()) {
             BookableDate bookableDate = BookableDate.builder()
                     .date(entry.getDate())
-                    .touchUp(entry.getType().equals("touchup"))
-                    .dropIn(entry.getType().equals("dropin"))
                     .fullyBooked(false)
                     .build();
 
-            if(!bookableDate.isDropIn()){
+            if(entry.getType() != null){
+                bookableDate.setTouchUp(entry.getType().equals("touchup"));
+                bookableDate.setDropIn(entry.getType().equals("dropin"));
+            }else{
+                bookableDate.setTouchUp(false);
+                bookableDate.setDropIn(false);
+            }
+
+            if(!bookableDate.isDropIn() && entry.getHours() != null){
                 bookableDate.setBookableHours(entry.getHours().stream()
                         .map(hour -> BookableHour.builder()
                                 .hour(hour)
                                 .booked(false)
                                 .build())
                         .toList());
-            }else{
+            }else if(bookableDate.isDropIn()){
                 bookableDate.setBookableHours(List.of(BookableHour.builder()
                         .hour(LocalTime.of(12, 0))
                         .build()));
             }
 
-            bookableDatesToSaveList.add(bookableDate);
+            if(bookableDate.getBookableHours() != null){
+                bookableDatesToSaveList.add(bookableDate);
+            }
         }
 
         bookableDateService.saveListOfBookableDates(bookableDatesToSaveList);

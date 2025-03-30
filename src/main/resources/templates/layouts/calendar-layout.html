@@ -1,0 +1,53 @@
+<div th:fragment="calendar">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            width: 14%;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        th{
+            text-align: center;
+        }
+    </style>
+    <table>
+        <tr>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th class="text-danger">Sun</th>
+        </tr>
+        <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
+            <td class="customer-calendar-colum" th:each="i : ${#numbers.sequence(0, 6)}"
+                th:with="day=${days[week * 7 + i]}"
+                th:text="${day.date.dayOfMonth}"
+                th:class="${day.currentMonth ?
+                    (day.fullyBooked ? 'no-available-hours' :
+                        (day.touchUp ? 'touch-up' :
+                            (day.dropIn ? 'drop-in' :
+                                (day.bookable ? 'available-hours':
+                                    'not-bookable'))))
+                                        : 'not-current-month'}"
+            >
+            </td>
+        </tr>
+    </table>
+
+    <div class="calendar-bottom-table-container">
+        <table>
+            <tr>
+                <td class="available-hours">Dag med ledig tid</td>
+                <td class="drop-in">Drop in</td>
+                <td class="touch-up">Touch up</td>
+                <td class="no-available-hours">Fullbokat</td>
+            </tr>
+        </table>
+    </div>
+</div>

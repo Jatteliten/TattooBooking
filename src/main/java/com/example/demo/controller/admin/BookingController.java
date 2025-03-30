@@ -46,7 +46,6 @@ public class BookingController {
 
     @GetMapping("/book-tattoo")
     public String bookTattoo(Model model){
-        model.addAttribute("weeks", calendarService.getNextTwentyEightDates());
         return "admin/book-tattoo";
     }
 

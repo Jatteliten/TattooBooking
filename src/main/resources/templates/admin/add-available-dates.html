@@ -6,6 +6,7 @@
   <title>Add Dates</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body class="container">
 
@@ -26,6 +27,7 @@
     <p th:text="${errorMessage}" class="text-danger"></p>
   </div>
 
+  Hours:
   <div id="timeInputs">
     <div class="time-group">
       <input type="time" name="time" required>
@@ -36,7 +38,7 @@
       <button type="button" class="btn btn-danger btn-sm remove-time" onclick="removeTimeInput(this)">Remove</button>
     </div>
   </div>
-  <button type="button" class="btn btn-warning" onclick="addTimeInput()">Add Time</button>
+  <button type="button" class="btn btn-warning" onclick="addTimeInput()">Add Time slot</button>
   <br>
   <button type="submit" class="btn btn-success confirm-date-button">Confirm</button>
 </form>
@@ -47,6 +49,16 @@
   <button type="submit" class="btn btn-danger">Remove all bookable dates</button>
 </form>
 
+
+<div class="month-picker">
+  <a th:href="@{/add-dates/(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
+  <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
+  <a th:href="@{/add-dates/(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+</div>
+<div th:replace="~{layouts/calendar-layout :: calendar}"></div>
+
 <script src="/js/add-or-remove-hours.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.example.demo.dtos.calendardtos;
+package com.example.demo.dtos.bookabledatedtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -5,21 +5,6 @@
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        td {
-            width: 14%;
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ccc;
-        }
-        th{
-            text-align: center;
-        }
-    </style>
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
@@ -30,41 +15,7 @@
     <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
 </div>
 
-<table>
-    <tr>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thu</th>
-        <th>Fri</th>
-        <th>Sat</th>
-        <th class="text-danger">Sun</th>
-    </tr>
-    <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
-        <td class="customer-calendar-colum" th:each="i : ${#numbers.sequence(0, 6)}"
-            th:with="day=${days[week * 7 + i]}"
-            th:text="${day.date.dayOfMonth}"
-            th:class="${day.currentMonth ?
-                (day.fullyBooked ? 'no-available-hours' :
-                    (day.touchUp ? 'touch-up' :
-                        (day.dropIn ? 'drop-in' :
-                            (day.bookable ? 'available-hours':
-                                'not-bookable'))))
-                                    : 'not-current-month'}"
-        >
-        </td>
-    </tr>
-</table>
-
-<div class="calendar-bottom-table-container">
-    <table>
-        <tr>
-            <td class="available-hours">Dag med ledig tid</td>
-            <td class="drop-in">Drop in</td>
-            <td class="touch-up">Touch up</td>
-        </tr>
-    </table>
-</div>
+<div th:replace="~{layouts/calendar-layout :: calendar}"></div>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

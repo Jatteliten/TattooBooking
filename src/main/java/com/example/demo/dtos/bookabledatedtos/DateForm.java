@@ -1,5 +1,6 @@
-package com.example.demo.dtos.calendardtos;
+package com.example.demo.dtos.bookabledatedtos;
 
+import com.example.demo.dtos.bookabledatedtos.DateEntry;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

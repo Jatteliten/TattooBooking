@@ -1,50 +1,75 @@
 package com.example.demo.util.calendar;
 
+import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookingService;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CalendarService {
-    private final BookingService bookingService;
+    private final BookableDateService bookableDateService;
 
-    public CalendarService(BookingService bookingService){
-        this.bookingService = bookingService;
+    public CalendarService(BookableDateService bookableDateService){
+        this.bookableDateService = bookableDateService;
     }
 
-    public List<List<CalendarDate>> getNextTwentyEightDates() {
-        List<List<CalendarDate>> weeks = new ArrayList<>();
-        List<CalendarDate> currentWeek = new ArrayList<>();
+    public void createCalendarModel(Model model, Integer year, Integer month){
+        LocalDate today = LocalDate.now();
+        LocalDate selectedDate = LocalDate.of(
+                (year != null) ? year : today.getYear(),
+                (month != null) ? month : today.getMonthValue(),
+                1
+        );
 
-        LocalDate startDate = LocalDate.now();
-        while (startDate.getDayOfWeek() != DayOfWeek.MONDAY) {
-            startDate = startDate.minusDays(1);
-        }
+        List<BookableDateForCalendarDto> days = createDaysInMonthFromSelectedDate(selectedDate);
 
-        for (int i = 0; i < 28; i++) {
-            LocalDate currentDate = startDate.plusDays(i);
-            CalendarDate calendarDate = CalendarDate.builder()
-                    .date(currentDate)
-                    .build();
+        model.addAttribute("days", days);
+        model.addAttribute("month", selectedDate.getMonthValue());
+        model.addAttribute("year", selectedDate.getYear());
+        model.addAttribute("prevMonth", selectedDate.minusMonths(1).getMonthValue());
+        model.addAttribute("prevYear", selectedDate.minusMonths(1).getYear());
+        model.addAttribute("nextMonth", selectedDate.plusMonths(1).getMonthValue());
+        model.addAttribute("nextYear", selectedDate.plusMonths(1).getYear());
+    }
 
-            if (bookingService.getBookingsByDate(currentDate.atStartOfDay()).isEmpty()) {
-                calendarDate.setColor("green");
-            } else {
-                calendarDate.setColor("red");
+    private List<BookableDateForCalendarDto> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
+        LocalDate firstDayOfMonth = selectedDate.withDayOfMonth(1);
+        LocalDate firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY);
+        LocalDate lastDayOfMonth = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth());
+        LocalDate lastDayOfCalendar = lastDayOfMonth.with(DayOfWeek.SUNDAY);
+        List<BookableDateForCalendarDto> days = new ArrayList<>();
+        LocalDate date = firstDayOfCalendar;
+
+        Map<LocalDate, BookableDateForCalendarDto> dateToBookableDateForCalendarDto =
+                bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(
+                                bookableDateService.findBookableDatesBetweenTwoGivenDates(firstDayOfMonth, lastDayOfMonth))
+                        .stream()
+                        .collect(Collectors
+                                .toMap(BookableDateForCalendarDto::getDate, dto -> dto));
+
+        while (!date.isAfter(lastDayOfCalendar)) {
+            boolean isCurrentMonth = date.getMonth() == selectedDate.getMonth();
+            BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
+            if(bookableDate != null){
+                bookableDate.setCurrentMonth(isCurrentMonth);
+                days.add(bookableDate);
+            }else{
+                days.add(BookableDateForCalendarDto.builder()
+                        .currentMonth(isCurrentMonth)
+                        .bookable(false)
+                        .date(date)
+                        .build());
             }
-
-            currentWeek.add(calendarDate);
-
-            if (currentWeek.size() == 7) {
-                weeks.add(new ArrayList<>(currentWeek));
-                currentWeek.clear();
-            }
+            date = date.plusDays(1);
         }
-
-        return weeks;
+        return days;
     }
 }

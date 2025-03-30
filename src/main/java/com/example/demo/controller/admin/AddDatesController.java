@@ -56,7 +56,7 @@ public class AddDatesController {
         List<LocalDate> availableDates = new ArrayList<>();
         List<BookableDate> alreadyExistingBookableDateList =
                 bookableDateService.findBookableDatesBetweenTwoGivenDates(
-                        LocalDate.parse(fromDate), LocalDate.parse(toDate));
+                        from, to);
 
         for (LocalDate date = from; !date.isAfter(to);
              date = date.plusDays(1)) {

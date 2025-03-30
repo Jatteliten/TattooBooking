@@ -21,32 +21,33 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="date : ${dates}">
+            <tr th:each="date, iterStat : ${dates}">
                 <td>
                     <span th:text="${date}"></span>
                     <br>
                     <span th:text="${#temporals.dayOfWeekName(date)}"></span>
+                    <input type="hidden" th:name="'dateList[' + ${iterStat.index} + '].date'" th:value="${date}" />
                 </td>
                 <td>
                     <label>
-                        <input type="radio" th:name="'type_' + ${date}" th:value="standard" th:id="'standard-' + ${date}" />
+                        <input type="radio" th:name="'dateList[' + ${iterStat.index} + '].type'" value="standard"/>
                         Standard
                     </label>
                     <br>
                     <label>
-                        <input type="radio" th:name="'type_' + ${date}" th:value="dropin" th:id="'dropin-' + ${date}" />
+                        <input type="radio" th:name="'dateList[' + ${iterStat.index} + '].type'" value="dropin"/>
                         Drop-in
                     </label>
                     <br>
                     <label>
-                        <input type="radio" th:name="'type_' + ${date}" th:value="touchup" th:id="'touchup-' + ${date}" />
+                        <input type="radio" th:name="'dateList[' + ${iterStat.index} + '].type'" value="touchup"/>
                         Touch-up
                     </label>
                 </td>
                 <td>
                     <div th:each="time : ${times}">
                         <label>
-                            <input type="checkbox" th:name="'dates[' + ${date} + ']' + ${time}" th:value="${date} + '=' + ${time}" th:checked="true"/>
+                            <input type="checkbox" th:name="'dateList[' + ${iterStat.index} + '].hours'" th:value="${time}" th:checked="true"/>
                             <span th:text="${time}"></span>
                         </label>
                     </div>

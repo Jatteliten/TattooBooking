@@ -2,8 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
-import com.example.demo.model.dtos.bokablehourdtos.BookableHourForCalendarDto;
-import com.example.demo.model.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
+import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
 import com.example.demo.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ public class BookableDateService {
     }
 
     @Transactional
-    public void saveAllBookableDatesAndAssociatedHours(List<BookableDate> dateList){
+    public void saveListOfBookableDates(List<BookableDate> dateList){
         bookableDateRepo.saveAll(dateList);
     }
 

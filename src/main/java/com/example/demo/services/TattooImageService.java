@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.model.TattooImage;
-import com.example.demo.model.dtos.tattooImagesdtos.TattooImageUrlDto;
+import com.example.demo.dtos.tattooImagesdtos.TattooImageUrlDto;
 import com.example.demo.repos.TattooImageRepo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

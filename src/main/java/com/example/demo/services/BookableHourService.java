@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.model.BookableHour;
-import com.example.demo.model.dtos.bokablehourdtos.BookableHourForCalendarDto;
+import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.repos.BookableHourRepo;
 import org.springframework.stereotype.Service;
 

@@ -2,8 +2,8 @@ package com.example.demo.services;
 
 import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
-import com.example.demo.model.dtos.bookingdtos.BookingCustomerDepositTimeDto;
-import com.example.demo.model.dtos.bookingdtos.BookingWithoutIdDto;
+import com.example.demo.dtos.bookingdtos.BookingCustomerDepositTimeDto;
+import com.example.demo.dtos.bookingdtos.BookingWithoutIdDto;
 import com.example.demo.repos.BookingRepo;
 import org.springframework.stereotype.Service;
 

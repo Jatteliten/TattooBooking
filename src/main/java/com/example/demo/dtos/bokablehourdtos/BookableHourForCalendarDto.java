@@ -1,4 +1,4 @@
-package com.example.demo.model.dtos.bokablehourdtos;
+package com.example.demo.dtos.bokablehourdtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

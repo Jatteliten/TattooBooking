@@ -1,26 +1,31 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const dateElements = document.querySelectorAll("tr");
+document.addEventListener("DOMContentLoaded", function () {
+    const dateRows = document.querySelectorAll("tbody tr");
 
-    dateElements.forEach((row) => {
-        const dateElement = row.querySelector("span");
-        if (dateElement) {
-            const dateStr = dateElement.textContent.trim();
-            const date = new Date(dateStr);
-            const dayOfWeek = date.getDay();
+    dateRows.forEach((row) => {
+        const dateInput = row.querySelector("input[type='hidden'][name*='date']");
+        if (!dateInput) return;
 
-            const standardRadio = row.querySelector(`#standard-${dateStr}`);
-            const dropinRadio = row.querySelector(`#dropin-${dateStr}`);
-            const touchupRadio = row.querySelector(`#touchup-${dateStr}`);
+        const date = new Date(dateInput.value);
+        const dayOfWeek = date.getDay();
 
-            if (dayOfWeek === 6) {
-                standardRadio.checked = false;
-                dropinRadio.checked = false;
-                touchupRadio.checked = false;
-            } else if (dayOfWeek === 2) {
-                touchupRadio.checked = true;
-            } else {
-                standardRadio.checked = true;
-            }
+        const radioButtons = row.querySelectorAll("input[type='radio'][name*='type']");
+        if (radioButtons.length === 0) return;
+
+        radioButtons.forEach(radio => radio.checked = false);
+
+        if (dayOfWeek === 6) {
+        } else if (dayOfWeek === 2) {
+            radioButtons.forEach(radio => {
+                if (radio.value === "touchup") {
+                    radio.checked = true;
+                }
+            });
+        } else {
+            radioButtons.forEach(radio => {
+                if (radio.value === "standard") {
+                    radio.checked = true;
+                }
+            });
         }
     });
 });

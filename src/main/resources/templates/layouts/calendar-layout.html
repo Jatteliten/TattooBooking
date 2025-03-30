@@ -38,6 +38,7 @@
                                     'not-bookable'))))
                                         : 'not-current-month'}"
                 th:attr="data-date=${day.date}, data-hours=${day.hours}"
+                onclick="showTooltip(event, this)"
                 onmouseover="showTooltip(event, this)"
                 onmousemove="moveTooltip(event)"
                 onmouseout="hideTooltip()"

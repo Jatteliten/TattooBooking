@@ -9,16 +9,19 @@
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <body class="container">
 
-<div class="front-page-container">
-    <div class="card bg-light mb-3 front-page-card">
-        <div class="card-header front-page-card-header">
-            Senaste nytt
+<div class="front-page-container container">
+
+    <div class="row">
+        <div class="card bg-light col-md-4 col-sm-12 px-0">
+            <div class="card-header front-page-card-header">
+                Senaste nytt
+            </div>
+            <div class="card-body">
+                <p class="front-page-card-text" th:utext="${frontPageNews}">Default text here...</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p class="front-page-card-text" th:utext="${frontPageNews}">Default text here...</p>
-        </div>
+        <span class="col-8">hejhejhej här är framsidan. till vänster är ett kort. kul kul kul</span>
     </div>
-    hejhejhej här är framsidan. till vänster är ett kort. kul kul kul
 </div>
 
 

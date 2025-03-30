@@ -11,6 +11,12 @@
             border: 1px solid #ccc;
             position: relative;
         }
+        .bottom-columns{
+            border: 1px solid #ccc;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
         th {
             text-align: center;
         }
@@ -46,16 +52,13 @@
             </td>
         </tr>
     </table>
+    <br>
 
-    <div class="calendar-bottom-table-container">
-        <table>
-            <tr>
-                <td class="available-hours">Dag med ledig tid</td>
-                <td class="drop-in">Drop in</td>
-                <td class="touch-up">Touch up</td>
-                <td class="no-available-hours">Fullbokat</td>
-            </tr>
-        </table>
+    <div class="row">
+        <div class="bottom-columns available-hours col-md-3 col-sm-6">Lediga tider</div>
+        <div class="bottom-columns touch-up col-md-3 col-sm-6">Lediga touch-up tider</div>
+        <div class="bottom-columns drop-in col-md-3 col-sm-6">Drop in</div>
+        <div class="bottom-columns no-available-hours col-md-3 col-sm-6">Fullbokat</div>
     </div>
 
     <div id="hoursDisplay"></div>

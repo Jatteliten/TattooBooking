@@ -30,20 +30,10 @@
     display: flex;
     align-items: flex-start;
 }
-.front-page-card{
-    width: 20%;
-    margin-left: 12px;
-    margin-right: 20px;
-}
 .front-page-card-text {
-    width:100%;
-    height:auto;
     white-space: pre-line;
 }
 .front-page-card-header{
-    width:100%;
-    height:auto;
-    border-radius: 0;
     background-color: var(--secondary-pink);
 }
 .logo{

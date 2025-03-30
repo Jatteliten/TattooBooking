@@ -8,6 +8,7 @@ import com.example.demo.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookableHourService;
 import com.example.demo.services.BookingService;
+import com.example.demo.services.CalendarService;
 import com.example.demo.services.CustomerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,13 +28,15 @@ import java.util.Optional;
 @RequestMapping("/booking")
 @PreAuthorize("hasAuthority('Admin')")
 public class BookingController {
+    private final CalendarService calendarService;
     private final BookingService bookingService;
     private final CustomerService customerService;
     private final BookableDateService bookableDateService;
     private final BookableHourService bookableHourService;
 
-    public BookingController(BookingService bookingService, CustomerService customerService,
+    public BookingController(CalendarService calendarService, BookingService bookingService, CustomerService customerService,
                              BookableDateService bookableDateService, BookableHourService bookableHourService){
+        this.calendarService = calendarService;
         this.bookingService = bookingService;
         this.customerService = customerService;
         this.bookableDateService = bookableDateService;
@@ -42,7 +45,11 @@ public class BookingController {
 
 
     @GetMapping("/book-tattoo")
-    public String bookTattoo(){
+    public String bookTattoo(@RequestParam(name = "year", required = false) Integer year,
+                             @RequestParam(name = "month", required = false) Integer month,
+                             Model model){
+        calendarService.createCalendarModel(model, year, month);
+
         return "admin/book-tattoo";
     }
 

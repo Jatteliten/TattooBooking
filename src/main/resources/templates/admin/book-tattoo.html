@@ -5,41 +5,19 @@
     <title>Book Tattoo</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <br><br>
-<table class="centered">
-    <thead>
-    <tr>
-        <th>Mon</th>
-        <th>Tue</th>
-        <th>Wed</th>
-        <th>Thu</th>
-        <th>Fri</th>
-        <th>Sat</th>
-        <th>Sun</th>
-    </tr>
-    <tr>
-        <th colspan="7" style="height: 20px;"></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="week : ${weeks}">
-        <td th:each="day : ${week}">
-            <div th:if="${day != null}" class="calendar-date">
-                <a th:href="@{/booking/book-tattoo-at-date(date=${day.date})}"
-                   th:with="formattedDate=${day.date.dayOfMonth}"
-                   th:text="${formattedDate}"
-                   th:style="'color:' + ${day.color}">
-                </a>
-            </div>
-            <div th:if="${day == null}" class="empty-date"></div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="month-picker">
+    <a th:href="@{/booking/book-tattoo(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
+    <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
+    <a th:href="@{/booking/book-tattoo(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+</div>
 
+<div th:replace="~{layouts/calendar-layout :: calendar}"></div>
 
+<script src="/js/send-bookable-date-through-calendar.js"></script>
 </body>
 </html>

@@ -56,6 +56,8 @@ public class BookableDatesController {
 
         if(!from.isBefore(to) && !from.isEqual(to)){
             model.addAttribute("errorMessage", "From date must be before To date");
+            calendarService.createCalendarModel(model, null, null);
+
             return "admin/add-available-dates";
         }
 
@@ -105,7 +107,7 @@ public class BookableDatesController {
                         .toList());
             }else if(bookableDate.isDropIn()){
                 bookableDate.setBookableHours(List.of(BookableHour.builder()
-                        .hour(LocalTime.of(12, 0))
+                        .hour(LocalTime.of(11, 0))
                         .build()));
             }
 

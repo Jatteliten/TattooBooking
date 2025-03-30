@@ -25,16 +25,17 @@
             <th class="text-danger">Sun</th>
         </tr>
         <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
-            <td class="customer-calendar-colum" th:each="i : ${#numbers.sequence(0, 6)}"
+            <td class="customer-calendar-column" th:each="i : ${#numbers.sequence(0, 6)}"
                 th:with="day=${days[week * 7 + i]}"
                 th:text="${day.date.dayOfMonth}"
-                th:class="${day.currentMonth ?
+                th:classappend="${day.currentMonth ?
                     (day.fullyBooked ? 'no-available-hours' :
                         (day.touchUp ? 'touch-up' :
                             (day.dropIn ? 'drop-in' :
                                 (day.bookable ? 'available-hours':
                                     'not-bookable'))))
                                         : 'not-current-month'}"
+                th:attr="data-date=${day.date}"
             >
             </td>
         </tr>

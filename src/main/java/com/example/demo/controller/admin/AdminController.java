@@ -43,8 +43,6 @@ public class AdminController {
         return "admin/admin-landing-page";
     }
 
-
-
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file, Model model) {
         try {

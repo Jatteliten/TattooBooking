@@ -24,10 +24,6 @@ public class BookableHourService {
         bookableHourRepo.saveAll(hourList);
     }
 
-    public BookableHour getBookableHourByHour(LocalTime hour){
-        return bookableHourRepo.findByHour(hour);
-    }
-
     public BookableHourForCalendarDto convertBookableHourToBookableHourForCalendarDto(BookableHour bookableHour){
         return BookableHourForCalendarDto.builder()
                 .hour(bookableHour.getHour())

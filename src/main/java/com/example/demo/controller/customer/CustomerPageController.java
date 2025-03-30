@@ -1,9 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.model.CustomerPageText;
-import com.example.demo.services.BookableDateService;
 import com.example.demo.services.CustomerPageTextService;
-import com.example.demo.services.TattooImageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CustomerPageController {
 
-    private final TattooImageService tattooImageService;
-    private final BookableDateService bookableDateService;
-    CustomerPageTextService customerPageTextService;
+    private final CustomerPageTextService customerPageTextService;
 
-    public CustomerPageController(TattooImageService tattooImageService, BookableDateService bookableDateService,
-                                  CustomerPageTextService customerPageTextService){
-        this.tattooImageService = tattooImageService;
-        this.bookableDateService = bookableDateService;
+    public CustomerPageController(CustomerPageTextService customerPageTextService){
         this.customerPageTextService = customerPageTextService;
     }
 

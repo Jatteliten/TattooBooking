@@ -62,31 +62,8 @@ public class BookableDateService {
         bookableDateRepo.saveAll(dateList);
     }
 
-    public List<BookableDate> getAllCurrentlyAvailableBookableDates(){
-        return bookableDateRepo.findByFullyBookedFalse();
-    }
-
-    public BookableDate getBookableDateFromBookableDateListByDate(List<BookableDate> bookableDateList, LocalDate date){
-        try {
-            return bookableDateList.stream().filter(b -> b.getDate().equals(date)).toList().get(0);
-        } catch(IndexOutOfBoundsException e){
-            return null;
-        }
-    }
-
-    public List<BookableDate> sortBookableDateListByDate(List<BookableDate> listToSort){
-        listToSort.sort(Comparator.comparing(BookableDate::getDate));
-        return listToSort;
-    }
-
     public BookableDate findBookableDateByDate(LocalDate date){
         return bookableDateRepo.findByDate(date);
     }
 
-    public List<BookableDate> sortHoursInBookableHourListByHour(List<BookableDate> bookableDateList){
-        for(BookableDate bookableDate: bookableDateList){
-            bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
-        }
-        return bookableDateList;
-    }
 }

@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 public class AddAdmin implements CommandLineRunner {
 
-    RoleService roleService;
-    UserService userService;
+    private final RoleService roleService;
+    private final UserService userService;
 
     @Value("${admin.username}")
     private String adminUsername;

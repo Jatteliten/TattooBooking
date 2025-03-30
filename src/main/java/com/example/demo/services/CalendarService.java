@@ -1,8 +1,6 @@
-package com.example.demo.util.calendar;
+package com.example.demo.services;
 
 import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
-import com.example.demo.services.BookableDateService;
-import com.example.demo.services.BookingService;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

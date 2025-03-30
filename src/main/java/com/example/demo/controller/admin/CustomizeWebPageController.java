@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/customize")
 @PreAuthorize("hasAuthority('Admin')")
 public class CustomizeWebPageController {
-    CustomerPageTextService customerPageTextService;
+    private final CustomerPageTextService customerPageTextService;
 
     public CustomizeWebPageController(CustomerPageTextService customerPageTextService){
         this.customerPageTextService = customerPageTextService;

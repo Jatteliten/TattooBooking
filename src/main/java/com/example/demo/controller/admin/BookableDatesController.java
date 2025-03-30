@@ -5,7 +5,7 @@ import com.example.demo.dtos.bookabledatedtos.DateForm;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.services.BookableDateService;
-import com.example.demo.util.calendar.CalendarService;
+import com.example.demo.services.CalendarService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

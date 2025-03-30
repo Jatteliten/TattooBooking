@@ -1,7 +1,6 @@
 package com.example.demo.controller.customer;
 
-import com.example.demo.services.BookableDateService;
-import com.example.demo.util.calendar.CalendarService;
+import com.example.demo.services.CalendarService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CalendarController {
-    CalendarService calendarService;
+    private final CalendarService calendarService;
 
     public CalendarController(CalendarService calendarService){
         this.calendarService = calendarService;

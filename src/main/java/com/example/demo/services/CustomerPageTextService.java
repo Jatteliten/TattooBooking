@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Service
 public class CustomerPageTextService {
 
-    CustomerPageTextRepo customerPageTextRepo;
+    private final CustomerPageTextRepo customerPageTextRepo;
 
     public CustomerPageTextService (CustomerPageTextRepo customerPageTextRepo){
         this.customerPageTextRepo = customerPageTextRepo;

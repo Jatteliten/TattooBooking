@@ -16,6 +16,7 @@ import java.util.List;
 public class BookableDateForCalendarDto {
     private LocalDate date;
     private List<BookableHourForCalendarDto> hours;
+    private boolean bookable;
     private boolean currentMonth;
     private boolean fullyBooked;
     private boolean touchUp;

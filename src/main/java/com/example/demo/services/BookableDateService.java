@@ -43,6 +43,7 @@ public class BookableDateService {
         }
         return BookableDateForCalendarDto.builder()
                 .date(bookableDate.getDate())
+                .bookable(true)
                 .hours(bookableHoursForCalendarList)
                 .currentMonth(true)
                 .fullyBooked(bookableDate.isFullyBooked())

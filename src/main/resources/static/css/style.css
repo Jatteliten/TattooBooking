@@ -88,7 +88,8 @@
     background-color: var(--secondary-pink);
 }
 .no-available-hours {
-    color: rgb(154, 146, 146);
+    color: #860000;
+    background-color: #fabcbc;
 }
 .available-hours {
     color: #3a8600;

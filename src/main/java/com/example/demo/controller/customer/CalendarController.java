@@ -53,9 +53,9 @@ public class CalendarController {
         LocalDate firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY);
         LocalDate lastDayOfMonth = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth());
         LocalDate lastDayOfCalendar = lastDayOfMonth.with(DayOfWeek.SUNDAY);
-
         List<BookableDateForCalendarDto> days = new ArrayList<>();
         LocalDate date = firstDayOfCalendar;
+
         Map<LocalDate, BookableDateForCalendarDto> dateToBookableDateForCalendarDto =
                 bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(
                         bookableDateService.findBookableDatesBetweenTwoGivenDates(firstDayOfMonth, lastDayOfMonth))
@@ -68,15 +68,12 @@ public class CalendarController {
             BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
             if(bookableDate != null){
                 bookableDate.setCurrentMonth(isCurrentMonth);
-                if(bookableDate.isFullyBooked()){
-                    bookableDate.setFullyBooked(true);
-                }
                 days.add(bookableDate);
             }else{
                 days.add(BookableDateForCalendarDto.builder()
                         .currentMonth(isCurrentMonth)
+                        .bookable(false)
                         .date(date)
-                        .fullyBooked(true)
                         .build());
             }
             date = date.plusDays(1);

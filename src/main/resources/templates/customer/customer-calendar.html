@@ -45,11 +45,12 @@
             th:with="day=${days[week * 7 + i]}"
             th:text="${day.date.dayOfMonth}"
             th:class="${day.currentMonth ?
-                (day.touchUp ? 'touch-up' :
-                    (day.fullyBooked ? 'no-available-hours' :
+                (day.fullyBooked ? 'no-available-hours' :
+                    (day.touchUp ? 'touch-up' :
                         (day.dropIn ? 'drop-in' :
-                         'available-hours')))
-                            : 'not-current-month'}"
+                            (day.bookable ? 'available-hours':
+                                'not-bookable'))))
+                                    : 'not-current-month'}"
         >
         </td>
     </tr>

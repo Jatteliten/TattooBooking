@@ -8,11 +8,21 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<form th:action="@{/booking/bookings}" method="get">
+    <span>View bookings between</span>
+    <br>
+    <input type="date" name="fromDate" required> - <input type="date" name="toDate" required>
+    <br>
+    <button type="submit" class="btn btn-success booking-buttons btn-sm">Submit</button>
+</form>
+
 <div th:if="${errorMessage != null}">
     <p th:text="${errorMessage}" class="text-danger"></p>
 </div>
-<div th:each="booking:${upcomingBookings}">
-    <p th:text="${#temporals.format(booking.date, 'dd/MM-yy | HH:mm')} + ' - ' + ${booking.customer.name}"></p>
+
+<div class="upcoming-bookings" th:each="booking:${upcomingBookings}">
+    <p th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${booking.customer.name}|"></p>
 </div>
 
 

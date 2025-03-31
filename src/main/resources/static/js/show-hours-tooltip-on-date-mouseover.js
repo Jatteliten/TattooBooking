@@ -5,7 +5,11 @@ function showTooltip(event, element) {
         .substring(1, element.getAttribute('data-hours').length - 1);
     if (hoursData) {
         const hoursArray = hoursData.split(',');
-        let hoursText = '';
+        let hoursText = element.getAttribute('data-date').split('-')[2] + '<hr>';
+        if(hoursText.startsWith('0')){
+            hoursText = hoursText.substring(1);
+        }
+
         hoursArray.forEach(hour => {
             const [time, available] = hour.split('-');
             const availabilityClass = available === 'true' ? 'text-danger text-decoration-line-through' : 'text-success';

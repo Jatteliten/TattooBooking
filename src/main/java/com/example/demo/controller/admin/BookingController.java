@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/booking")
@@ -61,11 +64,26 @@ public class BookingController {
     }
 
     @GetMapping("/bookings")
-    public String displayBookings(Model model){
-        model.addAttribute("upcomingBookings",
-                bookingService.getBookingsFromTodayToFourWeeksForward().stream()
-                        .map(bookingService::convertBookingToBookingCustomerDepositTimeDto)
-                        .toList());
+    public String displayBookings(@RequestParam(required=false) LocalDate fromDate,
+                                  @RequestParam(required=false) LocalDate toDate, Model model){
+        List<Booking> bookings;
+
+        if(fromDate != null && toDate != null){
+            bookings = bookingService.getBookingsBetweenTwoGivenDates(
+                    LocalDateTime.of(fromDate, LocalTime.of(0,0)),
+                    LocalDateTime.of(toDate, LocalTime.of(23,59)));
+        }else{
+            bookings = bookingService.getBookingsByDate(LocalDate.now());
+        }
+
+        if(!bookings.isEmpty()){
+            bookings.sort(Comparator.comparing(Booking::getDate));
+            model.addAttribute("upcomingBookings", bookings);
+        }else if(fromDate != null && toDate != null){
+            model.addAttribute("errorMessage", "No bookings on given dates");
+        }else{
+            model.addAttribute("errorMessage", "No bookings today");
+        }
         return "admin/bookings";
     }
 

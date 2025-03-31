@@ -29,7 +29,7 @@
     </div>
 
     <p th:each="booking : ${bookingsAtDate}">
-        <span th:text="|${#temporals.format(booking.date, 'HH:mm') - ${booking.customer.name}}|"
+        <span th:text="|${#temporals.format(booking.date, 'HH:mm')} - ${booking.customer.name}|"
               th:classappend="text-success"></span>
     </p>
     <p>

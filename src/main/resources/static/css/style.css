@@ -115,13 +115,11 @@
     font-weight: bold;
 }
 
-.calendar-bottom-table-container{
-    padding-bottom: 20px;
-    padding-top: 20px;
-    width: 57.2%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.calendar-bottom-columns{
+    border: 1px solid #ccc;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #hoursDisplay {
@@ -135,4 +133,8 @@
     padding:10px;
     color: #333;
     border-radius: 5px;
+}
+
+.booking-buttons{
+    margin-top: 10px;
 }

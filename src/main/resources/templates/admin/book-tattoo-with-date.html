@@ -28,6 +28,10 @@
         <p class="text-danger">No customer found. You can create a new customer below.</p>
     </div>
 
+    <p th:each="booking : ${bookingsAtDate}">
+        <span th:text="|${#temporals.format(booking.date, 'HH:mm') - ${booking.customer.name}}|"
+              th:classappend="text-success"></span>
+    </p>
     <p>
         <span th:each="time : ${bookableHours}"
               th:text="${time.hour} + ' '"
@@ -65,8 +69,12 @@
             <input type="hidden" name="customerEmail" th:value="${searchResult.email}">
             <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
             <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
-            <input type="time" name="startTime" required><input type="time" name="endTime" required>
-            <button type="submit" class="btn btn-success">Book Customer</button>
+            Between: <input class="booking-buttons" type="time" name="startTime" required> - <input class="booking-buttons" type="time" name="endTime" required>
+            <br><button type="submit" class="btn btn-success booking-buttons">Book Customer</button>
+        </form>
+        <form th:action="@{/booking/book-tattoo-at-date}">
+            <input type="hidden" name="date" th:value="${selectedDate}">
+            <button type="submit" class="btn btn-secondary booking-buttons">Choose another customer</button>
         </form>
     </div>
 

@@ -79,10 +79,10 @@ public class BookingController {
     @GetMapping("/book-tattoo-at-date")
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
-        BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
+        model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null) {
-            List<BookableHour> bookableHourList = bookableDateService.findBookableDateByDate(date).getBookableHours();
-            bookableHourList.sort(Comparator.comparing(BookableHour::getHour));
+            List<BookableHour> bookableHourList = bookableDateService.getBookableDateByDate(date).getBookableHours();
             model.addAttribute("bookableHours", bookableHourList);
         }
         return "admin/book-tattoo-with-date";
@@ -90,8 +90,10 @@ public class BookingController {
 
 
     @GetMapping("/search-customer")
-    public String searchCustomer(@RequestParam String searchInput, @RequestParam LocalDate date, Model model){
+    public String searchCustomer(@RequestParam String searchInput, @RequestParam LocalDate date,
+                                 Model model){
         model.addAttribute("selectedDate", date);
+        model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
         Customer customer = customerService.findCustomerByAnyField(searchInput);
 
         if(customer == null){
@@ -101,7 +103,7 @@ public class BookingController {
                     customerService.findCustomerByAnyField(searchInput));
         }
 
-        BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null) {
             model.addAttribute("bookableHours", bookableDate.getBookableHours());
         }
@@ -139,7 +141,7 @@ public class BookingController {
                         .instagram(customerInstagram)
                         .build());
 
-        BookableDate bookableDate = bookableDateService.findBookableDateByDate(date);
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null){
             int count = 0;
             for(BookableHour bookableHour: bookableDate.getBookableHours()){

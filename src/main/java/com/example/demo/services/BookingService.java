@@ -7,6 +7,7 @@ import com.example.demo.dtos.bookingdtos.BookingWithoutIdDto;
 import com.example.demo.repos.BookingRepo;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class BookingService {
         this.bookingRepo = bookingRepo;
     }
 
-    public List<Booking> getBookingsByDate(LocalDateTime date){
-        return bookingRepo.findByDate(date);
+    public List<Booking> getBookingsByDate(LocalDate date){
+        LocalDateTime startOfDate = date.atStartOfDay();
+        LocalDateTime endOfDate = date.atTime(23, 59, 59);
+        return bookingRepo.findByDateBetween(startOfDate, endOfDate);
     }
 
     public void saveBooking(Booking booking){

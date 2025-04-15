@@ -4,11 +4,12 @@ import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.demo.model.Booking;
 import com.example.demo.repos.BookableDateRepo;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,7 +64,6 @@ public class BookableDateService {
                 .toList();
     }
 
-    @Transactional
     public void saveListOfBookableDates(List<BookableDate> dateList){
         bookableDateRepo.saveAll(dateList);
     }
@@ -74,6 +74,33 @@ public class BookableDateService {
             bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
         }
         return bookableDateRepo.findByDate(date);
+    }
+
+    public void setBookableDateAndHoursToUnavailable(BookableDate bookableDate){
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            if(!bookableHour.isBooked()){
+                bookableHour.setBooked(true);
+            }
+        }
+        bookableDate.setFullyBooked(true);
+        saveBookableDate(bookableDate);
+    }
+
+    public void setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(BookableDate bookableDate, List<Booking> bookingsAtDate){
+        boolean fullyBooked = true;
+
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            if(bookingsAtDate.stream().filter(b ->
+                            LocalTime.from(b.getDate()).minusMinutes(1).isBefore(bookableHour.getHour())
+                                    && LocalTime.from(b.getEndTime()).plusMinutes(1).isAfter(bookableHour.getHour()))
+                            .toList()
+                            .isEmpty()){
+                bookableHour.setBooked(false);
+                fullyBooked = false;
+            }
+        }
+        bookableDate.setFullyBooked(fullyBooked);
+        saveBookableDate(bookableDate);
     }
 
 }

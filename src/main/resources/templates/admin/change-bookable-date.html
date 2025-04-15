@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Change bookable date</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+<div th:each="booking : ${bookings}">
+  <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
+</div>
+<span th:each="time : ${bookableDate.getBookableHours()}"
+      th:text="${time.hour} + ' '"
+      th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
+<form th:action="@{/add-dates/close-date}" method="post">
+  <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
+  <button type="submit" class="btn btn-danger booking-buttons">Mark date as closed</button>
+</form>
+<form th:action="@{/add-dates/open-date}" method="post">
+  <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
+  <button type="submit" class="btn btn-success booking-buttons">Mark date as open</button>
+</form>
+</body>
+</html>

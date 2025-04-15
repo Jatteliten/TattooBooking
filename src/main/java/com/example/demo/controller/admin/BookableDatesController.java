@@ -5,6 +5,7 @@ import com.example.demo.dtos.bookabledatedtos.DateForm;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.services.BookableDateService;
+import com.example.demo.services.BookingService;
 import com.example.demo.services.CalendarService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,10 +28,12 @@ import java.util.List;
 public class BookableDatesController {
     private final BookableDateService bookableDateService;
     private final CalendarService calendarService;
+    private final BookingService bookingService;
 
-    public BookableDatesController(BookableDateService bookableDateService, CalendarService calendarService){
+    public BookableDatesController(BookableDateService bookableDateService, CalendarService calendarService, BookingService bookingService){
         this.bookableDateService = bookableDateService;
         this.calendarService = calendarService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping("/")
@@ -121,7 +124,37 @@ public class BookableDatesController {
 
         bookableDateService.saveListOfBookableDates(bookableDatesToSaveList);
 
-        model.addAttribute("datesAdded", bookableDatesToSaveList.size() + " dates added!");
+        model.addAttribute("landingPageSingleLineMessage", bookableDatesToSaveList.size() + " dates added!");
+        return "admin/admin-landing-page";
+    }
+
+    @GetMapping("/change-bookable-date")
+    public String changeBookableDate(@RequestParam LocalDate date, Model model){
+        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
+        model.addAttribute("bookableDate", bookableDateService.getBookableDateByDate(date));
+        return "admin/change-bookable-date";
+    }
+
+    @PostMapping("/close-date")
+    public String makeDateUnavailable(@RequestParam LocalDate date, Model model){
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
+        bookableDateService.setBookableDateAndHoursToUnavailable(bookableDate);
+
+        model.addAttribute("landingPageSingleLineMessage", "Date " + bookableDate.getDate() + " set as unavailable.");
+        return "admin/admin-landing-page";
+    }
+
+    @PostMapping("/open-date")
+    public String makeDateAvailable(@RequestParam LocalDate date, Model model){
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
+        bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(bookableDate, bookingService.getBookingsByDate(date));
+        if(bookableDate.isFullyBooked()){
+            model.addAttribute("landingPageSingleLineMessage", "All available hours for " +
+                    bookableDate.getDate() + " are booked. Cannot set as available");
+        }else{
+            model.addAttribute("landingPageSingleLineMessage", "Date " + bookableDate.getDate() + " set as available.");
+        }
+
         return "admin/admin-landing-page";
     }
 

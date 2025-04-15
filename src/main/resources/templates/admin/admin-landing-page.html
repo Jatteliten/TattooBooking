@@ -9,20 +9,20 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<div th:if="${datesAdded != null}">
-    <p th:text="${datesAdded}"></p>
+<div th:if="${landingPageSingleLineMessage != null}">
+    <p th:text="${landingPageSingleLineMessage}"></p>
 </div>
 
 <div th:if="${bookingAdded != null}">
     <p th:text="${bookingAdded}"></p>
-</div>
-
-<div th:if="${doubleBookError != null}">
-    <p class="text-danger" th:text="${doubleBookError}"></p>
-</div>
-
-<div th:if="${customerMissingError != null}">
-    <p class="text-danger" th:text="${customerMissingError}"></p>
+    Bookable hours available:
+    <span th:each="time : ${bookableDate.getBookableHours()}"
+          th:text="${time.hour} + ' '"
+          th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
+    <br>
+    <a th:href="@{/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
+        <button class="btn btn-secondary">Change available hours</button>
+    </a>
 </div>
 
 </body>

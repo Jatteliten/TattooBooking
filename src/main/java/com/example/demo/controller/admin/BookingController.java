@@ -171,7 +171,7 @@ public class BookingController {
         LocalDateTime endDateAndTime = date.atTime(endTime);
 
         if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
-            model.addAttribute("doubleBookError", "Can't book at already booked times");
+            model.addAttribute("landingPageSingleLineMessage", "Can't book at already booked times");
             return "admin/admin-landing-page";
         }
 
@@ -211,14 +211,14 @@ public class BookingController {
                     .build();
             bookingService.saveBooking(booking);
             model.addAttribute("bookingAdded", customerToBook.getName()
-                    + " booked at " + startTime
+                    + " booked at " + startTime + " - " + endTime
                     + " on " + date);
+            model.addAttribute("bookableDate", bookableDate);
 
-            return "admin/admin-landing-page";
         }else{
-            model.addAttribute("customerMissingError", "Something went wrong with non existing customer");
-            return "admin/admin-landing-page";
+            model.addAttribute("landingPageSingleLineMessage", "Something went wrong with non existing customer");
         }
+        return "admin/admin-landing-page";
     }
 
 }

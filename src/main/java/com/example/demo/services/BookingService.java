@@ -79,7 +79,8 @@ public class BookingService {
     }
 
     public boolean checkIfBookingOverlapsWithAlreadyBookedHours(LocalDateTime startTime, LocalDateTime endTime){
-        return !bookingRepo.findByDateBetween(startTime, endTime).isEmpty() || !bookingRepo.findByEndTimeBetween(startTime, endTime).isEmpty();
+        return !bookingRepo.findByDateBetween(startTime, endTime.minusMinutes(1)).isEmpty() ||
+                !bookingRepo.findByEndTimeBetween(startTime.plusMinutes(1), endTime).isEmpty();
     }
 
     public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {

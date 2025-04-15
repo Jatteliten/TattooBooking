@@ -28,16 +28,27 @@
         <p class="text-danger">No customer found. You can create a new customer below.</p>
     </div>
 
-    <p th:each="booking : ${bookingsAtDate}">
-        <a th:href="@{/booking/booking-information(id=${booking.id})}">
-            <span th:text="|${#temporals.format(booking.date, 'HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
-        </a>
-    </p>
-    <p>
-        <span th:each="time : ${bookableHours}"
+    <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            Bookings on this date
+        </div>
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item" th:each="booking : ${bookingsAtDate}">
+            <a th:href="@{/booking/booking-information(id=${booking.id})}">
+                <span th:text="${#temporals.format(booking.date, 'HH:mm')}  + '-' + ${#temporals.format(booking.endTime, 'HH:mm')} + ' | ' + ${booking.customer.name}" class="text-success"></span>
+            </a>
+        </li>
+        </ul>
+    </div>
+
+    <div class="card" style="width: 18rem; margin-top:10px; margin-bottom:10px">
+        <div class="card-header">
+            Published hours on this date
+        </div>
+        <span class="text-center" th:each="time : ${bookableHours}"
               th:text="${time.hour} + ' '"
               th:classappend="${time.booked} ? 'text-danger' : 'text-success'"></span>
-    </p>
+    </div>
 
     <div th:if="${searchResult != null && searchResult != 'No customer found'}">
         <div>

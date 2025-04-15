@@ -8,13 +8,13 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div class="card customer-page-margin booking-form-card centered">
+<div class="card customer-page-margin booking-form-card">
   <h5 class="card-header booking-information-header">Bokningsförfrågan</h5>
   <div class="booking-form-body">
-    <form class="booking-form">
+    <form class="booking-form" id="bookingForm">
       <div class="form-group">
-        <label for="name">Name *</label>
-        <input type="text" class="form-control" id="name">
+        <label for="name">Namn *</label>
+        <input type="text" class="form-control" id="name" required>
       </div>
       <div class="form-group">
         <label for="mail">Email **</label>
@@ -25,24 +25,26 @@
         <input type="text" class="form-control" id="instagram">
       </div>
       <div class="form-group">
-        <label for="phone">Phone **</label>
+        <label for="phone">Telefon **</label>
         <input type="tel" class="form-control" id="phone">
       </div>
+      <div id="contactError" class="text-danger mb-2" style="display: none;"></div>
       <div class="form-group">
-        <label for="size">Assumed size (diameter in cm)</label>
+        <label for="size">Storlek (diameter i cm)</label>
         <input type="number" class="form-control" id="size">
       </div>
       <div class="form-group">
-        <label for="placement">Placement on body</label>
+        <label for="placement">Placering på kroppen</label>
         <input type="text" class="form-control" id="placement">
       </div>
       <div class="form-group">
-        <label for="inspiration">Image links to inspiration (raw image link, link to google drive etc)</label>
+        <label for="inspiration">Länkar till inspirations-bilder (rå länk till bild, länk till google drive etc)</label>
         <input type="text" class="form-control" id="inspiration">
       </div>
       <br/>
-      * Required<br/>
-      ** One required
+      <span>* Obligatorisk</span><br>
+      <span>** Minst ett alternativ obligatoriskt</span><br>
+      <button type="submit" class="btn btn-success">Skicka</button>
     </form>
   </div>
 
@@ -69,5 +71,6 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/js/force-one-required-alternative-in-contact-form.js"></script>
 </body>
 </html>

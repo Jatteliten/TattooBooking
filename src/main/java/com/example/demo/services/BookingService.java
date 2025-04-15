@@ -57,7 +57,7 @@ public class BookingService {
             LocalTime hour = bookableHour.getHour();
             LocalTime startTime = booking.getDate().toLocalTime();
             LocalTime endTime = booking.getEndTime().toLocalTime();
-            if((hour.isBefore(endTime) && hour.isAfter(startTime)) || hour.equals(startTime) || hour.equals(endTime)){
+            if((hour.isBefore(endTime) && hour.isAfter(startTime)) || hour.equals(startTime)){
                 bookableHour.setBooked(false);
                 if(bookableDate.isFullyBooked()){
                     bookableDate.setFullyBooked(false);

@@ -1,22 +1,16 @@
 <div th:fragment="header">
   <header>
     <div class="container">
-      <nav class="navbar navbar-expand-sm navbar-light bg-light front-page-navbar">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <nav class="navbar navbar-expand-md w-100 navbar-light bg-light front-page-navbar">
           <div class="navbar-nav justify-content-between w-100">
             <a class="nav-item nav-link active" th:href="@{/}">Home</a>
             <a class="nav-item nav-link active" th:href="@{/customize/}">Customize Site</a>
             <a class="nav-item nav-link active" th:href="@{/add-dates/}">Add Bookable Dates</a>
             <a class="nav-item nav-link active" th:href="@{/booking/book-tattoo}">Book Tattoo</a>
             <a class="nav-item nav-link active" th:href="@{/booking/bookings}">View Bookings</a>
-            <a class="nav-item nav-link active" th:href="@{/booking/adjust-booking}">Adjust Booking</a>
             <a class="nav-item nav-link active" th:href="@{/admin/set-front-page-images}">Set Front Page Images</a>
             <a class="nav-item nav-link active" th:href="@{/admin/customer}">Customer Information</a>
           </div>
-        </div>
       </nav>
     </div>
   </header>

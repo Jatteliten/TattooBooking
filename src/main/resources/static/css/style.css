@@ -37,14 +37,16 @@
     background-color: var(--secondary-pink);
 }
 .logo{
-    padding-top:20px;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    padding-bottom: 10px;
 }
 .image-select{
     display: inline-block;
     margin: 5px;
 }
 .booking-form-card{
-    width:50%;
     display: flex;
     margin-bottom: 20px;
 }

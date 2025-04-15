@@ -207,14 +207,18 @@ public class BookingController {
                     .date(startDateAndTime)
                     .endTime(endDateAndTime)
                     .customer(customerToBook)
+                    .depositPaid(true)
                     .build();
             bookingService.saveBooking(booking);
-        }
+            model.addAttribute("bookingAdded", customerToBook.getName()
+                    + " booked at " + startTime
+                    + " on " + date);
 
-        model.addAttribute("bookingAdded", customerToBook.getName()
-                + " booked at " + startTime.toString()
-                + " on " + date.toString());
-        return "admin/admin-landing-page";
+            return "admin/admin-landing-page";
+        }else{
+            model.addAttribute("customerMissingError", "Something went wrong with non existing customer");
+            return "admin/admin-landing-page";
+        }
     }
 
 }

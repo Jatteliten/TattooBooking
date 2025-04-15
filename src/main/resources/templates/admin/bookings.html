@@ -22,7 +22,9 @@
 </div>
 
 <div class="upcoming-bookings" th:each="booking:${upcomingBookings}">
-    <p th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${booking.customer.name}|"></p>
+    <a th:href="@{/booking/booking-information(id=${booking.id})}">
+        <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
+    </a>
 </div>
 
 

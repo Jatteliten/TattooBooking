@@ -26,16 +26,17 @@ public class CustomerService {
     }
 
     public Customer findCustomerIfAtLeastOneContactMethodMatches(Customer customer) {
+        Customer customerToFind;
         if (customer.getPhone() != null && !customer.getPhone().isEmpty()) {
-            Customer foundCustomer = findCustomerByAnyField(customer.getPhone());
-            if (foundCustomer != null){
-                return foundCustomer;
+            customerToFind = findCustomerByAnyField(customer.getPhone());
+            if (customerToFind != null){
+                return customerToFind;
             }
         }
         if (customer.getInstagram() != null && !customer.getInstagram().isEmpty()) {
-            Customer foundCustomer = findCustomerByAnyField(customer.getInstagram());
-            if (foundCustomer != null){
-                return foundCustomer;
+            customerToFind = findCustomerByAnyField(customer.getInstagram());
+            if (customerToFind != null){
+                return customerToFind;
             }
         }
         if (customer.getEmail() != null && !customer.getEmail().isEmpty()) {

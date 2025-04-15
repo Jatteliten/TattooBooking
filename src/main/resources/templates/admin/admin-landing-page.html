@@ -21,5 +21,9 @@
     <p class="text-danger" th:text="${doubleBookError}"></p>
 </div>
 
+<div th:if="${customerMissingError != null}">
+    <p class="text-danger" th:text="${customerMissingError}"></p>
+</div>
+
 </body>
 </html>

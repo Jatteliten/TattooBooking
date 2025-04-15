@@ -29,8 +29,9 @@
     </div>
 
     <p th:each="booking : ${bookingsAtDate}">
-        <span th:text="|${#temporals.format(booking.date, 'HH:mm')} - ${booking.customer.name}|"
-              th:classappend="text-success"></span>
+        <a th:href="@{/booking/booking-information(id=${booking.id})}">
+            <span th:text="|${#temporals.format(booking.date, 'HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
+        </a>
     </p>
     <p>
         <span th:each="time : ${bookableHours}"

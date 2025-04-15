@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -27,6 +28,7 @@ public class Booking {
     private boolean depositPaid;
     private int finalPrice;
     private LocalDateTime date;
+    private LocalDateTime endTime;
     private String notes;
     private boolean touchUp;
 

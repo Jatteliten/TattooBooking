@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Controller
@@ -56,10 +57,24 @@ public class BookingController {
         return "admin/book-tattoo";
     }
 
+    @GetMapping("/booking-information")
+    public String viewBookingInformation(@RequestParam UUID id, Model model){
+        model.addAttribute("booking", bookingService.getBookingById(id));
+        return "admin/booking-information";
+    }
+
     @PostMapping("/remove-all-bookings")
     public String removeAllBookings(Model model){
         bookingService.deleteBookings(bookingService.getAllBookings());
         model.addAttribute("errorMessage", "All bookable dates deleted");
+        return "admin/bookings";
+    }
+
+    @PostMapping("/cancel-appointment")
+    public String removeBooking(@RequestParam UUID id, Model model){
+        Booking booking = bookingService.getBookingById(id);
+        bookingService.deleteBooking(booking);
+        model.addAttribute("errorMessage", "Canceled " + booking.getCustomer().getName() + " at " + booking.getDate().toString());
         return "admin/bookings";
     }
 
@@ -152,6 +167,14 @@ public class BookingController {
                                           @RequestParam LocalTime endTime, @RequestParam String customerEmail,
                                           @RequestParam String customerInstagram, @RequestParam String customerPhone,
                                           Model model){
+        LocalDateTime startDateAndTime = date.atTime(startTime);
+        LocalDateTime endDateAndTime = date.atTime(endTime);
+
+        if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
+            model.addAttribute("doubleBookError", "Can't book at already booked times");
+            return "admin/admin-landing-page";
+        }
+
         Customer customerToBook = customerService.findCustomerIfAtLeastOneContactMethodMatches(
                 Customer.builder()
                         .email(customerEmail)
@@ -163,12 +186,6 @@ public class BookingController {
         if(bookableDate != null){
             int count = 0;
             for(BookableHour bookableHour: bookableDate.getBookableHours()){
-                if(bookableHour.isBooked() &&
-                        ((bookableHour.getHour().isBefore(endTime) && bookableHour.getHour().isAfter(startTime)) ||
-                                bookableHour.getHour().equals(startTime))){
-                    model.addAttribute("doubleBookError", "Can't book at already booked times");
-                    return "admin/admin-landing-page";
-                }
                 if(bookableHour.getHour().isAfter(startTime.minusMinutes(1))
                         && bookableHour.getHour().isBefore(endTime)){
                     bookableHour.setBooked(true);
@@ -187,7 +204,8 @@ public class BookingController {
 
         if(customerToBook != null) {
             Booking booking = Booking.builder()
-                    .date(date.atTime(startTime))
+                    .date(startDateAndTime)
+                    .endTime(endDateAndTime)
                     .customer(customerToBook)
                     .build();
             bookingService.saveBooking(booking);

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface BookingRepo extends JpaRepository<Booking, UUID> {
     List<Booking> findByDateBetween(LocalDateTime fromDateTime, LocalDateTime toDateTime);
+    List<Booking> findByEndTimeBetween(LocalDateTime fromDateTime, LocalDateTime toDateTIme);
     Optional<Booking> findByCustomerAndDate(Customer customer, LocalDateTime dateTime);
     List<Booking> findByDate(LocalDateTime date);
 }

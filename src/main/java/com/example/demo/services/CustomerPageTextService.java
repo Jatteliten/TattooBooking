@@ -21,9 +21,6 @@ public class CustomerPageTextService {
     }
 
     public CustomerPageText getLatestCustomerPageTextByPageAndSection(String page, String section){
-        for(CustomerPageText customerPageText: customerPageTextRepo.findAll()){
-            System.out.println(customerPageText.getText());
-        }
         return customerPageTextRepo.findTopByPageAndSectionOrderByCreatedDesc(page, section);
     }
 }

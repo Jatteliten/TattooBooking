@@ -39,12 +39,11 @@ public class CustomizeWebPageController {
 
     @PostMapping("/update-latest-news")
     public String updateLatestNews(Model model, @RequestParam String updatedLatestNews) {
-        System.out.println(updatedLatestNews);
         if (updatedLatestNews == null || updatedLatestNews.trim().isEmpty()) {
             model.addAttribute("updated", "The news text cannot be empty!");
             model.addAttribute("frontPageNews",
                     customerPageTextService.getLatestCustomerPageTextByPageAndSection(
-                            "index", "latest-news"));
+                            "index", "latest-news").getText());
             return "admin/customize-latest-news";
         }
 

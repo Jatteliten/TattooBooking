@@ -88,7 +88,7 @@ public class AdminController {
         return "admin/customer";
     }
 
-    @DeleteMapping("/delete-all-customers")
+    @PostMapping("/delete-all-customers")
     public String deleteAllCustomers(){
         customerService.deleteAllCustomers();
         return "admin/customer";

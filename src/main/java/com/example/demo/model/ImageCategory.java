@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,20 +18,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class TattooImage {
+public class ImageCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
-    private String name;
-    private String contentType;
-    private String url;
-    private long size;
-    private boolean frontPage;
+    private String category;
 
     @ManyToMany
-    private List<ImageCategory> categories;
-
-    @OneToOne
-    private Booking booking;
+    private List<TattooImage> images;
 }

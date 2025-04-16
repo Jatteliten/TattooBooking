@@ -1,6 +1,7 @@
 :root {
     --primary-pink: #f1d7fa;
     --secondary-pink: #fbf4ff;
+    --tertiary-pink: #e7affa;
 }
 .top-padded-body{
     padding-top: 5px;
@@ -146,6 +147,21 @@
     margin-top: 20px;
 }
 
+.instagram-outer-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#instagram-wrapper {
+    background-color: var(--secondary-pink);
+    border-radius: 20px;
+    padding: 10px 40px;
+    display: inline-block;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 #instagram-content {
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
@@ -153,6 +169,15 @@
     justify-content: center;
     margin-top: 20px;
 }
+
 #instagram-content.visible {
     opacity: 1;
+}
+
+.spinner-border.custom-spinner{
+    color: var(--tertiary-pink);
+}
+
+.hidden {
+    display: none;
 }

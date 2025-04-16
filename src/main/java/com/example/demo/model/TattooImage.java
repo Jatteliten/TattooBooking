@@ -28,7 +28,6 @@ public class TattooImage {
     private String contentType;
     private String url;
     private long size;
-    private boolean frontPage;
 
     @ManyToMany
     private List<ImageCategory> categories;

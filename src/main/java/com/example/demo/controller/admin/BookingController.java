@@ -65,6 +65,16 @@ public class BookingController {
         return "admin/booking-information";
     }
 
+    @PostMapping("/update-booking")
+    public String updateBookingInformation(@RequestParam String notes, @RequestParam UUID bookingId, Model model){
+        Booking booking = bookingService.getBookingById(bookingId);
+        booking.setNotes(notes);
+        bookingService.saveBooking(booking);
+        model.addAttribute("booking", booking);
+        model.addAttribute("bookingSaved", "Booking saved...");
+        return "admin/booking-information";
+    }
+
     @PostMapping("/remove-all-bookings")
     public String removeAllBookings(Model model){
         bookingService.deleteBookings(bookingService.getAllBookings());

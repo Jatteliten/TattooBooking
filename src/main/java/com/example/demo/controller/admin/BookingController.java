@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -128,12 +129,7 @@ public class BookingController {
         model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
         Customer customer = customerService.findCustomerByAnyField(searchInput);
 
-        if(customer == null){
-            model.addAttribute("searchResult", "No customer found");
-        }else {
-            model.addAttribute("searchResult",
-                    customerService.findCustomerByAnyField(searchInput));
-        }
+        model.addAttribute("searchResult", Objects.requireNonNullElse(customer, "No customer found"));
 
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null) {
@@ -180,13 +176,7 @@ public class BookingController {
                         .phone(customerPhone)
                         .instagram(customerInstagram)
                         .build());
-
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
-        if(bookableDate != null){
-            bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
-                    bookableDate, startTime,endTime);
-            bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
-        }
 
         if(customerToBook != null) {
             Booking booking = Booking.builder()
@@ -207,9 +197,15 @@ public class BookingController {
                     + " on " + date);
             model.addAttribute("bookableDate", bookableDate);
 
+            if(bookableDate != null){
+                bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+                        bookableDate, startTime,endTime);
+                bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
+            }
         }else{
             model.addAttribute("landingPageSingleLineMessage", "Something went wrong with non existing customer");
         }
+
         return "admin/admin-landing-page";
     }
 

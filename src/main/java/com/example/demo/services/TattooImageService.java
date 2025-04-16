@@ -32,12 +32,6 @@ public class TattooImageService {
     public List<TattooImage> getAllImages(){
         return tattooImageRepo.findAll();
     }
-    public List<TattooImage> getAllFrontPageImages(){
-        return tattooImageRepo.findByFrontPageTrue();
-    }
-    public List<TattooImage> getAllNonFrontPageImages(){
-        return tattooImageRepo.findByFrontPageFalse();
-    }
     public TattooImage findImageByUrl(String url){return tattooImageRepo.findByUrl(url);}
 
     public TattooImageUrlDto convertTattooImageToTattooImageUrlDto(TattooImage tattooImage){
@@ -45,13 +39,6 @@ public class TattooImageService {
                 .url(tattooImage.getUrl())
                 .name(tattooImage.getName())
                 .build();
-    }
-
-    public List<TattooImageUrlDto> getAllFrontPageImagesUrls(){
-        return getAllFrontPageImages()
-                .stream()
-                .map(this::convertTattooImageToTattooImageUrlDto)
-                .collect(Collectors.toList());
     }
 
     public TattooImage saveImage(MultipartFile file) throws IOException {
@@ -64,18 +51,11 @@ public class TattooImageService {
                 .contentType(file.getContentType())
                 .size(file.getSize())
                 .url(filePath.toString())
-                .frontPage(false)
                 .build());
     }
 
     public TattooImage getImage(UUID id) {
         return tattooImageRepo.findById(id).orElseThrow(() -> new RuntimeException("Image not found"));
-    }
-
-    public void changeTattooImageStateToOppositeByUrl(String url) {
-        TattooImage image = findImageByUrl(url);
-        image.setFrontPage(!image.isFrontPage());
-        tattooImageRepo.save(image);
     }
 
 }

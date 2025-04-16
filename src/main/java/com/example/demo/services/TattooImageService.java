@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.model.ImageCategory;
 import com.example.demo.model.TattooImage;
 import com.example.demo.dtos.tattooImagesdtos.TattooImageUrlDto;
 import com.example.demo.repos.TattooImageRepo;
@@ -16,7 +17,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class TattooImageService {
@@ -56,6 +56,10 @@ public class TattooImageService {
 
     public TattooImage getImage(UUID id) {
         return tattooImageRepo.findById(id).orElseThrow(() -> new RuntimeException("Image not found"));
+    }
+
+    public List<TattooImage> getImageListByCategory(ImageCategory category){
+        return tattooImageRepo.findByCategoriesContaining(category);
     }
 
 }

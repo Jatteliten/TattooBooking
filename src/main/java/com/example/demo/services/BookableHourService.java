@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.repos.BookableHourRepo;
@@ -22,6 +23,17 @@ public class BookableHourService {
 
     public void saveAllBookableHours(List<BookableHour> hourList){
         bookableHourRepo.saveAll(hourList);
+    }
+
+    public void iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+            BookableDate bookableDate, LocalTime startTime, LocalTime endTime){
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            if(bookableHour.getHour().isAfter(startTime.minusMinutes(1))
+                    && bookableHour.getHour().isBefore(endTime)){
+                bookableHour.setBooked(true);
+            }
+        }
+        saveAllBookableHours(bookableDate.getBookableHours());
     }
 
     public BookableHourForCalendarDto convertBookableHourToBookableHourForCalendarDto(BookableHour bookableHour){

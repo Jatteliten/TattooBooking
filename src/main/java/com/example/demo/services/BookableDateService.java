@@ -76,6 +76,14 @@ public class BookableDateService {
         return bookableDateRepo.findByDate(date);
     }
 
+    public void setBookableDateToFullyBookedIfAllHoursAreBooked(BookableDate bookabledate){
+        if(bookabledate.getBookableHours().stream().filter(BookableHour::isBooked).toList().size() ==
+                bookabledate.getBookableHours().size()){
+            bookabledate.setFullyBooked(true);
+            saveBookableDate(bookabledate);
+        }
+    }
+
     public void setBookableDateAndHoursToUnavailable(BookableDate bookableDate){
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
             if(!bookableHour.isBooked()){

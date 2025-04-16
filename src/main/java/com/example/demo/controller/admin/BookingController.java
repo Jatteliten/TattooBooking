@@ -184,22 +184,9 @@ public class BookingController {
 
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null){
-            int count = 0;
-            for(BookableHour bookableHour: bookableDate.getBookableHours()){
-                if(bookableHour.getHour().isAfter(startTime.minusMinutes(1))
-                        && bookableHour.getHour().isBefore(endTime)){
-                    bookableHour.setBooked(true);
-                }
-                if(bookableHour.isBooked()){
-                    count++;
-                }
-            }
-            bookableHourService.saveAllBookableHours(bookableDate.getBookableHours());
-
-            if(count == bookableDate.getBookableHours().size()){
-                bookableDate.setFullyBooked(true);
-                bookableDateService.saveBookableDate(bookableDate);
-            }
+            bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+                    bookableDate, startTime,endTime);
+            bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
         }
 
         if(customerToBook != null) {

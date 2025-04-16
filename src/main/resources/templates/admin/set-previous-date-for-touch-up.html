@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Set previous appointment</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<form action="/booking/confirm-touch-up-booking" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" name="startDateAndTime" th:value="${booking.date}" />
+    <input type="hidden" name="endDateAndTime" th:value="${booking.endTime}"/>
+    <input type="hidden" name="customerId" th:value="${customer.id}" />
+
+    <h3>Select Previous Booking for Touch-Up</h3>
+    <div class="mb-3" th:each="prevBooking : ${previousBookings}">
+        <label class="form-check-label">
+            <input class="form-check-input"
+                   type="radio"
+                   name="previousBookingId"
+                   th:value="${prevBooking.id}" required>
+            <span th:text="${#temporals.format(prevBooking.date, 'yyyy-MM-dd HH:mm')}"></span>
+            <span th:if="${prevBooking.notes != null}" th:text="' - ' + ${prevBooking.notes}"></span>
+        </label>
+    </div>
+
+    <button type="submit">Confirm Touch-Up Booking</button>
+</form>
+</body>
+</html>

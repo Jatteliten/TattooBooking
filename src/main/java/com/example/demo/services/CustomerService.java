@@ -5,6 +5,7 @@ import com.example.demo.repos.CustomerRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -23,6 +24,10 @@ public class CustomerService {
     }
     public void deleteAllCustomers(){
         customerRepo.deleteAll();
+    }
+
+    public Customer findCustomerById(UUID id){
+        return customerRepo.findById(id).orElse(null);
     }
 
     public Customer findCustomerIfAtLeastOneContactMethodMatches(Customer customer) {

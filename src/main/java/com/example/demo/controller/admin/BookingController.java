@@ -187,6 +187,7 @@ public class BookingController {
             if(touchUp != null && touchUp){
                 booking.setTouchUp(true);
                 booking.setDepositPaid(false);
+                return setPreviousBookingForTouchUp(booking, bookableDate, customerToBook, model);
             }else{
                 booking.setDepositPaid(true);
                 booking.setTouchUp(false);
@@ -200,6 +201,50 @@ public class BookingController {
             if(bookableDate != null){
                 bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
                         bookableDate, startTime,endTime);
+                bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
+            }
+        }else{
+            model.addAttribute("landingPageSingleLineMessage", "Something went wrong with non existing customer");
+        }
+
+        return "admin/admin-landing-page";
+    }
+
+    @GetMapping("/set-previous-booking-for-touch-up")
+    public String setPreviousBookingForTouchUp(Booking booking, BookableDate bookableDate, Customer customer, Model model){
+        model.addAttribute("booking", booking);
+        model.addAttribute("bookableDate", bookableDate);
+        model.addAttribute("customer", customer);
+        model.addAttribute("previousBookings", customer.getBookings().stream().filter(b ->
+                !b.isTouchUp() && b.getDate().isBefore(booking.getDate())));
+        return "admin/set-previous-date-for-touch-up";
+    }
+
+    @PostMapping("/confirm-touch-up-booking")
+    public String confirmTouchUpBooking(@RequestParam UUID previousBookingId, @RequestParam LocalDateTime startDateAndTime,
+                                        @RequestParam LocalDateTime endDateAndTime, @RequestParam UUID customerId,
+                                        Model model){
+        Customer customer = customerService.findCustomerById(customerId);
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(startDateAndTime.toLocalDate());
+        if(customer != null){
+            Booking booking = Booking.builder()
+                    .date(startDateAndTime)
+                    .endTime(endDateAndTime)
+                    .customer(customer)
+                    .previousBooking(bookingService.getBookingById(previousBookingId))
+                    .touchUp(true)
+                    .depositPaid(false)
+                    .build();
+
+            bookingService.saveBooking(booking);
+            model.addAttribute("bookingAdded", customer.getName()
+                    + " booked for touch up at " + startDateAndTime.toLocalTime() + " - " + endDateAndTime.toLocalTime()
+                    + " on " + startDateAndTime.toLocalDate());
+            model.addAttribute("bookableDate", bookableDate);
+
+            if(bookableDate != null){
+                bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+                        bookableDate, startDateAndTime.toLocalTime(), endDateAndTime.toLocalTime());
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{

@@ -18,16 +18,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class ImageCategory {
+public class FlashImage {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID  )
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String category;
+    private String name;
+    private String contentType;
+    private String url;
+    private long size;
 
     @ManyToMany
-    private List<TattooImage> tattooImages;
-
-    @ManyToMany
-    private List<FlashImage> flashImages;
+    private List<ImageCategory> categories;
 }

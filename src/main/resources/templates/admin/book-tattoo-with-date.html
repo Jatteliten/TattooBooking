@@ -82,6 +82,8 @@
             <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
             <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
             Between: <input class="booking-buttons" type="time" name="startTime" required> - <input class="booking-buttons" type="time" name="endTime" required>
+            <br>
+            <input type="checkbox" name="touchUp" th:value="true"> Touch up
             <br><button type="submit" class="btn btn-success booking-buttons">Book Customer</button>
         </form>
         <form th:action="@{/booking/book-tattoo-at-date}">

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -166,7 +165,7 @@ public class BookingController {
     public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime startTime,
                                           @RequestParam LocalTime endTime, @RequestParam String customerEmail,
                                           @RequestParam String customerInstagram, @RequestParam String customerPhone,
-                                          Model model){
+                                          @RequestParam(required = false) Boolean touchUp, Model model){
         LocalDateTime startDateAndTime = date.atTime(startTime);
         LocalDateTime endDateAndTime = date.atTime(endTime);
 
@@ -194,8 +193,14 @@ public class BookingController {
                     .date(startDateAndTime)
                     .endTime(endDateAndTime)
                     .customer(customerToBook)
-                    .depositPaid(true)
                     .build();
+            if(touchUp != null && touchUp){
+                booking.setTouchUp(true);
+                booking.setDepositPaid(false);
+            }else{
+                booking.setDepositPaid(true);
+                booking.setTouchUp(false);
+            }
             bookingService.saveBooking(booking);
             model.addAttribute("bookingAdded", customerToBook.getName()
                     + " booked at " + startTime + " - " + endTime

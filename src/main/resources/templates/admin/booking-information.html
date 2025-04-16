@@ -11,6 +11,9 @@
 <p><span th:text="${booking.date.getDayOfMonth()} + ' ' + ${booking.date.getMonth()} + ' ' + ${booking.date.getYear()}"></span></p>
 <p><span th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></span></p>
 <p><span th:text="${booking.customer.name}"></span></p>
+<span th:if="${booking.touchUp == true}">
+  (Touch up)
+</span>
 <p>Deposit paid: <span th:text="${booking.depositPaid} ? 'Yes' : 'No'"></span></p>
 <form th:action="@{/booking/cancel-appointment}" method="post" style="display:inline;">
   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

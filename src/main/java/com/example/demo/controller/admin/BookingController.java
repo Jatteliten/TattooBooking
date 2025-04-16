@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -156,7 +158,6 @@ public class BookingController {
         return "admin/book-tattoo-with-date";
     }
 
-
     @PostMapping("/book-tattoo-with-customer")
     public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime startTime,
                                           @RequestParam LocalTime endTime, @RequestParam String customerEmail,
@@ -166,7 +167,7 @@ public class BookingController {
         LocalDateTime endDateAndTime = date.atTime(endTime);
 
         if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
-            model.addAttribute("landingPageSingleLineMessage", "Can't book at already booked times");
+            model.addAttribute("landingPageSingleLineMessage", "Can't book at already booked hours");
             return "admin/admin-landing-page";
         }
 
@@ -212,11 +213,27 @@ public class BookingController {
 
     @GetMapping("/set-previous-booking-for-touch-up")
     public String setPreviousBookingForTouchUp(Booking booking, BookableDate bookableDate, Customer customer, Model model){
+        List<UUID> touchedUpBookings = new ArrayList<>();
+        for(Booking customerBooking: customer.getBookings()){
+            if(customerBooking.getPreviousBooking() != null){
+                touchedUpBookings.add(customerBooking.getPreviousBooking().getId());
+            }
+        }
+
+        List<Booking> previousBookings = customer.getBookings().stream()
+                .filter(b -> !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b.getId()))
+                .toList();
+
+        if(previousBookings.isEmpty()){
+            model.addAttribute("landingPageSingleLineMessage", "Customer does not have any previous bookings");
+            return "admin/admin-landing-page";
+        }
+
         model.addAttribute("booking", booking);
         model.addAttribute("bookableDate", bookableDate);
         model.addAttribute("customer", customer);
-        model.addAttribute("previousBookings", customer.getBookings().stream().filter(b ->
-                !b.isTouchUp() && b.getDate().isBefore(booking.getDate())));
+        model.addAttribute("previousBookings", previousBookings);
+
         return "admin/set-previous-date-for-touch-up";
     }
 
@@ -226,6 +243,7 @@ public class BookingController {
                                         Model model){
         Customer customer = customerService.findCustomerById(customerId);
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(startDateAndTime.toLocalDate());
+
         if(customer != null){
             Booking booking = Booking.builder()
                     .date(startDateAndTime)
@@ -237,6 +255,7 @@ public class BookingController {
                     .build();
 
             bookingService.saveBooking(booking);
+
             model.addAttribute("bookingAdded", customer.getName()
                     + " booked for touch up at " + startDateAndTime.toLocalTime() + " - " + endDateAndTime.toLocalTime()
                     + " on " + startDateAndTime.toLocalDate());

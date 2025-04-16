@@ -54,22 +54,6 @@ public class AdminController {
         return "redirect:/admin/set-front-page-images";
     }
 
-    @GetMapping("/set-front-page-images")
-    public String setFrontPageImage(Model model){
-        model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
-        model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
-        return "admin/select-front-page-images";
-    }
-
-    @PostMapping("/changeImageState")
-    public String changeFrontPageState(@RequestParam String url, Model model){
-        tattooImageService.changeTattooImageStateToOppositeByUrl(url);
-
-        model.addAttribute("imagesOnFrontPage", tattooImageService.getAllFrontPageImages());
-        model.addAttribute("imagesNotOnFrontPage", tattooImageService.getAllNonFrontPageImages());
-        return "admin/select-front-page-images";
-    }
-
     @GetMapping("/images/{id}")
     public ResponseEntity<Resource> viewImage(@PathVariable UUID id) throws MalformedURLException {
         TattooImage image = tattooImageService.getImage(id);

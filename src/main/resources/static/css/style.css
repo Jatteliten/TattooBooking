@@ -145,3 +145,14 @@
 .upcoming-bookings{
     margin-top: 20px;
 }
+
+#instagram-content {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+#instagram-content.visible {
+    opacity: 1;
+}

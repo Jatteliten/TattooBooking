@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.model.Booking;
-import com.example.demo.model.Customer;
 import com.example.demo.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.dtos.bookingdtos.BookingWithoutIdDto;
 import com.example.demo.repos.BookingRepo;
@@ -19,12 +18,10 @@ import java.util.UUID;
 public class BookingService {
     private final BookingRepo bookingRepo;
     private final BookableDateService bookableDateService;
-    private final BookableHourService bookableHourService;
 
-    public BookingService(BookingRepo bookingRepo, BookableDateService bookableDateService, BookableHourService bookableHourService){
+    public BookingService(BookingRepo bookingRepo, BookableDateService bookableDateService){
         this.bookingRepo = bookingRepo;
         this.bookableDateService = bookableDateService;
-        this.bookableHourService = bookableHourService;
     }
 
     public List<Booking> getBookingsByDate(LocalDate date){
@@ -83,34 +80,9 @@ public class BookingService {
                 !bookingRepo.findByEndTimeBetween(startTime.plusMinutes(1), endTime).isEmpty();
     }
 
-    public Booking getBookingByCustomerAndDate(Customer customer, LocalDateTime dateTime) {
-        return bookingRepo.findByCustomerAndDate(customer, dateTime).orElse(null);
-    }
-
     public List<Booking> getBookingsBetweenTwoGivenDates(LocalDateTime fromDate, LocalDateTime toDate){
         return bookingRepo.findByDateBetween(fromDate, toDate);
     }
-
-    public BookingCustomerDepositTimeDto convertBookingToBookingCustomerDepositTimeDto(Booking booking){
-        return BookingCustomerDepositTimeDto.builder()
-                .depositPaid(booking.isDepositPaid())
-                .customer(booking.getCustomer())
-                .date(booking.getDate())
-                .build();
-    }
-
-    public BookingWithoutIdDto convertBookingToBookingWithoutIdDto(Booking booking){
-        return BookingWithoutIdDto.builder()
-                .depositPaid(booking.isDepositPaid())
-                .touchUp(booking.isTouchUp())
-                .finalPrice(booking.getFinalPrice())
-                .date(booking.getDate())
-                .notes(booking.getNotes())
-                .tattooImage(booking.getTattooImage())
-                .customer(booking.getCustomer())
-                .build();
-    }
-
 
     public BookingWithoutIdDto convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(
             BookingCustomerDepositTimeDto givenBookingDto){

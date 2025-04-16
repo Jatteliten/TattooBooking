@@ -1,7 +1,9 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.model.CustomerPageText;
+import com.example.demo.model.InstagramEmbed;
 import com.example.demo.services.CustomerPageTextService;
+import com.example.demo.services.InstagramEmbedService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @PreAuthorize("hasAuthority('Admin')")
 public class CustomizeWebPageController {
     private final CustomerPageTextService customerPageTextService;
+    private final InstagramEmbedService instagramEmbedService;
 
-    public CustomizeWebPageController(CustomerPageTextService customerPageTextService){
+    public CustomizeWebPageController(CustomerPageTextService customerPageTextService, InstagramEmbedService instagramEmbedService){
         this.customerPageTextService = customerPageTextService;
+        this.instagramEmbedService = instagramEmbedService;
     }
 
     @GetMapping("/")
@@ -38,7 +42,7 @@ public class CustomizeWebPageController {
     }
 
     @PostMapping("/update-latest-news")
-    public String updateLatestNews(Model model, @RequestParam String updatedLatestNews) {
+    public String updateLatestNews(@RequestParam String updatedLatestNews, Model model) {
         if (updatedLatestNews == null || updatedLatestNews.trim().isEmpty()) {
             model.addAttribute("updated", "The news text cannot be empty!");
             model.addAttribute("frontPageNews",
@@ -56,6 +60,24 @@ public class CustomizeWebPageController {
         model.addAttribute("updated", "Latest news changed!");
         model.addAttribute("frontPageNews", updatedLatestNews);
         return "admin/customize-latest-news";
+    }
+
+    @GetMapping("/instagram-post")
+    public String customizeInstagramLink(Model model){
+        InstagramEmbed instagramEmbed = instagramEmbedService.getLatestEmbed();
+        model.addAttribute("currentURL", instagramEmbed.getEmbeddedLink());
+        model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(instagramEmbed.getEmbeddedLink()));
+
+        return "admin/update-instagram-link";
+    }
+
+    @PostMapping("/update-instagram-link")
+    public String updateInstagramLink(@RequestParam String updatedInstagramLink, Model model){
+        instagramEmbedService.saveOrUpdateEmbed(updatedInstagramLink);
+        model.addAttribute("currentURL", updatedInstagramLink);
+        model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(updatedInstagramLink));
+
+        return "admin/update-instagram-link";
     }
 
 }

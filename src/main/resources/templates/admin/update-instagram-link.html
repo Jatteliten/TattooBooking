@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Customers</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<form th:action="@{/customize/update-instagram-link}" method="post">
+    <div class="mb-3">
+        <textarea id="instagramLink"
+                  name="updatedInstagramLink"
+                  class="form-control"
+                  th:text="${currentURL}"
+                  rows="5"
+                  required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<p style="display: flex; justify-content: center;">Current Instagram post:</p>
+<div th:if="${embedHtml != null}" style="display: flex; justify-content: center; margin-top: 20px;">
+
+    <div th:utext="${embedHtml}"></div>
+</div>
+<div th:if="${embedHtml == null}">
+    <div th:utext="Ingenting"></div>
+</div>
+
+
+<script async src="//www.instagram.com/embed.js"></script>
+</body>
+</html>

@@ -13,12 +13,13 @@
 <p><span th:text="${booking.customer.name}"></span></p>
 <span th:if="${booking.touchUp == true}">
   (Touch up)
+  <a th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}" th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM')}"></a>
 </span>
-<p>Deposit paid: <span th:text="${booking.depositPaid} ? 'Yes' : 'No'"></span></p>
+<span th:if="${booking.touchUp != true}" th:text="'Deposit paid: ' + (${booking.depositPaid} ? 'Yes' : 'No')"></span>
 <div th:if="${bookingSaved != null}">
   <span class="text-success" th:text="${bookingSaved}"></span>
 </div>
-<form th:action="@{/admin/booking/update-booking}" method="post" style="margin-bottom:10px;">
+<form th:action="@{/admin/booking/update-booking}" method="post" style="margin-bottom:10px; margin-top:10px;">
   <div class="mb-3">
     <textarea th:text="${booking.notes}" name="notes" class="form-control" rows="5" required></textarea>
   </div>

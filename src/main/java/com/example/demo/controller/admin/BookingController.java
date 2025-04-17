@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-@RequestMapping("/booking")
+@RequestMapping("/admin/booking")
 @PreAuthorize("hasAuthority('Admin')")
 public class BookingController {
     private final CalendarService calendarService;

@@ -9,7 +9,7 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<form action="/booking/confirm-touch-up-booking" method="post">
+<form th:action="@{/admin/booking/confirm-touch-up-booking}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <input type="hidden" name="startDateAndTime" th:value="${booking.date}" />
     <input type="hidden" name="endDateAndTime" th:value="${booking.endTime}"/>

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let selectedDate = cell.getAttribute("data-date");
         if (selectedDate && !cell.classList.contains("not-current-month")) {
             let link = document.createElement("a");
-            link.href = "/booking/book-tattoo-at-date?date=" + selectedDate;
+            link.href = "/admin/booking/book-tattoo-at-date?date=" + selectedDate;
             link.textContent = cell.textContent;
             link.style.textDecoration = "none";
             link.style.color = "inherit";

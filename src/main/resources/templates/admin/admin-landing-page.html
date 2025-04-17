@@ -20,7 +20,7 @@
           th:text="${time.hour} + ' '"
           th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
     <br>
-    <a th:href="@{/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
+    <a th:href="@{/admin/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
         <button class="btn btn-secondary">Change available hours</button>
     </a>
 </div>

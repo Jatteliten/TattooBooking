@@ -16,13 +16,13 @@
       th:text="${time.hour} + ' '"
       th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
 <div th:if="!${bookableDate.isFullyBooked()}">
-  <form th:action="@{/add-dates/close-date}" method="post">
+  <form th:action="@{/admin/add-dates/close-date}" method="post">
     <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
     <button type="submit" class="btn btn-danger booking-buttons">Mark date as closed</button>
   </form>
 </div>
 <div th:if="${bookableDate.isFullyBooked()}">
-  <form th:action="@{/add-dates/open-date}" method="post">
+  <form th:action="@{/admin/add-dates/open-date}" method="post">
     <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
     <button type="submit" class="btn btn-success booking-buttons">Mark date as open</button>
   </form>

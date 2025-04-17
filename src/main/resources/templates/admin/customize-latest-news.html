@@ -12,7 +12,7 @@
 <div class="container mt-4">
     <h2>Edit Latest News</h2>
 
-    <form th:action="@{/customize/update-latest-news}" method="post">
+    <form th:action="@{/admin/customize/update-latest-news}" method="post">
         <div class="mb-3">
             <textarea id="latestNewsText" name="updatedLatestNews" class="form-control" rows="5" required>[[${frontPageNews}]]</textarea>
         </div>

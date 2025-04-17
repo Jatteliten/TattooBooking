@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/customize")
+@RequestMapping("/admin/customize")
 @PreAuthorize("hasAuthority('Admin')")
 public class CustomizeWebPageController {
     private final CustomerPageTextService customerPageTextService;

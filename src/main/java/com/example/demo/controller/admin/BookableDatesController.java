@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/add-dates")
+@RequestMapping("/admin/add-dates")
 @PreAuthorize("hasAuthority('Admin')")
 public class BookableDatesController {
     private final BookableDateService bookableDateService;

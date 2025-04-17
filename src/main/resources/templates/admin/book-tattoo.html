@@ -11,9 +11,9 @@
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <br><br>
 <div class="month-picker">
-    <a th:href="@{/booking/book-tattoo(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
+    <a th:href="@{/admin/booking/book-tattoo(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
     <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
-    <a th:href="@{/booking/book-tattoo(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+    <a th:href="@{/admin/booking/book-tattoo(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
 </div>
 
 <div th:replace="~{layouts/calendar-layout :: calendar}"></div>

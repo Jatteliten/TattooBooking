@@ -1,9 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const table = document.querySelector("table[data-base-link]");
+    if (!table) return;
+
+    const baseLink = table.getAttribute("data-base-link");
+
     document.querySelectorAll(".customer-calendar-column").forEach(function (cell) {
-        let selectedDate = cell.getAttribute("data-date");
+        const selectedDate = cell.getAttribute("data-date");
         if (selectedDate && !cell.classList.contains("not-current-month")) {
-            let link = document.createElement("a");
-            link.href = "/admin/booking/book-tattoo-at-date?date=" + selectedDate;
+            const link = document.createElement("a");
+            link.href = `${baseLink}?date=${selectedDate}`;
             link.textContent = cell.textContent;
             link.style.textDecoration = "none";
             link.style.color = "inherit";

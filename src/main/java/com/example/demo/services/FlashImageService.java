@@ -15,6 +15,10 @@ public class FlashImageService {
         this.flashImageRepo = flashImageRepo;
     }
 
+    public void saveListOfFlashImages(List<FlashImage> flashImages){
+        flashImageRepo.saveAll(flashImages);
+    }
+
     List<FlashImage> getImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }

@@ -32,6 +32,10 @@ public class TattooImageService {
     public List<TattooImage> getAllImages(){
         return tattooImageRepo.findAll();
     }
+
+    public void saveListOfTattooImages(List<TattooImage> tattooImages){
+        tattooImageRepo.saveAll(tattooImages);
+    }
     public TattooImage findImageByUrl(String url){return tattooImageRepo.findByUrl(url);}
 
     public TattooImageUrlDto convertTattooImageToTattooImageUrlDto(TattooImage tattooImage){

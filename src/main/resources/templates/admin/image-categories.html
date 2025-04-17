@@ -31,7 +31,9 @@
 
 <form th:action="@{/admin/images/save-image-category}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <input type="text" name="category">
+    <label>
+        <input type="text" name="category">
+    </label>
     <button type="submit" class="btn btn-success btn-sm">Add category</button>
 </form>
 

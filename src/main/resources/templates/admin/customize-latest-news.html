@@ -14,7 +14,7 @@
 
     <form th:action="@{/admin/customize/update-latest-news}" method="post">
         <div class="mb-3">
-            <textarea id="latestNewsText" name="updatedLatestNews" class="form-control" rows="5" required>[[${frontPageNews}]]</textarea>
+            <label for="latestNewsText"></label><textarea id="latestNewsText" name="updatedLatestNews" class="form-control" rows="5" required>[[${frontPageNews}]]</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>

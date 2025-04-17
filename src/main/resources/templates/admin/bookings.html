@@ -12,7 +12,11 @@
 <form th:action="@{/admin/booking/bookings}" method="get">
     <span>View bookings between</span>
     <br>
-    <input type="date" name="fromDate" required> - <input type="date" name="toDate" required>
+    <label>
+        <input type="date" name="fromDate" required>
+    </label> - <label>
+    <input type="date" name="toDate" required>
+</label>
     <br>
     <button type="submit" class="btn btn-success booking-buttons btn-sm">Submit</button>
 </form>

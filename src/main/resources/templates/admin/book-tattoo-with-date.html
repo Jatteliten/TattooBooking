@@ -18,7 +18,9 @@
     <h3>Find Customer</h3>
     <form th:action="@{/admin/booking/search-customer}" method="get" class="mb-4">
         <div class="input-group">
-            <input type="text" class="form-control" name="searchInput" placeholder="Search by email, instagram or phone number" required>
+            <label>
+                <input type="text" class="form-control" name="searchInput" placeholder="Search by email, instagram or phone number" required>
+            </label>
             <input type="hidden" name="date" th:value="${selectedDate}">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
@@ -81,9 +83,15 @@
             <input type="hidden" name="customerEmail" th:value="${searchResult.email}">
             <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
             <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
-            Between: <input class="booking-buttons" type="time" name="startTime" required> - <input class="booking-buttons" type="time" name="endTime" required>
+            Between: <label>
+            <input class="booking-buttons" type="time" name="startTime" required>
+        </label> - <label>
+            <input class="booking-buttons" type="time" name="endTime" required>
+        </label>
             <br>
-            <input type="checkbox" name="touchUp" th:value="true"> Touch up
+            <label>
+                <input type="checkbox" name="touchUp" th:value="true">
+            </label> Touch up
             <br><button type="submit" class="btn btn-success booking-buttons">Book Customer</button>
         </form>
         <form th:action="@{/admin/booking/book-tattoo-at-date}">

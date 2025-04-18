@@ -5,7 +5,9 @@ import com.example.demo.model.ImageCategory;
 import com.example.demo.repos.FlashImageRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -34,5 +36,18 @@ public class FlashImageService {
     }
     public List<FlashImage> getImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
+    }
+
+    public Map<ImageCategory, List<FlashImage>> getAllImagesMapByCategory(List<ImageCategory> categories){
+        Map<ImageCategory, List<FlashImage>> imagesByCategory = new LinkedHashMap<>();
+
+        for (ImageCategory category : categories) {
+            List<FlashImage> images = getImagesByCategory(category);
+            if (!images.isEmpty()) {
+                imagesByCategory.put(category, images);
+            }
+        }
+
+        return imagesByCategory;
     }
 }

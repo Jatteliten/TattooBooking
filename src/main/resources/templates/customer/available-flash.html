@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Lediga flash</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
+
+<div class="card" style="margin-bottom: 10px; margin-top: 10px;">
+  <div class="card-header customer-flash-card-header"><h4>Flash</h4></div>
+  <div th:if="${flashes != null}" th:each="entry : ${flashes}">
+    <h5 class="card-header customer-flash-card-category-header" th:text="${entry.key.category}">Category Name</h5>
+
+    <div class="row customer-flash-card-body" style="padding: 10px;">
+      <div th:each="flash : ${entry.value}" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+        <div class="card">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal"
+             th:attr="data-bs-image=${flash.url}, data-bs-caption=${entry.key.category}">
+            <img th:src="${flash.url}" th:alt="${flash.name}" class="card-img-top img-fluid flash-img" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header customer-flash-card-header">
+        <h5 id="modalCaption"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" src="" alt="Larger Image" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script src="/js/display-flash-image-modal.js"></script>
+</body>
+</html>

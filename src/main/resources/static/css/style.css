@@ -193,3 +193,11 @@
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+.customer-flash-card-header{
+    background-color: var(--primary-pink);
+}
+
+.customer-flash-card-category-header{
+    background-color: var(--secondary-pink);
+}

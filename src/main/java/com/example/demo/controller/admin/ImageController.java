@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -74,7 +72,7 @@ public class ImageController {
     @GetMapping("/view-flash-images")
     public String viewFlashImages(Model model){
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", getAllImagesMapByCategory());
+        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
         return "admin/flash-images";
     }
 
@@ -107,7 +105,7 @@ public class ImageController {
         }
 
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", getAllImagesMapByCategory());
+        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
 
         return "admin/flash-images";
     }
@@ -126,23 +124,10 @@ public class ImageController {
         }
 
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", getAllImagesMapByCategory());
+        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
 
         return "admin/flash-images";
     }
 
-    private Map<ImageCategory, List<FlashImage>> getAllImagesMapByCategory(){
-        List<ImageCategory> categories = imageCategoryService.getAllImageCategories();
-        Map<ImageCategory, List<FlashImage>> imagesByCategory = new LinkedHashMap<>();
-
-        for (ImageCategory category : categories) {
-            List<FlashImage> images = flashImageService.getImagesByCategory(category);
-            if (!images.isEmpty()) {
-                imagesByCategory.put(category, images);
-            }
-        }
-
-        return imagesByCategory;
-    }
 
 }

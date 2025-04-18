@@ -60,7 +60,7 @@ public class CustomerPageController {
     @GetMapping("/flash")
     public String flash(Model model){
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
+        model.addAttribute("flashes", flashImageService.getAllFlashImagesMapByCategory());
 
         return "customer/available-flash";
     }

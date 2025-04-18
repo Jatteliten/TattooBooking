@@ -5,6 +5,7 @@ import com.example.demo.model.ImageCategory;
 import com.example.demo.repos.FlashImageRepo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +35,20 @@ public class FlashImageService {
     public List<FlashImage> getAllFlashImages(){
         return flashImageRepo.findAll();
     }
-    public List<FlashImage> getImagesByCategory(ImageCategory imageCategory){
+    public List<FlashImage> getFlashImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }
 
-    public Map<ImageCategory, List<FlashImage>> getAllImagesMapByCategory(List<ImageCategory> categories){
-        Map<ImageCategory, List<FlashImage>> imagesByCategory = new LinkedHashMap<>();
+    public Map<ImageCategory, ArrayList<FlashImage>> getAllFlashImagesMapByCategory(){
+        Map<ImageCategory, ArrayList<FlashImage>> imagesByCategory = new LinkedHashMap<>();
+        List<FlashImage> flashImages = getAllFlashImages();
 
-        for (ImageCategory category : categories) {
-            List<FlashImage> images = getImagesByCategory(category);
-            if (!images.isEmpty()) {
-                imagesByCategory.put(category, images);
+        for (FlashImage flashImage: flashImages) {
+            ImageCategory flashImageCategory = flashImage.getCategories().getFirst();
+            if (imagesByCategory.get(flashImageCategory) == null) {
+                imagesByCategory.put(flashImageCategory, new ArrayList<>(List.of(flashImage)));
+            }else{
+                imagesByCategory.get(flashImageCategory).add(flashImage);
             }
         }
 

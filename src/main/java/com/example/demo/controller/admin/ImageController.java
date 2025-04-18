@@ -72,7 +72,7 @@ public class ImageController {
     @GetMapping("/view-flash-images")
     public String viewFlashImages(Model model){
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
+        model.addAttribute("flashes", flashImageService.getAllFlashImagesMapByCategory());
         return "admin/flash-images";
     }
 
@@ -105,7 +105,7 @@ public class ImageController {
         }
 
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
+        model.addAttribute("flashes", flashImageService.getAllFlashImagesMapByCategory());
 
         return "admin/flash-images";
     }
@@ -124,7 +124,7 @@ public class ImageController {
         }
 
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", flashImageService.getAllImagesMapByCategory(imageCategoryService.getAllImageCategories()));
+        model.addAttribute("flashes", flashImageService.getAllFlashImagesMapByCategory());
 
         return "admin/flash-images";
     }

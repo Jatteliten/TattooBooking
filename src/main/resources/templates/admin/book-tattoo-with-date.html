@@ -19,7 +19,7 @@
     <form th:action="@{/admin/booking/search-customer}" method="get" class="mb-4">
         <div class="input-group">
             <label>
-                <input type="text" class="form-control" name="searchInput" placeholder="Search by email, instagram or phone number" required>
+                <input type="text" class="form-control" name="searchInput" placeholder="Email, Instagram or phone number" required>
             </label>
             <input type="hidden" name="date" th:value="${selectedDate}">
             <button class="btn btn-primary" type="submit">Search</button>
@@ -103,8 +103,8 @@
 
     <div th:if="${searchResult == null || searchResult == 'No customer found'}">
         <h3>Create New Customer</h3>
-        <form th:action="@{/booking/create-customer}" method="post">
-            <div class="mb-3">
+        <form id="createCustomerForm" th:action="@{/admin/booking/create-customer}" method="post">
+        <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
@@ -126,6 +126,6 @@
     </div>
 </div>
 
-
+<script src="/js/force-one-required-alternative-when-creating-customer.js"></script>
 </body>
 </html>

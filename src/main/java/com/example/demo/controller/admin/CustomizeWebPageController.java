@@ -1,7 +1,6 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.model.CustomerPageText;
-import com.example.demo.model.InstagramEmbed;
 import com.example.demo.services.CustomerPageTextService;
 import com.example.demo.services.InstagramEmbedService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,11 +63,16 @@ public class CustomizeWebPageController {
 
     @GetMapping("/instagram-post")
     public String customizeInstagramLink(Model model){
-        InstagramEmbed instagramEmbed = instagramEmbedService.getLatestEmbed();
-        model.addAttribute("currentURL", instagramEmbed.getEmbeddedLink());
-        model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(instagramEmbed.getEmbeddedLink()));
+        String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromDatabase();
+        if(instagramEmbedUrl == null){
+            model.addAttribute("noEmbedLink", "No instagram post exists with portfolio");
+        }else{
+            model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(instagramEmbedUrl));
+        }
 
-        return "admin/update-instagram-link";
+        model.addAttribute("currentURL", instagramEmbedUrl);
+
+        return "admin/customize-portfolio-link";
     }
 
     @PostMapping("/update-instagram-link")
@@ -77,7 +81,7 @@ public class CustomizeWebPageController {
         model.addAttribute("currentURL", updatedInstagramLink);
         model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(updatedInstagramLink));
 
-        return "admin/update-instagram-link";
+        return "admin/customize-portfolio-link";
     }
 
 }

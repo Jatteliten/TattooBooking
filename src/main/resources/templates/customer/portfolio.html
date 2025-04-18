@@ -10,17 +10,22 @@
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 
-<div id="loading" style="display: flex; justify-content: center; margin-top: 40px;">
-  <div class="spinner-border custom-spinner" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
+<div th:if="noEmbedLink != null">
+  <h2>No portfolio exists</h2>
 </div>
+<div th:if="noEmbedLink == null">
+  <div id="loading" style="display: flex; justify-content: center; margin-top: 40px;">
+    <div class="spinner-border custom-spinner" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 
-<div class="instagram-outer-container hidden">
-  <div id="instagram-wrapper">
-    <div id="instagram-content">
-      <div th:if="${embedHtml != null}" th:utext="${embedHtml}"></div>
-      <div th:if="${embedHtml == null}" th:utext="Någonting gick fel vid laddning av portfolio"></div>
+  <div class="instagram-outer-container hidden">
+    <div id="instagram-wrapper">
+      <div id="instagram-content">
+        <div th:if="${embedHtml != null}" th:utext="${embedHtml}"></div>
+        <div th:if="${embedHtml == null}" th:utext="Någonting gick fel vid laddning av portfolio"></div>
+      </div>
     </div>
   </div>
 </div>

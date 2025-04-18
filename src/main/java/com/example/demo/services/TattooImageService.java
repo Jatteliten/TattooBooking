@@ -14,12 +14,20 @@ public class TattooImageService {
         this.tattooImageRepo = tattooImageRepo;
     }
 
-    public List<TattooImage> getAllImages(){
-        return tattooImageRepo.findAll();
+    public void saveTattooImage(TattooImage tattooImage){
+        tattooImageRepo.save(tattooImage);
+    }
+
+    public void deleteTattooImage(TattooImage tattooImage){
+        tattooImageRepo.delete(tattooImage);
     }
 
     public void saveListOfTattooImages(List<TattooImage> tattooImages){
         tattooImageRepo.saveAll(tattooImages);
+    }
+
+    public List<TattooImage> getAllImages(){
+        return tattooImageRepo.findAll();
     }
 
     public TattooImage findImageByUrl(String url){return tattooImageRepo.findByUrl(url);}

@@ -52,7 +52,12 @@ public class CustomerPageController {
 
     @GetMapping("/portfolio")
     public String portfolio(Model model) {
-        model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromDatabase());
+        String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromDatabase();
+        if(instagramEmbedUrl == null){
+            model.addAttribute("noEmbedLink", "No instagram post exists with portfolio");
+        }else{
+            model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromDatabase());
+        }
 
         return "customer/portfolio";
     }

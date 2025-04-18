@@ -55,7 +55,6 @@ public class S3ImageService {
     }
 
     public void deleteImage(String imageUrl) {
-
         String key = imageUrl.substring(imageUrl.indexOf(".com/") + 5);
         DeleteObjectRequest deleteRequest = DeleteObjectRequest.builder()
                 .bucket(bucketName)

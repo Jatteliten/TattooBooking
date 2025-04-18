@@ -35,6 +35,10 @@ public class InstagramEmbedService {
 
     @Cacheable("instagramEmbedHtml")
     public String generateEmbedHtmlFromDatabase() {
+        InstagramEmbed instagramEmbed = getLatestEmbed();
+        if(instagramEmbed == null){
+            return null;
+        }
         return "<blockquote class=\"instagram-media\" data-instgrm-permalink=\"" + getLatestEmbed().getEmbeddedLink() + "\" data-instgrm-version=\"14\"></blockquote>";
     }
 }

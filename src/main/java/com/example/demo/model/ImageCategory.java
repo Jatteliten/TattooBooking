@@ -25,9 +25,9 @@ public class ImageCategory {
 
     private String category;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private List<TattooImage> tattooImages;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     private List<FlashImage> flashImages;
 }

@@ -15,6 +15,7 @@
 
 <div class="text-left card" style="margin-bottom: 20px; width: 18rem;">
     <div class="card-body">
+        <h5 class="card-title">Current categories</h5>
         <div th:each="category : ${categories}">
             <form th:action="@{/admin/images/delete-image-category}" method="post"
                   th:data-category-name="${category.category}"

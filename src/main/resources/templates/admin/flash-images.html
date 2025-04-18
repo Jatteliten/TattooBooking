@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Flash Images</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<div class="card">
+    <h3 class="card-header">Upload flash</h3>
+    <form th:action="@{/admin/images/upload-flash}" method="post" style="padding: 10px;" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="form-group">
+            <label for="file">Choose an image:</label><br>
+            <input type="file" id="file" name="file" accept="image/*" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <label>Select categories:</label><br>
+            <div th:each="category : ${categories}" style="display: inline-block;">
+                <label>
+                    <input type="checkbox" name="categoryIds" th:value="${category.id}" th:id="'cat-' + ${category.id}">
+                </label>
+                <label th:for="'cat-' + ${category.id}" th:text="${category.category}"></label><br>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+    </form>
+</div>
+
+<div th:if="${successFeedback != null}">
+    <h4 th:text="${successFeedback}" class="text-success image-feedback"></h4>
+</div>
+<div th:if="${failFeedback != null}">
+    <h4 th:text="${failFeedback}" class="text-danger image-feedback"></h4>
+</div>
+
+<div class="card" style="margin-bottom: 10px; margin-top: 10px;">
+    <div class="card-header bg-secondary text-white"><h4>Flash</h4></div>
+    <div th:if="${flashes != null}" th:each="entry : ${flashes}">
+        <h5 class="card-header" th:text="${entry.key.category}">Category Name</h5>
+
+        <div class="row" style="padding: 10px;">
+            <div th:each="flash : ${entry.value}" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+                <div class="card">
+                    <img th:src="${flash.url}" th:alt="${flash.name}" class="card-img-top img-fluid" />
+                    <form th:action="@{/admin/images/delete-flash}" method="post">
+                        <input type="hidden" th:name="flashId" th:value="${flash.id}">
+                        <button class="card-footer bg-danger text-white w-100 text-center">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

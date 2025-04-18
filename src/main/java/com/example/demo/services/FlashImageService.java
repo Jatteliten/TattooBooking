@@ -6,6 +6,7 @@ import com.example.demo.repos.FlashImageRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class FlashImageService {
@@ -15,11 +16,23 @@ public class FlashImageService {
         this.flashImageRepo = flashImageRepo;
     }
 
+    public FlashImage getFlashImageById(UUID id){
+        return flashImageRepo.findById(id).orElse(null);
+    }
+    public void saveFlashImage(FlashImage flashImage){
+        flashImageRepo.save(flashImage);
+    }
     public void saveListOfFlashImages(List<FlashImage> flashImages){
         flashImageRepo.saveAll(flashImages);
     }
 
-    List<FlashImage> getImagesByCategory(ImageCategory imageCategory){
+    public void deleteFlashImage(FlashImage flashImage){
+        flashImageRepo.delete(flashImage);
+    }
+    public List<FlashImage> getAllFlashImages(){
+        return flashImageRepo.findAll();
+    }
+    public List<FlashImage> getImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }
 }

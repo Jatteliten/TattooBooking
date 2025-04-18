@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +31,8 @@ public class FlashImage {
     private long size;
 
     @ManyToMany
+    @JoinTable(name = "flash_image_categories",
+            joinColumns = @JoinColumn(name = "flash_image_id"),
+            inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<ImageCategory> categories;
 }

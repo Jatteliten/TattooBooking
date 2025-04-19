@@ -8,9 +8,9 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
-
 <form th:action="@{/admin/customize/update-instagram-link}" method="post">
     <div class="mb-3">
+        <h3>Current link</h3>
         <label for="instagramLink"></label><textarea id="instagramLink"
                                                      name="updatedInstagramLink"
                                                      class="form-control"

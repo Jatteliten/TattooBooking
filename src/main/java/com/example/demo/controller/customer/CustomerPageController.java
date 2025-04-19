@@ -8,6 +8,7 @@ import com.example.demo.services.InstagramEmbedService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -66,9 +67,20 @@ public class CustomerPageController {
     @GetMapping("/flash")
     public String flash(Model model){
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("flashes", flashImageService.getAllFlashImagesMapByCategory());
 
-        return "customer/available-flash";
+        return "customer/flash-categories";
     }
+
+    @GetMapping("/flash-with-category")
+    public String showFlashWithCategory(@RequestParam String categoryName, Model model){
+        model.addAttribute("category", categoryName);
+        model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+                flashImageService.getFlashImagesByCategory(
+                        imageCategoryService.findImageCategoryByCategoryString(
+                                categoryName))));
+
+        return "customer/available-flash-with-category";
+    }
+
 
 }

@@ -201,3 +201,11 @@
 .customer-flash-card-category-header{
     background-color: var(--secondary-pink);
 }
+
+.btn-primary-pink{
+    background-color: var(--primary-pink);
+}
+
+.card-header-pink{
+    background-color: var(--secondary-pink);
+}

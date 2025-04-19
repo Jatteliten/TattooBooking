@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dtos.FlashImagedtos.FlashImageOnlyUrlDto;
 import com.example.demo.model.FlashImage;
 import com.example.demo.model.ImageCategory;
 import com.example.demo.repos.FlashImageRepo;
@@ -12,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class FlashImageService {
@@ -47,6 +49,18 @@ public class FlashImageService {
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }
 
+    public FlashImageOnlyUrlDto convertFlashImageToFlashImageOnlyUrlDTO(FlashImage flashImage){
+        return FlashImageOnlyUrlDto.builder()
+                .url(flashImage.getUrl())
+                .build();
+    }
+
+    public List<FlashImageOnlyUrlDto> convertFlashImageListToFlashImagesOnlyUrlDTO(List<FlashImage> flashImages){
+        return flashImages.stream()
+                .map(this::convertFlashImageToFlashImageOnlyUrlDTO)
+                .collect(Collectors.toList());
+    }
+
     @Cacheable("flashImages")
     public Map<ImageCategory, ArrayList<FlashImage>> getAllFlashImagesMapByCategory(){
         Map<ImageCategory, ArrayList<FlashImage>> imagesByCategory = new LinkedHashMap<>();
@@ -63,4 +77,5 @@ public class FlashImageService {
 
         return imagesByCategory;
     }
+
 }

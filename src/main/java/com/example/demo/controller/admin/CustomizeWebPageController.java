@@ -63,14 +63,15 @@ public class CustomizeWebPageController {
 
     @GetMapping("/instagram-post")
     public String customizeInstagramLink(Model model){
-        String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromDatabase();
+        String url = instagramEmbedService.getLatestEmbed().getEmbeddedLink();
+        String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromUrl(url);
         if(instagramEmbedUrl == null){
             model.addAttribute("noEmbedLink", "No instagram post exists with portfolio");
         }else{
-            model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(instagramEmbedUrl));
+            model.addAttribute("embedHtml", instagramEmbedUrl);
         }
 
-        model.addAttribute("currentURL", instagramEmbedUrl);
+        model.addAttribute("currentURL", url);
 
         return "admin/customize-portfolio-link";
     }

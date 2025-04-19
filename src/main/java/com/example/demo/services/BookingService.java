@@ -53,8 +53,11 @@ public class BookingService {
         return bookingRepo.findAll();
     }
 
+    @Transactional
     public void deleteBooking(Booking booking){
         setBookableHoursRelatedToBookingToAvailable(booking);
+        s3ImageService.deleteImage(booking.getTattooImage().getUrl());
+        tattooImageService.deleteTattooImage(booking.getTattooImage());
         bookingRepo.delete(booking);
     }
 

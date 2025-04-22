@@ -85,15 +85,30 @@
             <input type="hidden" name="customerEmail" th:value="${searchResult.email}">
             <input type="hidden" name="customerInstagram" th:value="${searchResult.instagram}">
             <input type="hidden" name="customerPhone" th:value="${searchResult.phone}">
-            Between: <label>
-            <input class="booking-buttons" type="time" name="startTime" required>
-        </label> - <label>
-            <input class="booking-buttons" type="time" name="endTime" required>
-        </label>
+            Hours:
+            <label>
+                <input class="booking-buttons" type="time" name="startTime" required>
+            </label>
+            -
+            <label>
+                <input class="booking-buttons" type="time" name="endTime" required>
+            </label>
             <br>
             <label>
-                <input type="checkbox" name="touchUp" th:value="true">
-            </label> Touch up
+                <input type="checkbox"
+                       name="touchUp"
+                       id="touchUpCheckbox"
+                       th:text="' Touch up'"
+                       th:value="true">
+            </label>
+            <br>
+            <label id="depositPaidWrapper">
+                <input type="checkbox"
+                       name="depositPaid"
+                       id="depositPaidCheckbox"
+                       th:text="' Deposit paid'"
+                       th:value="true">
+            </label>
             <br>
             <button type="submit" class="btn btn-success booking-buttons">Book Customer</button>
         </form>
@@ -129,6 +144,7 @@
     </div>
 </div>
 
+<script src="/js/uncheck-and-remove-deposit-paid-when-checking-touch-up-box.js"></script>
 <script src="/js/force-one-required-alternative-when-creating-customer.js"></script>
 </body>
 </html>

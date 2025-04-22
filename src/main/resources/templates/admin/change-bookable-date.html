@@ -16,7 +16,7 @@
         <div th:if="${bookings.size()} > 0" class="card-body">
             <div th:each="booking : ${bookings}">
                 <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                    <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|"
+                    <span th:text="|${#temporals.format(booking.date, 'HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|"
                           class="text-success">
                     </span>
                 </a>
@@ -42,20 +42,34 @@
             <div th:if="${bookableDate} != null">
                 <div th:if="${bookableDate.getBookableHours()} != null"
                      th:each="time : ${bookableDate.getBookableHours()}">
-            <span th:text="${time.hour} + ' '"
-                  th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'">
-            </span>
-                    <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/remove-hour}" method="post"
+                    <span th:text="${time.hour} + ' '"
+                          th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'">
+                    </span>
+                    <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/make-hour-unavailable}" method="post"
                           style="display: inline;">
                         <input type="hidden" name="hour" th:value="${time.hour}">
                         <input type="hidden" name="date" th:value="${bookableDate.date}">
                         <button type="submit" class="btn btn-xs btn-danger">Close</button>
                     </form>
-                    <form th:if="${time.isBooked()}" th:action="@{/admin/add-dates/add-hour}" method="post"
+                    <form th:if="${time.isBooked()}" th:action="@{/admin/add-dates/make-hour-available}" method="post"
                           style="display: inline;">
                         <input type="hidden" name="hour" th:value="${time.hour}">
                         <input type="hidden" name="date" th:value="${bookableDate.date}">
                         <button type="submit" class="btn btn-xs btn-success">Open</button>
+                    </form>
+                </div>
+
+                <div th:if="${bookableDate.getBookableHours()} != null">
+                    <br>
+                    <span>Add hour:</span>
+                    <form th:action="@{/admin/add-dates/add-new-hour}" method="post">
+                        <label>
+                            <input type="time" name="hour">
+                        </label>
+                        <input type="hidden" name="date" th:value="${bookableDate.date}">
+                        <button class="btn btn-success btn-sm" type="submit">
+                            Add hour
+                        </button>
                     </form>
                 </div>
 

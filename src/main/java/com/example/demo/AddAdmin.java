@@ -19,10 +19,10 @@ public class AddAdmin implements CommandLineRunner {
     private final UserService userService;
 
     @Value("${admin.username}")
-    private String adminUsername;
+    private static String ADMIN_USERNAME;
 
     @Value("${admin.password}")
-    private String adminPassword;
+    private static String ADMIN_PASSWORD;
 
     private final static String ROLE_NAME_ADMIN = "Admin";
 
@@ -42,8 +42,8 @@ public class AddAdmin implements CommandLineRunner {
 
         System.out.println(userService.saveUserIfItDoesNotAlreadyExist(User.builder()
                 .enabled(true)
-                .password(encoder.encode(adminPassword))
-                .username(adminUsername)
+                .password(encoder.encode(ADMIN_PASSWORD))
+                .username(ADMIN_USERNAME)
                 .roles(List.of(roleService.findRoleByName(ROLE_NAME_ADMIN)))
                 .build()));
     }

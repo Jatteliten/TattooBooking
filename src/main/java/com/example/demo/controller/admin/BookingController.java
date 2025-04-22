@@ -224,7 +224,8 @@ public class BookingController {
     public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime startTime,
                                           @RequestParam LocalTime endTime, @RequestParam String customerEmail,
                                           @RequestParam String customerInstagram, @RequestParam String customerPhone,
-                                          @RequestParam(required = false) Boolean touchUp, Model model){
+                                          @RequestParam(required = false) Boolean touchUp,
+                                          @RequestParam(required = false) Boolean depositPaid, Model model){
         LocalDateTime startDateAndTime = date.atTime(startTime);
         LocalDateTime endDateAndTime = date.atTime(endTime);
 
@@ -247,6 +248,9 @@ public class BookingController {
                     .endTime(endDateAndTime)
                     .customer(customerToBook)
                     .build();
+
+            booking.setDepositPaid(depositPaid != null);
+
             if(touchUp != null && touchUp){
                 booking.setTouchUp(true);
                 booking.setDepositPaid(false);

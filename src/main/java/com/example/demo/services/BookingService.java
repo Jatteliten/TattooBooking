@@ -17,8 +17,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -215,6 +217,12 @@ public class BookingService {
         tattooImageService.deleteTattooImage(tattooImage);
 
         return booking;
+    }
+
+    public List<Booking> sortBookingsByStartDateAndTime(List<Booking> bookings){
+        return bookings.stream()
+                .sorted(Comparator.comparing(Booking::getDate))
+                .collect(Collectors.toList());
     }
 
 }

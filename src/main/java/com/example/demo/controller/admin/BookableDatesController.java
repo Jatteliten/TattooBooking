@@ -1,9 +1,9 @@
 package com.example.demo.controller.admin;
 
-import com.example.demo.dtos.bookabledatedtos.DateEntry;
 import com.example.demo.dtos.bookabledatedtos.DateForm;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
+import com.example.demo.model.Booking;
 import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookingService;
 import com.example.demo.services.CalendarService;
@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -60,71 +58,26 @@ public class BookableDatesController {
         LocalDate from = LocalDate.parse(fromDate);
         LocalDate to = LocalDate.parse(toDate);
 
-        if(!from.isBefore(to) && !from.isEqual(to)){
+        if(from.isAfter(to)){
             model.addAttribute("errorMessage", "From date must be before To date");
             calendarService.createCalendarModel(model, null, null);
 
             return "admin/add-available-dates";
         }
 
-        List<LocalDate> availableDates = new ArrayList<>();
-        List<BookableDate> alreadyExistingBookableDateList =
-                bookableDateService.findBookableDatesBetweenTwoGivenDates(from, to);
-
-        for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
-            LocalDate currentDateInIteration = date;
-
-            if (date.getDayOfWeek() != DayOfWeek.SUNDAY && alreadyExistingBookableDateList.stream()
-                    .filter(bookableDate -> bookableDate.getDate().equals(currentDateInIteration))
-                    .toList()
-                    .isEmpty()) {
-                availableDates.add(date);
-            }
-        }
-
-        model.addAttribute("dates", availableDates);
+        model.addAttribute("dates", bookableDateService.getAvailableDatesBetweenTwoDates(from, to));
         model.addAttribute("times", time);
         return "admin/confirm-dates";
     }
 
     @PostMapping("/save-dates")
     public String saveDates(@ModelAttribute DateForm dateForm, Model model) {
-        List<BookableDate> bookableDatesToSaveList = new ArrayList<>();
-        for (DateEntry entry : dateForm.getDateList()) {
-            BookableDate bookableDate = BookableDate.builder()
-                    .date(entry.getDate())
-                    .fullyBooked(false)
-                    .build();
-
-            if(entry.getType() != null){
-                bookableDate.setTouchUp(entry.getType().equals("touchup"));
-                bookableDate.setDropIn(entry.getType().equals("dropin"));
-            }else{
-                bookableDate.setTouchUp(false);
-                bookableDate.setDropIn(false);
-            }
-
-            if(!bookableDate.isDropIn() && entry.getHours() != null){
-                bookableDate.setBookableHours(entry.getHours().stream()
-                        .map(hour -> BookableHour.builder()
-                                .hour(hour)
-                                .booked(false)
-                                .build())
-                        .toList());
-            }else if(bookableDate.isDropIn()){
-                bookableDate.setBookableHours(List.of(BookableHour.builder()
-                        .hour(LocalTime.of(11, 0))
-                        .build()));
-            }
-
-            if(bookableDate.getBookableHours() != null){
-                bookableDatesToSaveList.add(bookableDate);
-            }
-        }
+        List<BookableDate> bookableDatesToSaveList = bookableDateService.createBookableDatesFromDateForm(dateForm);
 
         bookableDateService.saveListOfBookableDates(bookableDatesToSaveList);
 
-        model.addAttribute("landingPageSingleLineMessage", bookableDatesToSaveList.size() + " dates added!");
+        model.addAttribute("landingPageSingleLineMessage",
+                bookableDatesToSaveList.size() + " dates added!");
         return "admin/admin-landing-page";
     }
 
@@ -132,14 +85,11 @@ public class BookableDatesController {
     public String changeBookableDate(@RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
 
-        if(bookableDate != null){
-            model.addAttribute("bookableDate", bookableDate);
-        }else{
-            model.addAttribute("bookableDate", BookableDate.builder().date(date).build());
+        if(bookableDate == null){
+            bookableDate = BookableDate.builder().date(date).build();
         }
 
-        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
-        return "admin/change-bookable-date";
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
 
     @PostMapping("/close-date")
@@ -148,15 +98,15 @@ public class BookableDatesController {
         bookableDateService.setBookableDateAndHoursToUnavailable(bookableDate);
 
         model.addAttribute("positiveFeedback", "Date " + bookableDate.getDate() + " set as unavailable.");
-        model.addAttribute("bookableDate", bookableDate);
-        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
-        return "admin/change-bookable-date";
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
 
     @PostMapping("/open-date")
     public String makeDateAvailable(@RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
-        bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(bookableDate, bookingService.getBookingsByDate(date));
+        bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
+                bookableDate, bookingService.getBookingsByDate(date));
+
         if(bookableDate.isFullyBooked()){
             model.addAttribute("negativeFeedback", "All available hours for " +
                     bookableDate.getDate() + " are booked. Cannot set as available");
@@ -164,56 +114,76 @@ public class BookableDatesController {
             model.addAttribute("positiveFeedback", "Date " + bookableDate.getDate() + " set as available.");
         }
 
-        model.addAttribute("bookableDate", bookableDate);
-        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
-        return "admin/change-bookable-date";
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
 
-    @PostMapping("/remove-hour")
+    @PostMapping("/make-hour-unavailable")
     public String setHourToBooked(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         BookableHour bookableHour = bookableDate.getBookableHours().stream()
-                .filter(bh -> bh.getHour().equals(hour)).toList().getFirst();
+                .filter(bh -> bh.getHour().equals(hour))
+                .findFirst()
+                .orElse(null);
 
         if(bookableHour != null){
             bookableHour.setBooked(true);
-            model.addAttribute("positiveFeedback", hour + " set as non bookable.");
+            model.addAttribute("positiveFeedback", hour + " set as unavailable.");
         }else{
             model.addAttribute("negativeFeedback", "Cannot change hour.");
         }
 
         bookableDateService.saveBookableDate(bookableDate);
 
-        model.addAttribute("bookableDate", bookableDate);
-        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
-
-        return "admin/change-bookable-date";
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
 
-    @PostMapping("/add-hour")
+    @PostMapping("/make-hour-available")
     public String unBookHour(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         BookableHour bookableHour = bookableDate.getBookableHours().stream()
-                .filter(bh -> bh.getHour().equals(hour)).toList().getFirst();
+                .filter(bh -> bh.getHour().equals(hour))
+                .findFirst()
+                .orElse(null);
 
         if(bookableHour != null){
-            if(bookingService.getBookingsByDate(date).stream().filter(booking ->
-                    booking.getDate().toLocalTime().isBefore(hour) &&
-                            booking.getEndTime().toLocalTime().isAfter(hour)).toList().isEmpty()){
-                bookableHour.setBooked(false);
-                model.addAttribute("positiveFeedback", hour + " set as book-able.");
+            if(bookableDateService.checkIfHourIsAvailable(hour, bookingService.getBookingsByDate(date))){
+                bookableDateService.setBookableDateAndBookableHourToAvailable(bookableDate, bookableHour);
+
+                model.addAttribute("positiveFeedback", hour + " set as available.");
             }else{
-                model.addAttribute("negativeFeedback", "Hour is booked");
+                model.addAttribute("negativeFeedback", hour + " is booked");
             }
         }else{
             model.addAttribute("negativeFeedback", "Cannot change hour.");
         }
 
-        bookableDateService.saveBookableDate(bookableDate);
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
+    }
 
+    @PostMapping("/add-new-hour")
+    public String addNewHourToBookableDate(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
+        List<Booking> bookings = bookingService.getBookingsByDate(date);
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
+
+        if(bookableDateService.checkIfHourIsAvailable(hour, bookings)){
+            if(!bookableDateService.checkIfBookableHourExistsAtBookableDate(bookableDate, hour)){
+                bookableDateService.addHourToBookableDate(bookableDate, hour);
+
+                model.addAttribute("positiveFeedback", hour + " Added to date.");
+            }else{
+                model.addAttribute("negativeFeedback", hour + " already exists as a bookable hour.");
+            }
+        }else{
+            model.addAttribute("negativeFeedback", hour + " is already booked.");
+        }
+
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
+    }
+
+    private String addBookableDateAndBookingsToModelAndReturnBookableDateView(BookableDate bookableDate, LocalDate date, Model model){
         model.addAttribute("bookableDate", bookableDate);
-        model.addAttribute("bookings", bookingService.getBookingsByDate(date));
-
+        model.addAttribute("bookings", bookingService.sortBookingsByStartDateAndTime(
+                bookingService.getBookingsByDate(date)));
         return "admin/change-bookable-date";
     }
 

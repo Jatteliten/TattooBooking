@@ -6,6 +6,7 @@ import com.example.demo.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -79,5 +80,17 @@ public class CustomerService {
         return bookingService.sortBookingsByStartDateAndTime(customer.getBookings());
     }
 
+    public List<Booking> getCustomersEligiblePreviousBookingsForTouchUp(Customer customer, Booking booking){
+        List<UUID> touchedUpBookings = new ArrayList<>();
+        for(Booking customerBooking: customer.getBookings()){
+            if(customerBooking.getPreviousBooking() != null){
+                touchedUpBookings.add(customerBooking.getPreviousBooking().getId());
+            }
+        }
+
+        return customer.getBookings().stream()
+                .filter(b -> !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b.getId()))
+                .toList();
+    }
 
 }

@@ -39,9 +39,12 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsByDate(LocalDate date){
-        LocalDateTime startOfDate = date.atStartOfDay();
-        LocalDateTime endOfDate = date.atTime(23, 59, 59);
-        return bookingRepo.findByDateBetween(startOfDate, endOfDate);
+        return bookingRepo.findByDateBetween(
+                        date.atStartOfDay(),
+                        date.atTime(23, 59, 59))
+                .stream()
+                .sorted(Comparator.comparing(Booking::getDate))
+                .toList();
     }
 
     public Booking getBookingById(UUID id){

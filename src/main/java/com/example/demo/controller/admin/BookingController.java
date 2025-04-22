@@ -22,8 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -74,7 +72,6 @@ public class BookingController {
         }
 
         if(!bookings.isEmpty()){
-            bookings.sort(Comparator.comparing(Booking::getDate));
             model.addAttribute("upcomingBookings", bookings);
         }else if(fromDate != null && toDate != null){
             model.addAttribute("errorMessage", "No bookings on given dates");
@@ -133,18 +130,17 @@ public class BookingController {
         if(categoryIds == null){
             model.addAttribute("failFeedback", "You must pick at least one category");
             model.addAttribute(bookingService.getBookingById(bookingId));
-            model.addAttribute("categories", imageCategoryService.getAllImageCategories());
         }else{
             try {
                 Booking booking = bookingService.uploadTattooImage(bookingId, file, categoryIds);
                 model.addAttribute("successFeedback", "Tattoo image uploaded!");
                 model.addAttribute("booking", booking);
-            } catch (IllegalArgumentException e) {
-                model.addAttribute("failFeedback", e.getMessage());
             } catch (Exception e) {
                 model.addAttribute("failFeedback", "Failed to upload image.");
             }
         }
+
+        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
 
         return "admin/booking-information";
     }
@@ -167,10 +163,7 @@ public class BookingController {
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
         model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
-        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
-        if(bookableDate != null) {
-            model.addAttribute("bookableHours", bookableDate.getBookableHours());
-        }
+        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
         return "admin/book-tattoo-with-date";
     }
 
@@ -183,10 +176,7 @@ public class BookingController {
 
         model.addAttribute("searchResult", Objects.requireNonNullElse(customer, "No customer found"));
 
-        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
-        if(bookableDate != null) {
-            model.addAttribute("bookableHours", bookableDate.getBookableHours());
-        }
+        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
         return "admin/book-tattoo-with-date";
     }
 
@@ -211,10 +201,7 @@ public class BookingController {
             model.addAttribute("searchResult", existingCustomer);
         }
 
-        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
-        if(bookableDate != null) {
-            model.addAttribute("bookableHours", bookableDate.getBookableHours());
-        }
+        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
 
         model.addAttribute("selectedDate", date);
         return "admin/book-tattoo-with-date";
@@ -278,19 +265,11 @@ public class BookingController {
 
     @GetMapping("/set-previous-booking-for-touch-up")
     public String setPreviousBookingForTouchUp(Booking booking, BookableDate bookableDate, Customer customer, Model model){
-        List<UUID> touchedUpBookings = new ArrayList<>();
-        for(Booking customerBooking: customer.getBookings()){
-            if(customerBooking.getPreviousBooking() != null){
-                touchedUpBookings.add(customerBooking.getPreviousBooking().getId());
-            }
-        }
-
-        List<Booking> previousBookings = customer.getBookings().stream()
-                .filter(b -> !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b.getId()))
-                .toList();
+        List<Booking> previousBookings = customerService.getCustomersEligiblePreviousBookingsForTouchUp(customer, booking);
 
         if(previousBookings.isEmpty()){
-            model.addAttribute("landingPageSingleLineMessage", "Customer does not have any previous bookings");
+            model.addAttribute("landingPageSingleLineMessage",
+                    "Customer does not have any previous bookings");
             return "admin/admin-landing-page";
         }
 
@@ -336,6 +315,13 @@ public class BookingController {
         }
 
         return "admin/admin-landing-page";
+    }
+
+    private void addBookableHoursToModelIfBookableDateExistsByDate(LocalDate date, Model model) {
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
+        if(bookableDate != null) {
+            model.addAttribute("bookableHours", bookableDate.getBookableHours());
+        }
     }
 
 }

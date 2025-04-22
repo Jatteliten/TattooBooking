@@ -49,15 +49,15 @@ public class CalendarService {
 
         Map<LocalDate, BookableDateForCalendarDto> dateToBookableDateForCalendarDto =
                 bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(
-                                bookableDateService.findBookableDatesBetweenTwoGivenDates(firstDayOfMonth, lastDayOfMonth))
+                                bookableDateService.findBookableDatesBetweenTwoGivenDates(
+                                        firstDayOfMonth, lastDayOfMonth))
                         .stream()
-                        .collect(Collectors
-                                .toMap(BookableDateForCalendarDto::getDate, dto -> dto));
+                        .collect(Collectors.toMap(BookableDateForCalendarDto::getDate, dto -> dto));
 
         while (!date.isAfter(lastDayOfCalendar)) {
             boolean isCurrentMonth = date.getMonth() == selectedDate.getMonth();
             BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
-            if(bookableDate != null){
+            if(date.isAfter(LocalDate.now().minusDays(1)) && bookableDate != null){
                 bookableDate.setCurrentMonth(isCurrentMonth);
                 if(date.isBefore(LocalDate.now()) && !bookableDate.isDropIn()){
                     bookableDate.setFullyBooked(true);
@@ -65,11 +65,12 @@ public class CalendarService {
                 }
                 days.add(bookableDate);
             }else{
-                days.add(BookableDateForCalendarDto.builder()
+                BookableDateForCalendarDto bookableDateForCalendarDto = BookableDateForCalendarDto.builder()
                         .currentMonth(isCurrentMonth)
                         .bookable(false)
                         .date(date)
-                        .build());
+                        .build();
+                days.add(bookableDateForCalendarDto);
             }
             date = date.plusDays(1);
         }

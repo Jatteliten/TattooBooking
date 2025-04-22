@@ -9,7 +9,7 @@
             width: 14%;
             padding: 10px;
             text-align: center;
-            border: 1px solid #ccc;
+            border: 1px solid #838383;
             position: relative;
         }
 
@@ -34,7 +34,7 @@
                 th:with="day=${days[week * 7 + i]}"
                 th:text="${day.date.dayOfMonth}"
                 th:classappend="${day.currentMonth ?
-                    (day.fullyBooked ? 'no-available-hours' :
+                    (day.fullyBooked ? 'no-available-hours' :B
                         (day.touchUp ? 'touch-up' :
                             (day.dropIn ? 'drop-in' :
                                 (day.bookable ? 'available-hours':

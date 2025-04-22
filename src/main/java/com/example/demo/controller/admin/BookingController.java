@@ -247,18 +247,17 @@ public class BookingController {
                     .date(startDateAndTime)
                     .endTime(endDateAndTime)
                     .customer(customerToBook)
+                    .depositPaid(depositPaid != null)
                     .build();
-
-            booking.setDepositPaid(depositPaid != null);
 
             if(touchUp != null && touchUp){
                 booking.setTouchUp(true);
                 booking.setDepositPaid(false);
                 return setPreviousBookingForTouchUp(booking, bookableDate, customerToBook, model);
             }else{
-                booking.setDepositPaid(true);
                 booking.setTouchUp(false);
             }
+
             bookingService.saveBooking(booking);
             model.addAttribute("bookingAdded", customerToBook.getName()
                     + " booked at " + startTime + " - " + endTime

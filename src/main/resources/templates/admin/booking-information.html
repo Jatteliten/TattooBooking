@@ -18,7 +18,7 @@
   <a th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}"
      th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM')}"></a>
 </span>
-<span th:if="${booking.touchUp != true}"
+<span th:if="${booking.touchUp != null}"
       th:text="'Deposit paid: ' + (${booking.depositPaid} ? 'Yes' : 'No')"></span>
 <h3 th:if="${failFeedback != null}"
     th:text="${failFeedback}" class="text-danger"></h3>

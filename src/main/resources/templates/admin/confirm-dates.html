@@ -26,7 +26,7 @@
                     <span th:text="${date}"></span>
                     <br>
                     <span th:text="${#temporals.dayOfWeekName(date)}"></span>
-                    <input type="hidden" th:name="'dateList[' + ${iterStat.index} + '].date'" th:value="${date}" />
+                    <input type="hidden" th:name="'dateList[' + ${iterStat.index} + '].date'" th:value="${date}"/>
                 </td>
                 <td>
                     <label>
@@ -47,7 +47,10 @@
                 <td>
                     <div th:each="time : ${times}">
                         <label>
-                            <input type="checkbox" th:name="'dateList[' + ${iterStat.index} + '].hours'" th:value="${time}" th:checked="true"/>
+                            <input type="checkbox"
+                                   th:name="'dateList[' + ${iterStat.index} + '].hours'"
+                                   th:value="${time}"
+                                   th:checked="true"/>
                             <span th:text="${time}"></span>
                         </label>
                     </div>

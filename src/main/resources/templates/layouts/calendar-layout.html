@@ -4,6 +4,7 @@
             width: 100%;
             border-collapse: collapse;
         }
+
         td {
             width: 14%;
             padding: 10px;
@@ -11,6 +12,7 @@
             border: 1px solid #ccc;
             position: relative;
         }
+
         th {
             text-align: center;
         }
@@ -27,7 +29,7 @@
             <th class="text-danger">Sun</th>
         </tr>
         <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
-            <td class="customer-calendar-column" th:each="i : ${#numbers.sequence(0, 6)}"
+            <td th:each="i : ${#numbers.sequence(0, 6)}"
                 th:with="day=${days[week * 7 + i]}"
                 th:text="${day.date.dayOfMonth}"
                 th:classappend="${day.currentMonth ?

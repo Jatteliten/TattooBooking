@@ -120,8 +120,11 @@ public class BookingService {
     public void deleteBookings(List<Booking> bookings){
         List<TattooImage> tattooImages = new ArrayList<>();
         for(Booking booking: bookings){
-            tattooImages.add(booking.getTattooImage());
-            s3ImageService.deleteImage(booking.getTattooImage().getUrl());
+            TattooImage tattooImage = booking.getTattooImage();
+            if(tattooImage!= null){
+                tattooImages.add(tattooImage);
+                s3ImageService.deleteImage(tattooImage.getUrl());
+            }
             setBookableHoursRelatedToBookingToAvailable(booking);
         }
 

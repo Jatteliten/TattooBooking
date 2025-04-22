@@ -17,16 +17,16 @@
         <input type="text" class="form-control" id="name" required>
       </div>
       <div class="form-group">
-        <label for="mail">Email **</label>
+        <label for="mail">Email</label>
         <input type="email" class="form-control" id="mail">
       </div>
       <div class="form-group">
-        <label for="instagram">Instagram **</label>
+        <label for="instagram">Instagram (Ej om du har låst Instagram)</label>
         <input type="text" class="form-control" id="instagram">
       </div>
       <div class="form-group">
-        <label for="phone">Telefon **</label>
-        <input type="tel" class="form-control" id="phone">
+        <label for="phone">Telefon *</label>
+        <input type="tel" class="form-control" id="phone" required>
       </div>
       <div id="contactError" class="text-danger mb-2" style="display: none;"></div>
       <div class="form-group">
@@ -43,7 +43,6 @@
       </div>
       <br/>
       <span>* Obligatorisk</span><br>
-      <span>** Minst ett alternativ obligatoriskt</span><br>
       <button type="submit" class="btn btn-success">Skicka</button>
     </form>
   </div>
@@ -71,6 +70,5 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="/js/force-one-required-alternative-in-contact-form.js"></script>
 </body>
 </html>

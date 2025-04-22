@@ -49,6 +49,10 @@ public class BookingService {
         bookingRepo.save(booking);
     }
 
+    public void saveListOfBookings(List<Booking> bookings){
+        bookingRepo.saveAll(bookings);
+    }
+
     public List<Booking> getAllBookings(){
         return bookingRepo.findAll();
     }

@@ -22,6 +22,10 @@ public class TattooImageService {
         tattooImageRepo.delete(tattooImage);
     }
 
+    public void deleteListOfTattooImages(List<TattooImage> tattooImages){
+        tattooImageRepo.deleteAll(tattooImages);
+    }
+
     public void saveListOfTattooImages(List<TattooImage> tattooImages){
         tattooImageRepo.saveAll(tattooImages);
     }

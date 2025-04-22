@@ -1,12 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
 import com.example.demo.repos.CustomerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,32 +26,18 @@ public class CustomerService {
         customerRepo.save(customer);
     }
 
-    public void deleteCustomer(Customer customer){
-        List<Booking> bookingsToSetCustomerToNull = new ArrayList<>();
-        List<Booking> bookingsToDelete = new ArrayList<>();
+    @Transactional
+    public String deleteCustomerAndChangeAssociatedBookingsById(UUID id){
+        Customer customer = findCustomerById(id);
+        String customerName = customer.getName();
 
-        for(Booking booking: customer.getBookings()){
-            if(booking.getDate().isBefore(LocalDateTime.now())){
-                booking.setCustomer(null);
-                bookingsToSetCustomerToNull.add(booking);
-            }else{
-                bookingsToDelete.add(booking);
-            }
-        }
-
-        if(!bookingsToSetCustomerToNull.isEmpty()){
-            bookingService.saveListOfBookings(bookingsToSetCustomerToNull);
-        }
-
-        if(!bookingsToDelete.isEmpty()){
-            bookingService.deleteBookings(bookingsToDelete);
+        if(customer.getBookings() != null && !customer.getBookings().isEmpty()){
+            bookingService.deleteFutureBookingsAndSetPastBookingsCustomerToNull(customer.getBookings());
         }
 
         customerRepo.delete(customer);
-    }
 
-    public void deleteAllCustomers(){
-        customerRepo.deleteAll();
+        return customerName;
     }
 
     public Customer findCustomerById(UUID id){
@@ -83,4 +67,6 @@ public class CustomerService {
     public Customer findCustomerByAnyField(String input) {
         return customerRepo.findByAnyContactMethod(input).orElse(null);
     }
+
+
 }

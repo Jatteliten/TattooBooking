@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -31,37 +32,47 @@ public class CustomerController {
 
     @GetMapping("/customer")
     public String getCustomerById(@RequestParam UUID id, Model model){
-        Customer customer = customerService.findCustomerById(id);
-
-        if(customer != null){
-            model.addAttribute("customer", customer);
-        }else{
-            model.addAttribute("customerFindError",
-                    "Can't find customer with ID \"" + id + "\"");
-        }
-
-        return "admin/customer";
+        return populateModelIfCustomerExists(
+                customerService.findCustomerById(id),
+                "Can't find customer with ID \"" + id + "\"", model);
     }
 
     @GetMapping("/search-customer")
-    public String searchCustomer(@RequestParam String searchInput, Model model){
-        Customer customer = customerService.findCustomerByAnyField(searchInput);
+    public String searchCustomerByContactInformation(@RequestParam String searchInput, Model model){
+        return populateModelIfCustomerExists(
+                customerService.findCustomerByAnyField(searchInput),
+                "Can't find customer with information \"" + searchInput + "\"", model);
+    }
 
-        if(customer != null){
-            model.addAttribute("customer", customer);
+    @GetMapping("/search-customer-name")
+    public String searchCustomersByName(@RequestParam String searchInput, Model model){
+        List<Customer> customerList = customerService.findCustomerByNameContaining(searchInput);
+        if(!customerList.isEmpty()){
+            model.addAttribute("customerList", customerList);
         }else{
             model.addAttribute("customerFindError",
-                    "Can't find customer with information \"" + searchInput + "\"");
+                    "No customer with \"" + searchInput + "\" in their name found.");
         }
 
         return "admin/customer";
     }
 
     @PostMapping("/delete-customer")
-    public String deleteCustomer(UUID customerId, Model model){
+    public String deleteCustomer(@RequestParam UUID customerId, Model model){
         String customerName = customerService.deleteCustomerAndChangeAssociatedBookingsById(customerId);
 
         model.addAttribute("deletedCustomer", customerName + " removed.");
+        return "admin/customer";
+    }
+
+    public String populateModelIfCustomerExists(Customer customer, String errorMessage, Model model){
+        if(customer != null){
+            customer.setBookings(customerService.sortCustomerBookings(customer));
+            model.addAttribute("customer", customer);
+        }else{
+            model.addAttribute("customerFindError", errorMessage);
+        }
+
         return "admin/customer";
     }
 

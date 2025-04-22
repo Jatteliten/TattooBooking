@@ -1,10 +1,12 @@
 package com.example.demo.services;
 
+import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
 import com.example.demo.repos.CustomerRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +26,11 @@ public class CustomerService {
 
     public void saveCustomer(Customer customer){
         customerRepo.save(customer);
+    }
+
+    public List<Customer> findCustomerByNameContaining(String input){
+        return customerRepo.findByNameContainingIgnoreCase(input)
+                .stream().sorted(Comparator.comparing(Customer::getName)).toList();
     }
 
     @Transactional
@@ -66,6 +73,10 @@ public class CustomerService {
 
     public Customer findCustomerByAnyField(String input) {
         return customerRepo.findByAnyContactMethod(input).orElse(null);
+    }
+
+    public List<Booking> sortCustomerBookings(Customer customer){
+        return bookingService.sortBookingsByStartDateAndTime(customer.getBookings());
     }
 
 

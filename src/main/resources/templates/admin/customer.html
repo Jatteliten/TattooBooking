@@ -8,47 +8,72 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
+<div class="container">
+    <h3 th:if="${deletedCustomer != null}" th:text="${deletedCustomer}" class="text-danger"></h3>
 
-<h3 th:if="${deletedCustomer != null}" th:text="${deletedCustomer}" class="text-danger"></h3>
+    <form th:action="@{/admin/customers/search-customer-name}">
+        <div class="input-group">
+            <label>
+                <input type="text"
+                       name="searchInput"
+                       placeholder="Customer name"
+                       class="form-control"
+                       required>
+            </label>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+    <br>
+    <form th:action="@{/admin/customers/search-customer}" method="get" class="mb-4">
+        <div class="input-group">
+            <label>
+                <input type="text"
+                       name="searchInput"
+                       placeholder="Email, Instagram or phone number"
+                       class="form-control"
+                       required>
+            </label>
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
 
-<form th:action="@{/admin/customers/search-customer}" method="get" class="mb-4">
-    <div class="input-group">
-        <label>
-            <input type="text"
-                   name="searchInput"
-                   placeholder="Email, Instagram or phone number"
-                   class="form-control"
-                   required>
-        </label>
-        <button class="btn btn-primary" type="submit">Search</button>
-    </div>
-</form>
+    <h4 th:if="${customerFindError != null}" th:text="${customerFindError}" class="text-danger"></h4>
 
-<h4 th:if="${customerFindError != null}" th:text="${customerFindError}" class="text-danger"></h4>
-
-<div th:if="${customer != null}">
-    <h2 th:text="${customer.name}"></h2>
-    <div th:if="${customer.bookings.size()} > 0" class="container">
-        <div class="card">
-            <h4 class="card-header">Bookings:</h4>
-            <div th:each="booking : ${customer.bookings}" class="card-body">
-                <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                    <span th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></span>
+    <div th:if="${customerList} != null" class="card">
+        <div class="card-header">Customers found</div>
+        <div class="card-body">
+            <div th:each="customer: ${customerList}">
+                <a th:href="@{/admin/customers/customer(id=${customer.id})}">
+                    <p th:text="${customer.name}"></p>
                 </a>
             </div>
         </div>
     </div>
+    <div th:if="${customer != null}">
+        <h2 th:text="${customer.name}"></h2>
+        <div th:if="${customer.bookings.size()} > 0" class="container">
+            <div class="card">
+                <h4 class="card-header">Bookings:</h4>
+                <div th:each="booking : ${customer.bookings}" class="card-body">
+                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
+                        <span th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-    <div th:if="${customer.bookings.size()} == 0">
-        <p class="text-danger">Customer has no booked sessions.</p>
+        <div th:if="${customer.bookings.size()} == 0">
+            <p class="text-danger">Customer has no booked sessions.</p>
+        </div>
+
+        <br>
+
+        <form th:action="@{/admin/customers/delete-customer}" method="post">
+            <input type="hidden" name="customerId" th:value="${customer.id}">
+            <button type="submit" class="btn btn-danger">Delete customer</button>
+        </form>
     </div>
 
-    <br>
-
-    <form th:action="@{/admin/customers/delete-customer}" method="post">
-        <input type="hidden" name="customerId" th:value="${customer.id}">
-        <button type="submit" class="btn btn-danger">Delete customer</button>
-    </form>
 </div>
 
 

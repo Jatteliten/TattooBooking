@@ -29,7 +29,7 @@
             <h4 class="card-header">Bookings:</h4>
             <div th:each="booking : ${customer.bookings}" class="card-body">
                 <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                    <p th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></p>
+                    <span th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></span>
                 </a>
             </div>
         </div>

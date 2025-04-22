@@ -27,6 +27,9 @@ public class BookableDateService {
     }
 
     public void saveBookableDate(BookableDate bookableDate){
+        if(checkIfBookableHoursInBookableDateAreAllBooked(bookableDate)){
+            bookableDate.setFullyBooked(true);
+        }
         bookableDateRepo.save(bookableDate);
     }
     public void deleteAllBookableDates(){
@@ -39,13 +42,16 @@ public class BookableDateService {
 
     public BookableDateForCalendarDto convertBookableDateToBookableDateForCalendarDto(BookableDate bookableDate){
         List<String> bookableHoursStringsForCalendarList = new ArrayList<>();
+
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
             BookableHourForCalendarDto bookableHourForCalendarDto =
                     bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHour);
             bookableHoursStringsForCalendarList.add(bookableHourForCalendarDto.getHour() + "-"
                     + bookableHourForCalendarDto.isBooked());
         }
+
         Collections.sort(bookableHoursStringsForCalendarList);
+
         return BookableDateForCalendarDto.builder()
                 .date(bookableDate.getDate())
                 .bookable(true)
@@ -70,7 +76,9 @@ public class BookableDateService {
 
     public BookableDate getBookableDateByDate(LocalDate date){
         BookableDate bookableDate = bookableDateRepo.findByDate(date);
-        if(!bookableDate.getBookableHours().isEmpty()){
+        if(bookableDate == null){
+            return null;
+        }else if(!bookableDate.getBookableHours().isEmpty()){
             bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
         }
         return bookableDateRepo.findByDate(date);
@@ -109,6 +117,10 @@ public class BookableDateService {
         }
         bookableDate.setFullyBooked(fullyBooked);
         saveBookableDate(bookableDate);
+    }
+
+    public boolean checkIfBookableHoursInBookableDateAreAllBooked(BookableDate bookableDate){
+        return bookableDate.getBookableHours().stream().filter(bh -> !bh.isBooked()).toList().isEmpty();
     }
 
 }

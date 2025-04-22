@@ -29,6 +29,20 @@ public class CustomerController {
         return "admin/customer";
     }
 
+    @GetMapping("/customer")
+    public String getCustomerById(@RequestParam UUID id, Model model){
+        Customer customer = customerService.findCustomerById(id);
+
+        if(customer != null){
+            model.addAttribute("customer", customer);
+        }else{
+            model.addAttribute("customerFindError",
+                    "Can't find customer with ID \"" + id + "\"");
+        }
+
+        return "admin/customer";
+    }
+
     @GetMapping("/search-customer")
     public String searchCustomer(@RequestParam String searchInput, Model model){
         Customer customer = customerService.findCustomerByAnyField(searchInput);

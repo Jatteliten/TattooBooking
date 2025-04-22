@@ -9,16 +9,15 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <h2 th:text="${booking.date.getDayOfMonth()} + ' ' + ${booking.date.getMonth()} + ' ' + ${booking.date.getYear()}"></h2>
-<p><span th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></span></p>
-<p><span th:text="${booking.customer.name}"></span></p>
+<p th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></p>
+<a th:href="@{/admin/customers/customer(id=${booking.customer.id})}">
+  <p th:text="${booking.customer.name}"></p>
+</a>
 <span th:if="${booking.touchUp == true}">
   (Touch up)
   <a th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}" th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM')}"></a>
 </span>
 <span th:if="${booking.touchUp != true}" th:text="'Deposit paid: ' + (${booking.depositPaid} ? 'Yes' : 'No')"></span>
-<div th:if="${bookingSaved != null}">
-  <span class="text-success" th:text="${bookingSaved}"></span>
-</div>
 <h3 th:if="${failFeedback != null}" th:text="${failFeedback}" class="text-danger"></h3>
 <h3 th:if="${successFeedback != null}" th:text="${successFeedback}" class="text-success"></h3>
 
@@ -26,14 +25,19 @@
   <div class="col-12 col-md-6 col-lg-4">
     <div class="card fifteen-px-margin-top-bottom">
       <h3 class="card-header">Notes</h3>
-      <form th:action="@{/admin/booking/update-booking}" method="post" class="card-body">
-        <label>
-          <textarea th:text="${booking.notes}" name="notes" class="form-control" rows="5" required></textarea>
-        </label>
-        <input type="hidden" name="bookingId" th:value="${booking.id}">
-        <br>
-        <button type="submit" class="btn btn-primary">Save notes</button>
-      </form>
+      <div class="card-body">
+        <div th:if="${notesSaved != null}">
+          <span class="text-success" th:text="${notesSaved}"></span>
+        </div>
+        <form th:action="@{/admin/booking/update-booking}" method="post">
+          <label>
+            <textarea th:text="${booking.notes}" name="notes" class="form-control" rows="5" required></textarea>
+          </label>
+          <input type="hidden" name="bookingId" th:value="${booking.id}">
+          <br>
+          <button type="submit" class="btn btn-primary">Save notes</button>
+        </form>
+      </div>
     </div>
   </div>
 

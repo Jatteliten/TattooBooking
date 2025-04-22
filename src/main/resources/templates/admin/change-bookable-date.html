@@ -9,23 +9,92 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <h2 th:text="${bookableDate.getDate().getDayOfWeek()} + ' - ' + ${bookableDate.getDate().getDayOfMonth()} + ' ' +  ${bookableDate.getDate().getMonth()}"></h2>
-<div th:each="booking : ${bookings}">
-  <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
+<br>
+<div class="container">
+  <div class="card">
+    <h3 class="card-header">Bookings</h3>
+    <div th:if="${bookings.size()} > 0" class="card-body">
+      <div th:each="booking : ${bookings}">
+        <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
+          <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|" class="text-success"></span>
+        </a>
+      </div>
+    </div>
+    <div th:if="${bookings.size()} == 0" class="card-body">
+      <h5 class="text-danger">No booked hours on this date.</h5>
+    </div>
+  </div>
+
+  <br>
+
+
+  <div class="card">
+    <h3 class="card-header">Bookable hours</h3>
+    <div class="card-body">
+      <p th:if="${negativeFeedback} != null" th:text="${negativeFeedback}" class="text-danger"></p>
+      <p th:if="${positiveFeedback} != null" th:text="${positiveFeedback}" class="text-success"></p>
+      <div th:if="${bookableDate} != null">
+        <div th:if="${bookableDate.getBookableHours()} != null" th:each="time : ${bookableDate.getBookableHours()}">
+            <span th:text="${time.hour} + ' '"
+                  th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'">
+            </span>
+          <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/remove-hour}" method="post" style="display: inline;">
+            <input type="hidden" name="hour" th:value="${time.hour}">
+            <input type="hidden" name="date" th:value="${bookableDate.date}">
+            <button type="submit" class="btn btn-xs btn-danger">Close</button>
+          </form>
+          <form th:if="${time.isBooked()}" th:action="@{/admin/add-dates/add-hour}" method="post" style="display: inline;">
+            <input type="hidden" name="hour" th:value="${time.hour}">
+            <input type="hidden" name="date" th:value="${bookableDate.date}">
+            <button type="submit" class="btn btn-xs btn-success">Open</button>
+          </form>
+        </div>
+
+        <div th:if="${bookableDate.getBookableHours()} == null">
+          <h5 class="text-danger">No bookable hours on this date. Add hours below.</h5>
+          <br>
+          <form th:action="@{/admin/add-dates/confirm-dates}" id="timeForm">
+            <input type="hidden" id="fromDate" name="fromDate" th:value="${bookableDate.getDate()}" required>
+            <input type="hidden" id="toDate" name="toDate" th:value="${bookableDate.getDate()}" required>
+
+            <div id="timeInputs">
+              <div class="time-group">
+                <label>
+                  <input type="time" name="time" required>
+                </label>
+                <button type="button" class="btn btn-danger btn-sm remove-time" onclick="removeTimeInput(this)">Remove</button>
+              </div>
+              <div class="time-group">
+                <label>
+                  <input type="time" name="time" required>
+                </label>
+                <button type="button" class="btn btn-danger btn-sm remove-time" onclick="removeTimeInput(this)">Remove</button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-warning" onclick="addTimeInput()">Add Time slot</button>
+            <br>
+            <button type="submit" class="btn btn-success confirm-date-button">Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:if="${bookableDate.getBookableHours() != null}">
+    <div th:if="!${bookableDate.isFullyBooked()}">
+      <form th:action="@{/admin/add-dates/close-date}" method="post">
+        <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
+        <button type="submit" class="btn btn-danger booking-buttons">Mark date as closed</button>
+      </form>
+    </div>
+    <div th:if="${bookableDate.isFullyBooked()}">
+      <form th:action="@{/admin/add-dates/open-date}" method="post">
+        <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
+        <button type="submit" class="btn btn-success booking-buttons">Mark date as open</button>
+      </form>
+    </div>
+  </div>
 </div>
-<span th:each="time : ${bookableDate.getBookableHours()}"
-      th:text="${time.hour} + ' '"
-      th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
-<div th:if="!${bookableDate.isFullyBooked()}">
-  <form th:action="@{/admin/add-dates/close-date}" method="post">
-    <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
-    <button type="submit" class="btn btn-danger booking-buttons">Mark date as closed</button>
-  </form>
-</div>
-<div th:if="${bookableDate.isFullyBooked()}">
-  <form th:action="@{/admin/add-dates/open-date}" method="post">
-    <input type="hidden" th:name="date" th:value="${bookableDate.getDate()}">
-    <button type="submit" class="btn btn-success booking-buttons">Mark date as open</button>
-  </form>
-</div>
+
+<script src="/js/add-or-remove-hours.js"></script>
 </body>
 </html>

@@ -98,7 +98,7 @@ public class BookingController {
         bookingService.saveBooking(booking);
 
         model.addAttribute("booking", booking);
-        model.addAttribute("bookingSaved", "Booking saved...");
+        model.addAttribute("notesSaved", "Booking notes saved.");
         return "admin/booking-information";
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.demo.model.BookableHour;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -58,6 +59,10 @@ public class CalendarService {
             BookableDateForCalendarDto bookableDate = dateToBookableDateForCalendarDto.get(date);
             if(bookableDate != null){
                 bookableDate.setCurrentMonth(isCurrentMonth);
+                if(date.isBefore(LocalDate.now()) && !bookableDate.isDropIn()){
+                    bookableDate.setFullyBooked(true);
+                    bookableDate.getHours().clear();
+                }
                 days.add(bookableDate);
             }else{
                 days.add(BookableDateForCalendarDto.builder()

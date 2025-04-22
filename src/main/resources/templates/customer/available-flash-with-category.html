@@ -10,7 +10,7 @@
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 
 <div class="card">
-  <div class="card-header card-header-pink" th:text="${category}"></div>
+  <div class="card-header secondary-pink-background" th:text="${category}"></div>
   <div class="card-body">
     <div class="row">
       <div th:each="flash : ${flashes}" class="col-4 col-md-3 col-lg-2 mb-3">
@@ -29,7 +29,7 @@
 <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header customer-flash-card-header">
+      <div class="modal-header primary-pink-background">
         <h5 id="modalCaption"></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>

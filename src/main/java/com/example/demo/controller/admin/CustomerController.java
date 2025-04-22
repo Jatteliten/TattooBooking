@@ -36,7 +36,8 @@ public class CustomerController {
         if(customer != null){
             model.addAttribute("customer", customer);
         }else{
-            model.addAttribute("customerFindError", "Can't find customer");
+            model.addAttribute("customerFindError",
+                    "Can't find customer with information \"" + searchInput + "\"");
         }
 
         return "admin/customer";

@@ -3,6 +3,16 @@
     --secondary-pink: #fbf4ff;
     --tertiary-pink: #e7affa;
 }
+
+.primary-pink-background{
+    background-color: var(--primary-pink);
+}
+.secondary-pink-background{
+    background-color: var(--secondary-pink);
+}
+.tertiary-pink-background{
+    background-color: var(--tertiary-pink);
+}
 .top-padded-body{
     padding-top: 5px;
 }
@@ -34,9 +44,6 @@
 .front-page-card-text {
     white-space: pre-line;
 }
-.front-page-card-header{
-    background-color: var(--secondary-pink);
-}
 .logo{
     margin: auto;
     width: 50%;
@@ -51,15 +58,9 @@
     display: flex;
     margin-bottom: 20px;
 }
-.booking-form-header{
-    background-color: var(--secondary-pink);
-}
 .booking-form-body{
     text-align: left;
     padding: 10px;
-}
-.booking-information-header{
-    background-color: var(--secondary-pink);
 }
 .info-item{
     margin-right: 8px;
@@ -77,12 +78,6 @@
 #dateInputs{
     margin-top: 20px;
     margin-bottom: 20px;
-}
-.navbar-pink{
-    background-color: var(--primary-pink);
-}
-.navbar-dropdown-pink{
-    background-color: var(--secondary-pink);
 }
 .no-available-hours {
     color: #860000;
@@ -155,7 +150,6 @@
 }
 
 #instagram-wrapper {
-    background-color: var(--secondary-pink);
     border-radius: 20px;
     padding: 10px 40px;
     display: inline-block;
@@ -194,18 +188,6 @@
     margin-bottom: 15px;
 }
 
-.customer-flash-card-header{
-    background-color: var(--primary-pink);
-}
-
-.customer-flash-card-category-header{
-    background-color: var(--secondary-pink);
-}
-
-.btn-primary-pink{
-    background-color: var(--primary-pink);
-}
-
-.card-header-pink{
-    background-color: var(--secondary-pink);
+.btn.primary-pink-background:hover {
+    background-color: var(--tertiary-pink)
 }

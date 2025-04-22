@@ -20,18 +20,26 @@
     </div>
 </form>
 
-<h3 th:if="${customerFindError != null}" th:text="${customerFindError}" class="text-danger"></h3>
+<h4 th:if="${customerFindError != null}" th:text="${customerFindError}" class="text-danger"></h4>
 
 <div th:if="${customer != null}">
     <h2 th:text="${customer.name}"></h2>
-    <div class="container">
-        <h4> Bookings:</h4>
-        <div th:each="booking : ${customer.bookings}">
-            <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                <p th:text="${#temporals.format(booking.date, 'dd/MM - HH:mm')}"></p>
-            </a>
+    <div th:if="${customer.bookings.size()} > 0" class="container">
+        <div class="card">
+            <h4 class="card-header">Bookings:</h4>
+            <div th:each="booking : ${customer.bookings}" class="card-body">
+                <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
+                    <p th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></p>
+                </a>
+            </div>
         </div>
     </div>
+
+    <div th:if="${customer.bookings.size()} == 0">
+        <p class="text-danger">Customer has no booked sessions.</p>
+    </div>
+
+    <br>
 
     <form th:action="@{/admin/customers/delete-customer}" method="post">
         <input type="hidden" name="customerId" th:value="${customer.id}">

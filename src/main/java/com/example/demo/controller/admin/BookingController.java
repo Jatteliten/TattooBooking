@@ -63,11 +63,13 @@ public class BookingController {
         List<Booking> bookings;
 
         if(fromDate != null && toDate != null){
-            bookings = bookingService.getBookingsBetweenTwoGivenDates(
+            bookings = bookingService.sortBookingsByStartDateAndTime(
+                    bookingService.getBookingsBetweenTwoGivenDates(
                     LocalDateTime.of(fromDate, LocalTime.of(0,0)),
-                    LocalDateTime.of(toDate, LocalTime.of(23,59)));
+                    LocalDateTime.of(toDate, LocalTime.of(23,59))));
         }else{
-            bookings = bookingService.getBookingsByDate(LocalDate.now());
+            bookings = bookingService.sortBookingsByStartDateAndTime(
+                    bookingService.getBookingsByDate(LocalDate.now()));
         }
 
         if(!bookings.isEmpty()){
@@ -138,22 +140,22 @@ public class BookingController {
     @GetMapping("/book-tattoo-at-date")
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
-        model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
-        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
-        return "admin/book-tattoo-with-date";
+        model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
+                bookingService.getBookingsByDate(date)));
+        return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
 
     @GetMapping("/search-customer")
     public String searchCustomer(@RequestParam String searchInput, @RequestParam LocalDate date,
                                  Model model){
         model.addAttribute("selectedDate", date);
-        model.addAttribute("bookingsAtDate", bookingService.getBookingsByDate(date));
+        model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
+                bookingService.getBookingsByDate(date)));
         Customer customer = customerService.findCustomerByAnyField(searchInput);
 
         model.addAttribute("searchResult", Objects.requireNonNullElse(customer, "No customer found"));
 
-        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
-        return "admin/book-tattoo-with-date";
+        return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
 
     @PostMapping("/create-customer")
@@ -177,9 +179,8 @@ public class BookingController {
             model.addAttribute("searchResult", existingCustomer);
         }
 
-        addBookableHoursToModelIfBookableDateExistsByDate(date, model);
         model.addAttribute("selectedDate", date);
-        return "admin/book-tattoo-with-date";
+        return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
 
     @PostMapping("/book-tattoo-with-customer")
@@ -315,11 +316,12 @@ public class BookingController {
         return "admin/booking-information";
     }
 
-    private void addBookableHoursToModelIfBookableDateExistsByDate(LocalDate date, Model model) {
+    private String addBookableHoursToModelIfBookableDateExistsByDate(LocalDate date, Model model) {
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null) {
             model.addAttribute("bookableHours", bookableDate.getBookableHours());
         }
+        return "admin/book-tattoo-with-date";
     }
 
 }

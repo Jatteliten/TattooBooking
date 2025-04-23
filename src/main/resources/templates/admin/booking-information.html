@@ -22,6 +22,8 @@
 </p>
 <p th:if="${booking.touchUp != true}"
    th:text="'Deposit paid: ' + (${booking.depositPaid} ? 'Yes' : 'No')"></p>
+<p th:if="${booking.touchUp == true and booking.previousBooking.tattooImage == null}" class="text-danger">No image uploaded.</p>
+
 <p th:if="${failFeedback != null}"
    th:text="${failFeedback}" class="text-danger"></p>
 <p th:if="${successFeedback != null}"
@@ -41,26 +43,30 @@
 
 <div th:if="${booking.touchUp != true}" class="row">
     <div class="col-12 col-md-6 col-lg-4">
-        <form th:action="@{/admin/booking/update-booking-price}"
-              method="post"
-              class="card fifteen-px-margin-top-bottom">
-            <div class="card-header">
-                Price
-            </div>
+        <div class="card fifteen-px-margin-top-bottom">
+            <p class="card-header">Price</p>
             <div class="card-body">
-                <input type="hidden" name="bookingId" th:value="${booking.id}">
-                <label for="price"></label><input type="number" name="price" id="price" th:value="${booking.finalPrice}">
-                <button type="submit" class="btn btn-primary btn-sm">Change price</button>
+                <form th:action="@{/admin/booking/update-booking-price}" method="post">
+                    <label>
+                        <input type="number" name="price" id="price" th:value="${booking.finalPrice}">
+                    </label>
+                    <input type="hidden" name="bookingId" th:value="${booking.id}">
+                    <br>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Change price</button>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
     <div class="col-12 col-md-6 col-lg-4">
         <div class="card fifteen-px-margin-top-bottom">
-            <h3 class="card-header">Notes</h3>
+            <p class="card-header">Notes</p>
             <div class="card-body">
                 <form th:action="@{/admin/booking/update-booking}" method="post">
                     <label>
-                        <textarea th:text="${booking.notes}" name="notes" class="form-control" rows="5"
+                        <textarea th:text="${booking.notes}"
+                                  name="notes"
+                                  class="form-control"
+                                  rows="5"
                                   required></textarea>
                     </label>
                     <input type="hidden" name="bookingId" th:value="${booking.id}">
@@ -73,7 +79,7 @@
 
     <div th:if="${booking.tattooImage != null}" class="col-12 col-md-6 col-lg-4">
         <div class="fifteen-px-margin-top-bottom card">
-            <h3 class="card-header">Image</h3>
+            <p class="card-header">Image</p>
             <div class="card-body">
                 <img th:src="${booking.tattooImage.url}"
                      style="max-width: 100%; cursor: pointer;"

@@ -27,7 +27,7 @@
                 <button type="submit" class="btn btn-danger btn-xs">
                     Delete
                 </button>
-                <span th:text="${category.category}"></span>
+                <span th:text="'(' + ${category.flashImages.size()} + ') ' + ${category.category}"></span>
             </form>
         </div>
     </div>

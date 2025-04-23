@@ -39,24 +39,31 @@
     <h4 th:text="${failFeedback}" class="text-danger fifteen-px-margin-top-bottom"></h4>
 </div>
 
-<div class="card" style="margin-bottom: 10px; margin-top: 10px;">
-    <div class="card-header bg-secondary text-white"><h4>Flash</h4></div>
-    <div th:if="${flashes != null}" th:each="entry : ${flashes}">
-        <h5 class="card-header" th:text="${entry.key.category}">Category Name</h5>
+<div class="d-flex flex-wrap gap-2 mt-3">
+    <div th:each="category: ${categories}">
+        <a th:href="@{/admin/images/view-flash-images-by-category(category=${category.category})}">
+            <button class="btn btn-outline-secondary" th:text="${category.category}"></button>
+        </a>
+    </div>
+</div>
 
-        <div class="row" style="padding: 10px;">
-            <div th:each="flash : ${entry.value}" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
-                <div class="card">
-                    <img th:src="${flash.url}" th:alt="${flash.name}" class="card-img-top img-fluid" />
-                    <form th:action="@{/admin/images/delete-flash}" method="post">
-                        <input type="hidden" th:name="flashId" th:value="${flash.id}">
-                        <button class="card-footer bg-danger text-white w-100 text-center">Delete</button>
-                    </form>
-                </div>
+<div th:if="${flashes != null}" class="card" style="margin-bottom: 10px; margin-top: 10px;">
+    <div class="card-header bg-secondary text-white">
+        <h4 th:text="${category}"></h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div th:each="flash: ${flashes}" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+                <img th:src="${flash.url}" th:alt="${flash.name}" class="card-img-top img-fluid" />
+                <form th:action="@{/admin/images/delete-flash}" method="post">
+                    <input type="hidden" th:name="flashId" th:value="${flash.id}">
+                    <button class="card-footer bg-danger text-white w-100 text-center">Delete</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 </html>

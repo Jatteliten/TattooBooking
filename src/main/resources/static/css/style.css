@@ -37,10 +37,6 @@
     padding-right: 50px;
     margin-bottom: 20px;
 }
-.front-page-container {
-    display: flex;
-    align-items: flex-start;
-}
 .front-page-card-text {
     white-space: pre-line;
 }
@@ -143,10 +139,16 @@
 }
 
 .instagram-outer-container {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
     display: flex;
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.instagram-outer-container.visible {
+    opacity: 1;
 }
 
 #instagram-wrapper {
@@ -170,6 +172,14 @@
 
 .spinner-border.custom-spinner{
     color: var(--tertiary-pink);
+}
+
+.spinner-loading-text{
+    color: var(--tertiary-pink);
+    font-weight: bold;
+    font-size: 20px;
+    margin-left: 10px;
+    margin-bottom: 2px;
 }
 
 .hidden {

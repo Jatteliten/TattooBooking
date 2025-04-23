@@ -11,13 +11,26 @@
 
 <div class="container mt-4">
     <h2>Edit Latest News</h2>
-
-    <form th:action="@{/admin/customize/update-latest-news}" method="post">
-        <div class="mb-3">
-            <label for="latestNewsText"></label><textarea id="latestNewsText" name="updatedLatestNews" class="form-control" rows="5" required>[[${frontPageNews}]]</textarea>
+    <div class="card">
+        <div class="card-header">
+            Latest news
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+        <div class="card-body">
+            <form th:action="@{/admin/customize/update-latest-news}" method="post">
+                <div class="mb-3">
+                    <label for="latestNewsText"></label>
+                    <textarea id="latestNewsText"
+                              name="updatedLatestNews"
+                              class="form-control"
+                              rows="5"
+                              th:text="${frontPageNews}"
+                              required>[[${frontPageNews}]]</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+
 
 
     <div th:if="${updated != null}" class="alert alert-success mt-4">

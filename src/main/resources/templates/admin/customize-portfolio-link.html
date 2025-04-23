@@ -8,26 +8,37 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
-<form th:action="@{/admin/customize/update-instagram-link}" method="post">
-    <div class="mb-3">
-        <h3>Current link</h3>
-        <label for="instagramLink"></label>
-        <textarea id="instagramLink"
-                  name="updatedInstagramLink"
-                  class="form-control"
-                  th:text="${currentURL}"
-                  rows="5"
-                  required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
-<p style="display: flex; justify-content: center;">Current Instagram post:</p>
-<div th:if="${embedHtml != null}" style="display: flex; justify-content: center; margin-top: 20px;">
 
-    <div th:utext="${embedHtml}"></div>
-</div>
-<div th:if="${embedHtml == null}">
-    <div th:text="Nothing" class="text-danger" style="display:flex; justify-content: center;"></div>
+<div class="container mt-4">
+    <h2>Edit Instagram link</h2>
+    <form th:action="@{/admin/customize/update-instagram-link}" method="post">
+        <div class="card">
+            <div class="card-header">
+                Current link
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                <label for="instagramLink"></label>
+                <textarea id="instagramLink"
+                          name="updatedInstagramLink"
+                          class="form-control"
+                          th:text="${currentURL}"
+                          rows="5"
+                          required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <hr>
+                <p style="display: flex; justify-content: center;">Current Instagram post:</p>
+                <div th:if="${embedHtml != null}" style="display: flex; justify-content: center; margin-top: 20px;">
+
+                    <div th:utext="${embedHtml}"></div>
+                </div>
+                <div th:if="${embedHtml == null}">
+                    <div th:text="Nothing" class="text-danger" style="display:flex; justify-content: center;"></div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
 
 

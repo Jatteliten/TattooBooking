@@ -8,10 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,6 +20,7 @@ public class FlashImageService {
         this.flashImageRepo = flashImageRepo;
     }
 
+    @Cacheable(value = "flashImagesById", key = "#id")
     public FlashImage getFlashImageById(UUID id){
         return flashImageRepo.findById(id).orElse(null);
     }
@@ -41,10 +39,7 @@ public class FlashImageService {
         flashImageRepo.delete(flashImage);
     }
 
-    public List<FlashImage> getAllFlashImages(){
-        return flashImageRepo.findAll();
-    }
-
+    @Cacheable(value = "flashImagesByCategory", key = "#imageCategory.id")
     public List<FlashImage> getFlashImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }
@@ -59,23 +54,6 @@ public class FlashImageService {
         return flashImages.stream()
                 .map(this::convertFlashImageToFlashImageOnlyUrlDTO)
                 .collect(Collectors.toList());
-    }
-
-    @Cacheable("flashImages")
-    public Map<ImageCategory, ArrayList<FlashImage>> getAllFlashImagesMapByCategory(){
-        Map<ImageCategory, ArrayList<FlashImage>> imagesByCategory = new LinkedHashMap<>();
-        List<FlashImage> flashImages = getAllFlashImages();
-
-        for (FlashImage flashImage: flashImages) {
-            ImageCategory flashImageCategory = flashImage.getCategories().getFirst();
-            if (imagesByCategory.get(flashImageCategory) == null) {
-                imagesByCategory.put(flashImageCategory, new ArrayList<>(List.of(flashImage)));
-            }else{
-                imagesByCategory.get(flashImageCategory).add(flashImage);
-            }
-        }
-
-        return imagesByCategory;
     }
 
 }

@@ -24,11 +24,11 @@
                     this.getAttribute('data-category-name') + ')');">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <input type="hidden" th:name="category" th:value="${category.category}" />
-                <button th:if="${category.flashImages == null}" type="submit" class="btn btn-danger btn-xs">
+                <button th:if="${category.flashImages == null || category.flashImages.isEmpty()}" type="submit" class="btn btn-danger btn-xs">
                     Delete
                 </button>
-                <span th:if="${category.flashImages != null}" th:text="'(' + ${category.flashImages.size()} + ') ' + ${category.category}"></span>
-                <span th:if="${category.flashImages == null}" th:text="'(0) ' + ${category.category}"></span>
+                <span th:if="${category.flashImages != null && !category.flashImages.isEmpty()}" th:text="'(' + ${category.flashImages.size()} + ') ' + ${category.category}"></span>
+                <span th:if="${category.flashImages == null || category.flashImages.isEmpty()}" th:text="'(0) ' + ${category.category}"></span>
             </form>
         </div>
     </div>

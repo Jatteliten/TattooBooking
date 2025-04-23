@@ -201,3 +201,9 @@
 .btn.primary-pink-background:hover {
     background-color: var(--tertiary-pink)
 }
+
+.footer-font {
+    color: var(--tertiary-pink);
+    padding-left: 5px;
+    padding-right: 5px;
+}

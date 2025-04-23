@@ -1,33 +1,69 @@
 <div th:fragment="nav-bar">
   <div class="logo">
-    <img src="/images/Lev_i_buet_Logo.PNG" class="img-fluid w-75 logo" alt="Lev i buet logo">
+    <a href="/">
+      <img src=" /images/Lev_i_buet_Logo.PNG" class="img-fluid w-75 logo" alt="Lev i buet logo">
+    </a>
   </div>
   <div class="container">
     <nav class="navbar navbar-expand-md navbar-light front-page-navbar w-100 centered primary-pink-background">
-      <div class="navbar-nav justify-content-between w-100">
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Hem
-          </a>
-          <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="/">Välkommen</a></li>
-            <li><a class="dropdown-item" href="/contact">Kontakt</a></li>
-            <li><a class="dropdown-item" href="#">Vanliga frågor</a></li>
-          </ul>
-        </div>
-        <div class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Bokningskalender
-          </a>
-          <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton2">
-            <li><a class="dropdown-item" href="/calendar">Kalender</a></li>
-            <li><a class="dropdown-item" href="/booking-form">Bokningsförfrågan</a></li>
-          </ul>
-        </div>
-        <a class="nav-item nav-link" href="/flash">Lediga flash</a>
-        <a class="nav-item nav-link" href="/portfolio">Portfolio</a>
-        <a class="nav-item nav-link" href="/about-me">Om mig</a>
+      <button class="navbar-toggler secondary-pink-background d-flex align-items-center gap-1 d-md-none"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+              style="margin-left:-35px">
+        <span class="navbar-toggler-icon"></span>
+        <span>Meny</span>
+      </button>
+      <div class="collapse navbar-collapse w-100 justify-content-between" id="navbarSupportedContent">
+        <ul class="navbar-nav w-100 justify-content-between">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              Hem
+            </a>
+            <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="/">Välkommen</a></li>
+              <li><a class="dropdown-item" href="#">Vanliga frågor</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              Bokning
+            </a>
+            <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton2">
+              <li><a class="dropdown-item" href="/calendar">Kalender</a></li>
+              <li><a class="dropdown-item" href="/booking-form">Bokningsförfrågan</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" href="/flash">Lediga flash</a></li>
+          <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about-me">Om mig</a></li>
+        </ul>
       </div>
     </nav>
+  </div>
+</div>
+
+<div th:fragment="footer">
+  <hr class="tertiary-pink-background">
+  <div class="centered">
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.instagram.com/levibuet/">
+      <i class="fab fa-instagram fa-2x footer-font"></i>
+    </a>
+    <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="mailto:Tana@Tana.com">
+      <i class="fa fa-envelope fa-2x footer-font"></i>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.tiktok.com/@levibuet">
+      <i class="fab fa-tiktok fa-2x footer-font"></i>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.facebook.com/people/Lev-i-buet/61560790621912/">
+      <i class="fab fa-facebook fa-2x footer-font"></i>
+    </a>
   </div>
 </div>

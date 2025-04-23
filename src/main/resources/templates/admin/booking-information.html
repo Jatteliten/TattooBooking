@@ -18,12 +18,18 @@
   <a th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}"
      th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM')}"></a>
 </span>
-<span th:if="${booking.touchUp != null}"
+<span th:if="${booking.touchUp != true}"
       th:text="'Deposit paid: ' + (${booking.depositPaid} ? 'Yes' : 'No')"></span>
 <h3 th:if="${failFeedback != null}"
     th:text="${failFeedback}" class="text-danger"></h3>
 <h3 th:if="${successFeedback != null}"
     th:text="${successFeedback}" class="text-success"></h3>
+
+<form th:if="${booking.touchUp != true}" th:action="@{/admin/booking/update-booking-price}">
+    <input type="hidden" name="bookingId" th:value="${booking.finalPrice}">
+    <label for="price">Price: </label>
+    <input type="number" name="price" id="price">
+</form>
 
 <div class="row">
     <div class="col-12 col-md-6 col-lg-4">

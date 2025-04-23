@@ -3,7 +3,6 @@ package com.example.demo.controller.admin;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.Booking;
 import com.example.demo.model.Customer;
-import com.example.demo.dtos.bookingdtos.BookingCustomerDepositTimeDto;
 import com.example.demo.services.BookableDateService;
 import com.example.demo.services.BookableHourService;
 import com.example.demo.services.BookingService;
@@ -112,14 +111,6 @@ public class BookingController {
         bookingService.deleteBooking(booking);
         model.addAttribute("errorMessage", "Canceled " + booking.getCustomer().getName() + " at " + booking.getDate().toString());
         return "admin/bookings";
-    }
-
-
-    @GetMapping("/adjust-booking")
-    public String adjustBooking(BookingCustomerDepositTimeDto booking, Model model){
-        model.addAttribute("booking",
-                bookingService.convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(booking));
-        return "admin/adjust-booking";
     }
 
     @PostMapping("/upload-image")

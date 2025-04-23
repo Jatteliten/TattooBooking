@@ -56,7 +56,7 @@ public class CustomerPageController {
         String instagramEmbedHtml = instagramEmbedService.generateEmbedHtmlFromUrl(
                 instagramEmbedService.getLatestEmbed().getEmbeddedLink());
         if(instagramEmbedHtml == null){
-            model.addAttribute("noEmbedLink", "No instagram post exists with portfolio");
+            model.addAttribute("noEmbedLink", "No instagram post exists with portfolio..");
         }else{
             model.addAttribute("embedHtml", instagramEmbedHtml);
         }
@@ -65,18 +65,20 @@ public class CustomerPageController {
     }
 
     @GetMapping("/flash")
-    public String flash(Model model){
-        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+    public String viewFlashCategories(Model model){
+        model.addAttribute("categories",
+                imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(
+                        imageCategoryService.getAllImageCategories()));
 
         return "customer/flash-categories";
     }
 
     @GetMapping("/flash-with-category")
-    public String showFlashWithCategory(@RequestParam String categoryName, Model model){
+    public String viewFlashesWithCategories(@RequestParam String categoryName, Model model){
         model.addAttribute("category", categoryName);
         model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
                 flashImageService.getFlashImagesByCategory(
-                        imageCategoryService.findImageCategoryByCategoryString(
+                        imageCategoryService.findImageCategoryByCategoryName(
                                 categoryName))));
 
         return "customer/available-flash-with-category";

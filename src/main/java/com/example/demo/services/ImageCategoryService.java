@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dtos.imagecategorydtos.ImageCategoryWithOnlyCategoryDto;
 import com.example.demo.model.FlashImage;
 import com.example.demo.model.ImageCategory;
 import com.example.demo.model.TattooImage;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageCategoryService {
@@ -62,8 +64,21 @@ public class ImageCategoryService {
         imageCategoryRepo.delete(imageCategory);
     }
 
-
-    public ImageCategory findImageCategoryByCategoryString(String category){
+    public ImageCategory findImageCategoryByCategoryName(String category){
         return imageCategoryRepo.findByCategory(category);
     }
+
+    public ImageCategoryWithOnlyCategoryDto convertImageCategoryToImageCategoryWithOnlyCategory(ImageCategory imageCategory){
+        return ImageCategoryWithOnlyCategoryDto.builder()
+                .category(imageCategory.getCategory())
+                .build();
+    }
+
+    public List<ImageCategoryWithOnlyCategoryDto> convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(
+            List<ImageCategory> imageCategories){
+        return imageCategories.stream()
+                .map(this::convertImageCategoryToImageCategoryWithOnlyCategory)
+                .collect(Collectors.toList());
+    }
+
 }

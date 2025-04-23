@@ -40,7 +40,7 @@ public class ImageController {
 
     @PostMapping("/save-image-category")
     public String saveImageCategory(@RequestParam String category, Model model){
-        if(imageCategoryService.findImageCategoryByCategoryString(category) != null){
+        if(imageCategoryService.findImageCategoryByCategoryName(category) != null){
             model.addAttribute("categoryError", "Category " + category + " already exists!");
         }else{
             ImageCategory imageCategory = ImageCategory.builder()
@@ -63,7 +63,7 @@ public class ImageController {
     @PostMapping("/delete-image-category")
     public String deleteImageCategory(@RequestParam String category, Model model){
         imageCategoryService.deleteImageCategory(
-                imageCategoryService.findImageCategoryByCategoryString(category));
+                imageCategoryService.findImageCategoryByCategoryName(category));
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
         model.addAttribute("deletedCategory", "Category deleted: " + category + "!");
         return "admin/image-categories";
@@ -80,7 +80,7 @@ public class ImageController {
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
         model.addAttribute("category", category);
         model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
-                imageCategoryService.findImageCategoryByCategoryString(category)));
+                imageCategoryService.findImageCategoryByCategoryName(category)));
 
         return "admin/flash-images";
     }

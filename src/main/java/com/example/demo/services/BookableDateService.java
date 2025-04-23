@@ -42,9 +42,6 @@ public class BookableDateService {
         }
         bookableDateRepo.save(bookableDate);
     }
-    public void deleteAllBookableDates(){
-        bookableDateRepo.deleteAll();
-    }
 
     public List<BookableDate> findBookableDatesBetweenTwoGivenDates(LocalDate startDate, LocalDate endDate){
         return bookableDateRepo.findByDateBetween(startDate, endDate);

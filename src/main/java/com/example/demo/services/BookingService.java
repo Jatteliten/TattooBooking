@@ -3,8 +3,7 @@ package com.example.demo.services;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.model.Booking;
-import com.example.demo.dtos.bookingdtos.BookingCustomerDepositTimeDto;
-import com.example.demo.dtos.bookingdtos.BookingWithoutIdDto;
+import com.example.demo.model.Customer;
 import com.example.demo.model.ImageCategory;
 import com.example.demo.model.TattooImage;
 import com.example.demo.repos.BookingRepo;
@@ -57,10 +56,6 @@ public class BookingService {
 
     public void saveListOfBookings(List<Booking> bookings){
         bookingRepo.saveAll(bookings);
-    }
-
-    public List<Booking> getAllBookings(){
-        return bookingRepo.findAll();
     }
 
     @Transactional
@@ -138,10 +133,6 @@ public class BookingService {
         bookingRepo.deleteAll(bookings);
     }
 
-    public void deleteAllBookings(){
-        bookingRepo.deleteAll();
-    }
-
     public boolean checkIfBookingOverlapsWithAlreadyBookedHours(LocalDateTime startTime, LocalDateTime endTime){
         return !bookingRepo.findByDateBetween(startTime, endTime.minusMinutes(1)).isEmpty() ||
                 !bookingRepo.findByEndTimeBetween(startTime.plusMinutes(1), endTime).isEmpty();
@@ -149,25 +140,6 @@ public class BookingService {
 
     public List<Booking> getBookingsBetweenTwoGivenDates(LocalDateTime fromDate, LocalDateTime toDate){
         return bookingRepo.findByDateBetween(fromDate, toDate);
-    }
-
-    public BookingWithoutIdDto convertBookingCustomerDepositTimeDtoToBookingWithoutIdDto(
-            BookingCustomerDepositTimeDto givenBookingDto){
-        Booking b = bookingRepo.findByCustomerAndDate(
-                givenBookingDto.getCustomer(), givenBookingDto.getDate()).orElse(null);
-
-        if(b == null){
-            return null;
-        }
-        return BookingWithoutIdDto.builder()
-                .depositPaid(b.isDepositPaid())
-                .touchUp(b.isTouchUp())
-                .finalPrice(b.getFinalPrice())
-                .date(b.getDate())
-                .notes(b.getNotes())
-                .tattooImage(b.getTattooImage())
-                .customer(b.getCustomer())
-                .build();
     }
 
     @Transactional
@@ -229,6 +201,10 @@ public class BookingService {
         return bookings.stream()
                 .sorted(Comparator.comparing(Booking::getDate))
                 .collect(Collectors.toList());
+    }
+
+    public String createBookingSuccessMessage(Customer customer, LocalTime startTime, LocalTime endTime, LocalDate date){
+        return customer.getName() + " booked at " + startTime + " - " + endTime + " on " + date;
     }
 
 }

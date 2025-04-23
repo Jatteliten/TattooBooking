@@ -21,10 +21,6 @@ public class CustomerService {
         this.bookingService = bookingService;
     }
 
-    public List<Customer> getAllCustomers(){
-        return customerRepo.findAll();
-    }
-
     public void saveCustomer(Customer customer){
         customerRepo.save(customer);
     }

@@ -25,13 +25,24 @@
 <h3 th:if="${successFeedback != null}"
     th:text="${successFeedback}" class="text-success"></h3>
 
-<form th:if="${booking.touchUp != true}" th:action="@{/admin/booking/update-booking-price}">
-    <input type="hidden" name="bookingId" th:value="${booking.finalPrice}">
-    <label for="price">Price: </label>
-    <input type="number" name="price" id="price">
-</form>
+
 
 <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <form th:if="${booking.touchUp != true}"
+              th:action="@{/admin/booking/update-booking-price}"
+              method="post"
+              class="card fifteen-px-margin-top-bottom">
+            <div class="card-header">
+                Price
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="bookingId" th:value="${booking.id}">
+                <label for="price"></label><input type="number" name="price" id="price" th:value="${booking.finalPrice}">
+                <button type="submit" class="btn btn-primary btn-sm">Change price</button>
+            </div>
+        </form>
+    </div>
     <div class="col-12 col-md-6 col-lg-4">
         <div class="card fifteen-px-margin-top-bottom">
             <h3 class="card-header">Notes</h3>

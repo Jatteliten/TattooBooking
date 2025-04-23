@@ -93,16 +93,7 @@ public class BookingController {
         booking.setNotes(notes);
         bookingService.saveBooking(booking);
 
-        model.addAttribute("booking", booking);
-        model.addAttribute("notesSaved", "Booking notes saved.");
-        return "admin/booking-information";
-    }
-
-    @PostMapping("/remove-all-bookings")
-    public String removeAllBookings(Model model){
-        bookingService.deleteBookings(bookingService.getAllBookings());
-        model.addAttribute("errorMessage", "All bookable dates deleted");
-        return "admin/bookings";
+        return populateModelOnBookingUpdate(model, booking, "Booking notes saved.");
     }
 
     @PostMapping("/cancel-appointment")
@@ -119,35 +110,29 @@ public class BookingController {
                                      @RequestParam(value="categoryIds", required=false) List<UUID> categoryIds,
                                      Model model){
         if(categoryIds == null){
-            model.addAttribute("failFeedback", "You must pick at least one category");
-            model.addAttribute(bookingService.getBookingById(bookingId));
+            return populateModelOnFailedBookingUpdate(model, bookingService.getBookingById(bookingId),
+                    "You must pick at least one category");
         }else{
             try {
-                Booking booking = bookingService.uploadTattooImage(bookingId, file, categoryIds);
-                model.addAttribute("successFeedback", "Tattoo image uploaded!");
-                model.addAttribute("booking", booking);
+                return populateModelOnBookingUpdate(model,
+                        bookingService.uploadTattooImage(bookingId, file, categoryIds),
+                        "Tattoo image uploaded!");
             } catch (Exception e) {
-                model.addAttribute("failFeedback", "Failed to upload image.");
+                return populateModelOnFailedBookingUpdate(model, bookingService.getBookingById(bookingId),
+                        "Failed to upload image.");
             }
         }
-
-        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-
-        return "admin/booking-information";
     }
 
     @PostMapping("/delete-image")
     public String deleteTattooImage(@RequestParam UUID bookingId, Model model){
         try {
-            Booking booking = bookingService.deleteTattooImage(bookingId);
-            model.addAttribute("successFeedback", "Tattoo image deleted!");
-            model.addAttribute("booking", booking);
-            model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+            return populateModelOnBookingUpdate(model, bookingService.deleteTattooImage(bookingId),
+                    "Tattoo image deleted!");
         } catch (Exception e) {
-            model.addAttribute("failFeedback", "Failed to delete image.");
+            return populateModelOnFailedBookingUpdate(model, bookingService.getBookingById(bookingId),
+                    "Failed to delete image.");
         }
-
-        return "admin/booking-information";
     }
 
     @GetMapping("/book-tattoo-at-date")
@@ -193,15 +178,17 @@ public class BookingController {
         }
 
         addBookableHoursToModelIfBookableDateExistsByDate(date, model);
-
         model.addAttribute("selectedDate", date);
         return "admin/book-tattoo-with-date";
     }
 
     @PostMapping("/book-tattoo-with-customer")
-    public String bookSessionWithCustomer(@RequestParam LocalDate date, @RequestParam LocalTime startTime,
-                                          @RequestParam LocalTime endTime, @RequestParam String customerEmail,
-                                          @RequestParam String customerInstagram, @RequestParam String customerPhone,
+    public String bookSessionWithCustomer(@RequestParam LocalDate date,
+                                          @RequestParam LocalTime startTime,
+                                          @RequestParam LocalTime endTime,
+                                          @RequestParam String customerEmail,
+                                          @RequestParam String customerInstagram,
+                                          @RequestParam String customerPhone,
                                           @RequestParam(required = false) Boolean touchUp,
                                           @RequestParam(required = false) Boolean depositPaid, Model model){
         LocalDateTime startDateAndTime = date.atTime(startTime);
@@ -237,9 +224,8 @@ public class BookingController {
             }
 
             bookingService.saveBooking(booking);
-            model.addAttribute("bookingAdded", customerToBook.getName()
-                    + " booked at " + startTime + " - " + endTime
-                    + " on " + date);
+            model.addAttribute("bookingAdded", bookingService.createBookingSuccessMessage(
+                    customerToBook, startTime, endTime, date));
             model.addAttribute("bookableDate", bookableDate);
 
             if(bookableDate != null){
@@ -291,9 +277,8 @@ public class BookingController {
 
             bookingService.saveBooking(booking);
 
-            model.addAttribute("bookingAdded", customer.getName()
-                    + " booked for touch up at " + startDateAndTime.toLocalTime() + " - " + endDateAndTime.toLocalTime()
-                    + " on " + startDateAndTime.toLocalDate());
+            model.addAttribute("bookingAdded", bookingService.createBookingSuccessMessage(customer,
+                    startDateAndTime.toLocalTime(), endDateAndTime.toLocalTime(), startDateAndTime.toLocalDate()));
             model.addAttribute("bookableDate", bookableDate);
 
             if(bookableDate != null){
@@ -306,6 +291,28 @@ public class BookingController {
         }
 
         return "admin/admin-landing-page";
+    }
+
+    @PostMapping("/update-booking-price")
+    public String updateBookingPrice(@RequestParam int price, @RequestParam UUID bookingId, Model model){
+        Booking booking = bookingService.getBookingById(bookingId);
+        booking.setFinalPrice(price);
+        bookingService.saveBooking(booking);
+
+        return populateModelOnBookingUpdate(model, booking, "Price updated.");
+    }
+
+    private String populateModelOnFailedBookingUpdate(Model model, Booking booking, String failFeedback){
+        model.addAttribute("booking", booking);
+        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+        model.addAttribute("failFeedback", failFeedback);
+        return "admin/booking-information";
+    }
+    private String populateModelOnBookingUpdate(Model model, Booking booking, String updateFeedback) {
+        model.addAttribute("booking", booking);
+        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+        model.addAttribute("successFeedback", updateFeedback);
+        return "admin/booking-information";
     }
 
     private void addBookableHoursToModelIfBookableDateExistsByDate(LocalDate date, Model model) {

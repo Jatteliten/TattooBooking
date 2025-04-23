@@ -42,16 +42,6 @@ public class BookableDatesController {
         return "admin/add-available-dates";
     }
 
-    @PostMapping("/remove-all-bookable-dates")
-    public String removeAllBookableDates(@RequestParam(name = "year", required = false) Integer year,
-                                         @RequestParam(name = "month", required = false) Integer month,
-                                         Model model){
-        bookableDateService.deleteAllBookableDates();
-        model.addAttribute("errorMessage", "All bookable dates deleted");
-        calendarService.createCalendarModel(model, year, month);
-        return "admin/add-available-dates";
-    }
-
     @GetMapping("/confirm-dates")
     public String confirmDatesToAdd(@RequestParam List<String> time, @RequestParam String fromDate,
                                     @RequestParam String toDate, Model model){

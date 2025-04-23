@@ -9,13 +9,14 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-
-<div class="month-picker">
-    <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
-    <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
-    <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+<div class="customer-page-margin">
+    <div class="month-picker">
+        <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
+        <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
+        <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+    </div>
+    <div th:replace="~{layouts/calendar-layout :: calendar}"></div>
 </div>
-<div th:replace="~{layouts/calendar-layout :: calendar}"></div>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

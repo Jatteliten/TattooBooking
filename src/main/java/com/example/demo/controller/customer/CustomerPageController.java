@@ -88,5 +88,12 @@ public class CustomerPageController {
         }
     }
 
+    @GetMapping("/frequently-asked-questions")
+    public String viewFrequentlyAskedQuestions(Model model){
+        model.addAttribute("questions",
+                customerPageTextService.getCustomerPageTextListByPage("frequently-asked-questions"));
+
+        return "customer/frequently-asked-questions";
+    }
 
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Customize Latest News</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+
+<div class="card">
+  <p class="card-header">Add new frequently asked question</p>
+  <form class="card-body" th:action="@{/admin/customize/add-frequently-asked-question}" method="post">
+    <div class="form-group">
+      <label for="question">Question</label>
+        <input class="form-control" type="text" id="question" name="question" required>
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="answer">Question</label>
+        <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-success">Save</button>
+  </form>
+</div>
+
+<br>
+
+<div th:if="${!questions.isEmpty()}" th:each="question : ${questions}">
+  <div class="card">
+    <div class="card-header" th:text="${question.section}">
+    </div>
+    <div class="card-body" th:text="${question.text}"></div>
+    <form th:action="@{/admin/customize/delete-frequently-asked-question}" method="post">
+      <input type="hidden" name="id" th:value="${question.id}">
+      <button type="submit" class="btn btn-danger" style="width:100%">Remove question</button>
+    </form>
+  </div>
+  <br>
+</div>
+<div th:if="${questions.isEmpty()}">
+  <h4 class="text-danger">No frequently asked questions added..</h4>
+</div>
+
+</body>
+</html>

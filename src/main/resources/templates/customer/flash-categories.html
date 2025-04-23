@@ -10,17 +10,16 @@
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="customer-page-margin">
-  <div class="card" style="margin-bottom: 10px; margin-top: 10px;">
-    <div class="card-header secondary-pink-background">
-      <h4>Kategorier</h4>
-    </div>
+  <div class="container">
+    <h3>Kategorier</h3>
     <div th:if="${categories != null}" th:each="category : ${categories}">
       <form th:action="@{/flash-with-category}">
         <input type="hidden" name="categoryName" th:value="${category.category}">
         <div class="card-body">
-          <button type="submit" class="btn btn-outline-dark primary-pink-background text-black" th:text="${category.category}" style="width:100%"></button>
+          <button type="submit" class="btn primary-pink-background text-black" th:text="${category.category}" style="width:100%"></button>
         </div>
       </form>
+      <br>
     </div>
   </div>
 </div>

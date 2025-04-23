@@ -2,6 +2,7 @@
     --primary-pink: #f1d7fa;
     --secondary-pink: #fbf4ff;
     --tertiary-pink: #e7affa;
+    --quaternary-pink: #de85fd;
 }
 
 .primary-pink-background{
@@ -175,7 +176,7 @@
 }
 
 .spinner-loading-text{
-    color: var(--tertiary-pink);
+    color: var(--quaternary-pink);
     font-weight: bold;
     font-size: 20px;
     margin-left: 10px;
@@ -206,4 +207,14 @@
     color: var(--tertiary-pink);
     padding-left: 5px;
     padding-right: 5px;
+}
+
+.footer-font:hover{
+    color: var(--quaternary-pink);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--primary-pink);
+    color: inherit;
+    box-shadow: none;
 }

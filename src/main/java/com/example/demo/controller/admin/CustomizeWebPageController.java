@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/admin/customize")
 @PreAuthorize("hasAuthority('Admin')")
@@ -83,6 +85,37 @@ public class CustomizeWebPageController {
         model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(updatedInstagramLink));
 
         return "admin/customize-portfolio-link";
+    }
+
+    @GetMapping("/frequently-asked-questions")
+    public String customizeFrequentlyAskedQuestions(Model model){
+        return populateFaqModelAndReturnPage(model);
+    }
+    
+    @PostMapping("/add-frequently-asked-question")
+    public String saveFrequentlyAskedQuestion(@RequestParam String question, @RequestParam String answer, Model model){
+        customerPageTextService.saveCustomerPageText(CustomerPageText.builder()
+                .page("frequently-asked-questions")
+                .section(question)
+                .text(answer)
+                .build());
+
+        return populateFaqModelAndReturnPage(model);
+    }
+
+    @PostMapping("/delete-frequently-asked-question")
+    public String deleteFrequentlyAskedQuestion(@RequestParam UUID id, Model model){
+        customerPageTextService.deleteCustomerPageText(customerPageTextService.getCustomerPageTextById(id));
+
+        return populateFaqModelAndReturnPage(model);
+    }
+
+    private String populateFaqModelAndReturnPage(Model model) {
+        model.addAttribute("questions" ,
+                customerPageTextService.getCustomerPageTextListByPage(
+                        "frequently-asked-questions"));
+
+        return "admin/customize-frequently-asked-questions";
     }
 
 }

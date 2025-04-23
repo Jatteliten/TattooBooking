@@ -1,6 +1,7 @@
 package com.example.demo.controller.customer;
 
 import com.example.demo.model.CustomerPageText;
+import com.example.demo.model.ImageCategory;
 import com.example.demo.services.CustomerPageTextService;
 import com.example.demo.services.FlashImageService;
 import com.example.demo.services.ImageCategoryService;
@@ -68,20 +69,26 @@ public class CustomerPageController {
     public String viewFlashCategories(Model model){
         model.addAttribute("categories",
                 imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(
-                        imageCategoryService.getAllImageCategories()));
+                        imageCategoryService.filterImageCategoriesWithoutFlashImages(
+                        imageCategoryService.getAllImageCategories())));
 
         return "customer/flash-categories";
     }
 
     @GetMapping("/flash-with-category")
     public String viewFlashesWithCategories(@RequestParam String categoryName, Model model){
-        model.addAttribute("category", categoryName);
-        model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
-                flashImageService.getFlashImagesByCategory(
-                        imageCategoryService.findImageCategoryByCategoryName(
-                                categoryName))));
+        ImageCategory imageCategory = imageCategoryService.findImageCategoryByCategoryName(categoryName);
+        if(imageCategory.getFlashImages().isEmpty()){
+            return "error";
+        }else{
+            model.addAttribute("category", categoryName);
+            model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+                    flashImageService.getFlashImagesByCategory(
+                            imageCategoryService.findImageCategoryByCategoryName(
+                                    categoryName))));
 
-        return "customer/available-flash-with-category";
+            return "customer/available-flash-with-category";
+        }
     }
 
 

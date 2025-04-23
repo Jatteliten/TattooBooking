@@ -81,4 +81,8 @@ public class ImageCategoryService {
                 .collect(Collectors.toList());
     }
 
+    public List<ImageCategory> filterImageCategoriesWithoutFlashImages(List<ImageCategory> imageCategories){
+        return imageCategories.stream().filter(imageCategory -> !imageCategory.getFlashImages().isEmpty()).toList();
+    }
+
 }

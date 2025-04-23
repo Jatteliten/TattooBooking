@@ -4,23 +4,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <title>Login</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 </head>
-<body>
-<div>
-  <h2>Login Page</h2>
-  <form action="#" th:action="@{/login}" method="post">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required />
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required />
-    </div>
-    <div>
-      <button type="submit">Login</button>
-    </div>
-  </form>
+<body class="container">
+<div class="d-flex justify-content-center">
+  <div class="w-100" style="max-width: 400px; margin-top:30px;">
+    <form action="#" th:action="@{/login}" method="post">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" id="username" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-success w-100">Log in</button>
+      </div>
+    </form>
+  </div>
 </div>
 </body>
 </html>

@@ -96,6 +96,18 @@ public class ProductController {
         product.setDescription(description);
         productService.saveProduct(product);
 
+        model.addAttribute("success", product.getName() + " description changed.");
+        model.addAttribute("category", product.getCategory());
+        return "/admin/manage-products-by-category";
+    }
+
+    @PostMapping("/change-product-price")
+    public String changeProductPrice(@RequestParam UUID id, double price, Model model){
+        Product product = productService.getProductById(id);
+        product.setPrice(price);
+        productService.saveProduct(product);
+
+        model.addAttribute("success", product.getName() + " price changed.");
         model.addAttribute("category", product.getCategory());
         return "/admin/manage-products-by-category";
     }

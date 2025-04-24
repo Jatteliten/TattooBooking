@@ -54,16 +54,16 @@
 <div th:fragment="footer">
   <hr class="tertiary-pink-background">
   <div class="centered">
-    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.instagram.com/levibuet/">
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="'https://www.instagram.com/' + ${artistInstagram}">
       <i class="fab fa-instagram fa-2x footer-font"></i>
     </a>
-    <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="mailto:Tana@Tana.com">
+    <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="'mailto:' + ${artistMail}">
       <i class="fa fa-envelope fa-2x footer-font"></i>
     </a>
-    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.tiktok.com/@levibuet">
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="'https://www.tiktok.com/@' + ${artistTiktok}">
       <i class="fab fa-tiktok fa-2x footer-font"></i>
     </a>
-    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" href="https://www.facebook.com/people/Lev-i-buet/61560790621912/">
+    <a target="_blank" rel="noopener noreferrer" class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="'https://www.facebook.com/people/' + ${artistFacebookLink}">
       <i class="fab fa-facebook fa-2x footer-font"></i>
     </a>
   </div>

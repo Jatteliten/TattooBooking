@@ -58,16 +58,25 @@
               <textarea th:text="${product.description}"
                         name="description"
                         class="form-control h-100"
-                        rows="6"></textarea>
+                        rows="6"
+                        required></textarea>
             </label>
             <input type="hidden" name="id" th:value="${product.id}">
             <button type="submit" class="btn btn-success">Change description</button>
-            </form>
+          </form>
         </div>
       </li>
       <li class="list-group-item">
         <div class="row">
-          <span th:text="${product.price + ' kr'}" class="col-6 d-flex justify-content-start align-items-center"></span>
+          <form th:action="@{/admin/products/change-product-price}"
+                method="post"
+                class="col-6 d-flex justify-content-start align-items-center">
+            <label>
+              <input type="number" name="price" th:placeholder="${product.price}" required>
+            </label>
+            <input type="hidden" name="id" th:value="${product.id}">
+            <button type="submit" class="btn btn-success btn-sm">Change price</button>
+          </form>
           <form th:action="@{/admin/products/delete-product(id=${product.id})}"
                 class="col-6 d-flex justify-content-end"
                 method="post"

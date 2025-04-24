@@ -9,14 +9,27 @@ import com.example.demo.services.ImageCategoryService;
 import com.example.demo.services.InstagramEmbedService;
 import com.example.demo.services.ProductCategoryService;
 import com.example.demo.services.ProductService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 public class CustomerPageController {
+    @Value("${artist.mail}")
+    private String artistMail;
+
+    @Value("${artist.instagram}")
+    private String artistInstagram;
+
+    @Value("${artist.tiktok}")
+    private String artistTiktok;
+
+    @Value("${artist.facebook.link}")
+    private String artistFacebookLink;
 
     private final CustomerPageTextService customerPageTextService;
     private final InstagramEmbedService instagramEmbedService;
@@ -121,6 +134,26 @@ public class CustomerPageController {
                         productCategory.getProducts()));
         model.addAttribute("category", productCategory.getName());
         return "customer/products-with-category";
+    }
+
+    @ModelAttribute("artistMail")
+    public String getArtistMail() {
+        return artistMail;
+    }
+
+    @ModelAttribute("artistInstagram")
+    public String getArtistInstagram() {
+        return artistInstagram;
+    }
+
+    @ModelAttribute("artistTiktok")
+    public String getArtistTiktok() {
+        return artistTiktok;
+    }
+
+    @ModelAttribute("artistFacebookLink")
+    public String getArtistFacebookLink() {
+        return artistFacebookLink;
     }
 
 }

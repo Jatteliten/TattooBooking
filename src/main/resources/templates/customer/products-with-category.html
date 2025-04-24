@@ -31,7 +31,12 @@
                     </div>
                 </li>
                 <li class="list-group-item">
-                    <span th:text="${product.price + ' kr'}" class="col-6 d-flex justify-content-start align-items-center"></span>
+                    <span th:if="${product.price % 1 == 0}"
+                          th:text="${#numbers.formatDecimal(product.price, 1, 0, 'POINT') + ' kr'}"
+                          class="col-6 d-flex justify-content-start align-items-center"></span>
+                    <span th:unless="${product.price % 1 == 0}"
+                          th:text="${#numbers.formatDecimal(product.price, 1, 2, 'POINT') + ' kr'}"
+                          class="col-6 d-flex justify-content-start align-items-center"></span>
                 </li>
             </ul>
         </div>

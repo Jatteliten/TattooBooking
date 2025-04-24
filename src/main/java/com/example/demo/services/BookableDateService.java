@@ -8,6 +8,7 @@ import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
 import com.example.demo.model.Booking;
 import com.example.demo.repos.BookableDateRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,10 @@ public class BookableDateService {
     private final BookableHourService bookableHourService;
 
     @Value("${dropin.hour}")
-    private static int DROP_IN_START_HOUR;
+    private int dropInStartHour;
 
     @Value("${dropin.minute}")
-    private static int DROP_IN_START_MINUTE;
+    private int dropInStartMinute;
 
     public BookableDateService(BookableDateRepo bookableDateRepo, BookableHourService bookableHourService){
         this.bookableDateRepo = bookableDateRepo;
@@ -43,8 +44,75 @@ public class BookableDateService {
         bookableDateRepo.save(bookableDate);
     }
 
-    public List<BookableDate> findBookableDatesBetweenTwoGivenDates(LocalDate startDate, LocalDate endDate){
+    @Transactional
+    public void saveListOfBookableDates(List<BookableDate> dateList){
+        bookableDateRepo.saveAll(dateList);
+    }
+
+    @Transactional
+    public void addHourToBookableDate(BookableDate bookableDate, LocalTime hour){
+        bookableDate.getBookableHours().add(BookableHour.builder()
+                .hour(hour)
+                .booked(false)
+                .date(bookableDate)
+                .build());
+        bookableDate.setFullyBooked(false);
+        saveBookableDate(bookableDate);
+    }
+
+    @Transactional
+    public BookableDate getBookableDateByDate(LocalDate date){
+        BookableDate bookableDate = bookableDateRepo.findByDate(date);
+        if(bookableDate != null && !bookableDate.getBookableHours().isEmpty()){
+            bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
+        }
+        return bookableDate;
+    }
+
+    public List<BookableDate> getBookableDatesBetweenTwoDates(LocalDate startDate, LocalDate endDate){
         return bookableDateRepo.findByDateBetween(startDate, endDate);
+    }
+
+    public boolean checkIfBookableHoursInBookableDateAreAllBooked(BookableDate bookableDate){
+        return bookableDate.getBookableHours().stream().filter(bh -> !bh.isBooked()).toList().isEmpty();
+    }
+
+    public boolean checkIfHourIsAvailable(LocalTime hour, List<Booking> bookings) {
+        return bookings.stream().filter(booking ->
+                booking.getDate().toLocalTime().isBefore(hour) &&
+                        booking.getEndTime().toLocalTime().isAfter(hour)).toList().isEmpty();
+    }
+
+    public boolean checkIfBookableHourExistsAtBookableDate(BookableDate bookableDate, LocalTime hour){
+        return !bookableDate.getBookableHours()
+                .stream().filter(bookableHour -> bookableHour.getHour().equals(hour)).toList().isEmpty();
+    }
+
+    @Transactional
+    public void setBookableDateAndHoursToUnavailable(BookableDate bookableDate){
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            if(!bookableHour.isBooked()){
+                bookableHour.setBooked(true);
+            }
+        }
+        bookableDate.setFullyBooked(true);
+        saveBookableDate(bookableDate);
+    }
+
+    @Transactional
+    public void setBookableDateAndBookableHourToAvailable(BookableDate bookableDate, BookableHour bookableHour){
+        bookableHour.setBooked(false);
+        bookableDate.setFullyBooked(false);
+        saveBookableDate(bookableDate);
+    }
+
+    @Transactional
+    public void setBookableDateToFullyBookedIfAllHoursAreBooked(BookableDate bookabledate){
+        if(bookabledate.getBookableHours().stream().filter(BookableHour::isBooked).toList().size() ==
+                bookabledate.getBookableHours().size()){
+            bookabledate.setFullyBooked(true);
+            saveBookableDate(bookabledate);
+        }
     }
 
     public BookableDateForCalendarDto convertBookableDateToBookableDateForCalendarDto(BookableDate bookableDate){
@@ -77,36 +145,8 @@ public class BookableDateService {
                 .toList();
     }
 
-    public void saveListOfBookableDates(List<BookableDate> dateList){
-        bookableDateRepo.saveAll(dateList);
-    }
 
-    public BookableDate getBookableDateByDate(LocalDate date){
-        BookableDate bookableDate = bookableDateRepo.findByDate(date);
-        if(bookableDate != null && !bookableDate.getBookableHours().isEmpty()){
-            bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
-        }
-        return bookableDate;
-    }
-
-    public void setBookableDateToFullyBookedIfAllHoursAreBooked(BookableDate bookabledate){
-        if(bookabledate.getBookableHours().stream().filter(BookableHour::isBooked).toList().size() ==
-                bookabledate.getBookableHours().size()){
-            bookabledate.setFullyBooked(true);
-            saveBookableDate(bookabledate);
-        }
-    }
-
-    public void setBookableDateAndHoursToUnavailable(BookableDate bookableDate){
-        for(BookableHour bookableHour: bookableDate.getBookableHours()){
-            if(!bookableHour.isBooked()){
-                bookableHour.setBooked(true);
-            }
-        }
-        bookableDate.setFullyBooked(true);
-        saveBookableDate(bookableDate);
-    }
-
+    @Transactional
     public void setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(BookableDate bookableDate, List<Booking> bookingsAtDate){
         boolean fullyBooked = true;
 
@@ -124,8 +164,21 @@ public class BookableDateService {
         saveBookableDate(bookableDate);
     }
 
-    public boolean checkIfBookableHoursInBookableDateAreAllBooked(BookableDate bookableDate){
-        return bookableDate.getBookableHours().stream().filter(bh -> !bh.isBooked()).toList().isEmpty();
+    public List<LocalDate> getAvailableDatesBetweenTwoDates(LocalDate from, LocalDate to) {
+        List<LocalDate> availableDates = new ArrayList<>();
+        List<BookableDate> alreadyExistingBookableDateList = getBookableDatesBetweenTwoDates(from, to);
+
+        for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
+            LocalDate currentDateInIteration = date;
+
+            if (date.getDayOfWeek() != DayOfWeek.SUNDAY && alreadyExistingBookableDateList.stream()
+                    .filter(bookableDate -> bookableDate.getDate().equals(currentDateInIteration))
+                    .toList()
+                    .isEmpty()) {
+                availableDates.add(date);
+            }
+        }
+        return availableDates;
     }
 
     public List<BookableDate> createBookableDatesFromDateForm(DateForm dateForm) {
@@ -153,7 +206,7 @@ public class BookableDateService {
                         .toList());
             }else if(bookableDate.isDropIn()){
                 bookableDate.setBookableHours(List.of(BookableHour.builder()
-                        .hour(LocalTime.of(DROP_IN_START_HOUR, DROP_IN_START_MINUTE))
+                        .hour(LocalTime.of(dropInStartHour, dropInStartMinute))
                         .build()));
             }
 
@@ -162,51 +215,6 @@ public class BookableDateService {
             }
         }
         return bookableDatesToSaveList;
-    }
-
-    public List<LocalDate> getAvailableDatesBetweenTwoDates(LocalDate from, LocalDate to) {
-        List<LocalDate> availableDates = new ArrayList<>();
-        List<BookableDate> alreadyExistingBookableDateList =
-                findBookableDatesBetweenTwoGivenDates(from, to);
-
-        for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
-            LocalDate currentDateInIteration = date;
-
-            if (date.getDayOfWeek() != DayOfWeek.SUNDAY && alreadyExistingBookableDateList.stream()
-                    .filter(bookableDate -> bookableDate.getDate().equals(currentDateInIteration))
-                    .toList()
-                    .isEmpty()) {
-                availableDates.add(date);
-            }
-        }
-        return availableDates;
-    }
-
-    public boolean checkIfHourIsAvailable(LocalTime hour, List<Booking> bookings) {
-        return bookings.stream().filter(booking ->
-                booking.getDate().toLocalTime().isBefore(hour) &&
-                        booking.getEndTime().toLocalTime().isAfter(hour)).toList().isEmpty();
-    }
-
-    public boolean checkIfBookableHourExistsAtBookableDate(BookableDate bookableDate, LocalTime hour){
-        return !bookableDate.getBookableHours()
-                .stream().filter(bookableHour -> bookableHour.getHour().equals(hour)).toList().isEmpty();
-    }
-
-    public void addHourToBookableDate(BookableDate bookableDate, LocalTime hour){
-        bookableDate.getBookableHours().add(BookableHour.builder()
-                .hour(hour)
-                .booked(false)
-                .date(bookableDate)
-                .build());
-        bookableDate.setFullyBooked(false);
-        saveBookableDate(bookableDate);
-    }
-
-    public void setBookableDateAndBookableHourToAvailable(BookableDate bookableDate, BookableHour bookableHour){
-        bookableHour.setBooked(false);
-        bookableDate.setFullyBooked(false);
-        saveBookableDate(bookableDate);
     }
 
 }

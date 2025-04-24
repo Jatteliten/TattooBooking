@@ -1,7 +1,6 @@
 package com.example.demo.services;
 
 import com.example.demo.dtos.bookabledatedtos.BookableDateForCalendarDto;
-import com.example.demo.model.BookableHour;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -49,7 +48,7 @@ public class CalendarService {
 
         Map<LocalDate, BookableDateForCalendarDto> dateToBookableDateForCalendarDto =
                 bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(
-                                bookableDateService.findBookableDatesBetweenTwoGivenDates(
+                                bookableDateService.getBookableDatesBetweenTwoDates(
                                         firstDayOfMonth, lastDayOfMonth))
                         .stream()
                         .collect(Collectors.toMap(BookableDateForCalendarDto::getDate, dto -> dto));

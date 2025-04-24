@@ -2,27 +2,13 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <title>Lev i buet - Lediga flash</title>
+  <title>Lev i buet - Portfolio</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div class="customer-page-margin">
-  <div class="container">
-    <h3>Kategorier</h3>
-    <div th:if="${categories != null}" th:each="category : ${categories}">
-      <form th:action="@{/flash-with-category}">
-        <input type="hidden" name="categoryName" th:value="${category.category}">
-        <div class="card-body">
-          <button type="submit" class="btn primary-pink-background text-black" th:text="${category.category}" style="width:100%"></button>
-        </div>
-      </form>
-      <br>
-    </div>
-  </div>
-</div>
 
 <div th:replace="~{layouts/customer-layout :: footer}"></div>
 

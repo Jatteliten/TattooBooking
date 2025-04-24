@@ -18,7 +18,7 @@
         <div th:if="${!categories.isEmpty()}">
             <div th:each="category : ${categories}" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px">
                 <a th:href="@{/admin/products/products-by-category(category=${category.name})}">
-                    <button th:text="${category.name}" class="btn btn-outline-secondary btn-sm"></button>
+                    <button th:text="${category.name}" class="btn btn-outline-secondary"></button>
                 </a>
                 <span th:if="${category.getProducts() != null}" th:text="${'(' + category.getProducts().size() + ')'}"></span>
                 <span th:if="${category.getProducts() == null}">(0)</span>

@@ -42,6 +42,7 @@
     white-space: pre-line;
 }
 .logo{
+    padding-top: 10px;
     margin: auto;
     width: 90%;
     text-align: center;

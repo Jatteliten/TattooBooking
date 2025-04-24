@@ -1,4 +1,4 @@
-package com.example.demo.security.model;
+package com.example.demo.configuration.security.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,17 +20,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
-public class User {
+@Table(name = "Role")
+public class Role {
     @Id
-    @GeneratedValue(strategy= GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
-    private String username;
-    private String password;
-    private boolean enabled;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roles;
-
+    List<User> users;
 }

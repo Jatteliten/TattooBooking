@@ -1,7 +1,7 @@
-package com.example.demo.security.services;
+package com.example.demo.configuration.security.services;
 
-import com.example.demo.security.ConcreteUserDetails;
-import com.example.demo.security.model.User;
+import com.example.demo.configuration.security.model.User;
+import com.example.demo.configuration.security.ConcreteUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

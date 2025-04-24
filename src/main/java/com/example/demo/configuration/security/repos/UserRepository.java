@@ -1,6 +1,6 @@
-package com.example.demo.security.repos;
+package com.example.demo.configuration.security.repos;
 
-import com.example.demo.security.model.User;
+import com.example.demo.configuration.security.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

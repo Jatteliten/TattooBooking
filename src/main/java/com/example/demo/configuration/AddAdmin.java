@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.example.demo.configuration;
 
-import com.example.demo.security.services.RoleService;
-import com.example.demo.security.model.User;
-import com.example.demo.security.services.UserService;
+import com.example.demo.configuration.security.services.RoleService;
+import com.example.demo.configuration.security.model.User;
+import com.example.demo.configuration.security.services.UserService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

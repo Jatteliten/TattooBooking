@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,18 +19,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class ImageCategory {
+public class ProductCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID  )
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
 
     @Column(unique = true)
-    private String category;
+    private String name;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<TattooImage> tattooImages;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<FlashImage> flashImages;
+    @OneToMany
+    private List<Product> products;
 }

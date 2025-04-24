@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface InstagramEmbedRepo extends JpaRepository<InstagramEmbed, UUID> {
-
-}
+public interface InstagramEmbedRepo extends JpaRepository<InstagramEmbed, UUID> { }

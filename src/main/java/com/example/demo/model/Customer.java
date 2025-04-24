@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +27,11 @@ public class Customer {
     private UUID id;
 
     private String name;
+    @Column(unique = true)
     private String instagram;
+    @Column(unique = true)
     private String phone;
+    @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)

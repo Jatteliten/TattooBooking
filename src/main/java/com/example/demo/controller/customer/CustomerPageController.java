@@ -2,10 +2,13 @@ package com.example.demo.controller.customer;
 
 import com.example.demo.model.CustomerPageText;
 import com.example.demo.model.ImageCategory;
+import com.example.demo.model.ProductCategory;
 import com.example.demo.services.CustomerPageTextService;
 import com.example.demo.services.FlashImageService;
 import com.example.demo.services.ImageCategoryService;
 import com.example.demo.services.InstagramEmbedService;
+import com.example.demo.services.ProductCategoryService;
+import com.example.demo.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +22,16 @@ public class CustomerPageController {
     private final InstagramEmbedService instagramEmbedService;
     private final FlashImageService flashImageService;
     private final ImageCategoryService imageCategoryService;
+    private final ProductCategoryService productCategoryService;
+    private final ProductService productService;
 
-    public CustomerPageController(CustomerPageTextService customerPageTextService, InstagramEmbedService instagramEmbedService, FlashImageService flashImageService, ImageCategoryService imageCategoryService){
+    public CustomerPageController(CustomerPageTextService customerPageTextService, InstagramEmbedService instagramEmbedService, FlashImageService flashImageService, ImageCategoryService imageCategoryService, ProductCategoryService productCategoryService, ProductService productService){
         this.customerPageTextService = customerPageTextService;
         this.instagramEmbedService = instagramEmbedService;
         this.flashImageService = flashImageService;
         this.imageCategoryService = imageCategoryService;
+        this.productCategoryService = productCategoryService;
+        this.productService = productService;
     }
 
     @GetMapping("/")
@@ -94,6 +101,26 @@ public class CustomerPageController {
                 customerPageTextService.getCustomerPageTextListByPage("frequently-asked-questions"));
 
         return "customer/frequently-asked-questions";
+    }
+
+    @GetMapping("/products")
+    public String viewProductCategories(Model model){
+        model.addAttribute("categories", productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(
+                productCategoryService.filterOutProductCategoriesWithoutProducts(
+                        productCategoryService.getAllProductCategories())));
+
+        return "customer/product-categories";
+    }
+
+    @GetMapping("/products-with-category")
+    public String viewProductsByCategory(@RequestParam String categoryName, Model model){
+        ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
+
+        model.addAttribute("products",
+                productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
+                        productCategory.getProducts()));
+        model.addAttribute("category", productCategory.getName());
+        return "customer/products-with-category";
     }
 
 }

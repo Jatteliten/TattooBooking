@@ -1,17 +1,15 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,18 +17,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Builder
-public class ImageCategory {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
+    private String name;
+    private String description;
+    private String imageUrl;
+    private double price;
 
-    @Column(unique = true)
-    private String category;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<TattooImage> tattooImages;
-
-    @ManyToMany(mappedBy = "categories")
-    private List<FlashImage> flashImages;
+    @ManyToOne
+    private ProductCategory category;
 }

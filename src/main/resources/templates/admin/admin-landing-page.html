@@ -15,14 +15,16 @@
 
 <div th:if="${bookingAdded != null}">
     <p th:text="${bookingAdded}"></p>
-    Bookable hours available:
-    <span th:each="time : ${bookableDate.getBookableHours()}"
-          th:text="${time.hour} + ' '"
-          th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
-    <br>
-    <a th:href="@{/admin/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
-        <button class="btn btn-secondary">Change available hours</button>
-    </a>
+    <div th:if="${bookableDate != null}">
+        Bookable hours available:
+        <span th:each="time : ${bookableDate.getBookableHours()}"
+              th:text="${time.hour} + ' '"
+              th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
+        <br>
+        <a th:href="@{/admin/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
+            <button class="btn btn-secondary">Change available hours</button>
+        </a>
+    </div>
 </div>
 
 </body>

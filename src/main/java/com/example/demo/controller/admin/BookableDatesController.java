@@ -62,12 +62,16 @@ public class BookableDatesController {
 
     @PostMapping("/save-dates")
     public String saveDates(@ModelAttribute DateForm dateForm, Model model) {
-        List<BookableDate> bookableDatesToSaveList = bookableDateService.createBookableDatesFromDateForm(dateForm);
+        List<BookableDate> bookableDates = bookableDateService.createBookableDatesFromDateForm(dateForm);
 
-        bookableDateService.saveListOfBookableDates(bookableDatesToSaveList);
+        for(BookableDate bookableDate: bookableDates){
+            bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
+                    bookableDate, bookingService.getBookingsByDate(bookableDate.getDate()));
+        }
+        bookableDateService.saveListOfBookableDates(bookableDates);
 
         model.addAttribute("landingPageSingleLineMessage",
-                bookableDatesToSaveList.size() + " dates added!");
+                bookableDates.size() + " dates added!");
         return "admin/admin-landing-page";
     }
 
@@ -96,6 +100,7 @@ public class BookableDatesController {
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
                 bookableDate, bookingService.getBookingsByDate(date));
+        bookableDateService.saveBookableDate(bookableDate);
 
         if(bookableDate.isFullyBooked()){
             model.addAttribute("negativeFeedback", "All available hours for " +

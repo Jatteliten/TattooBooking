@@ -102,7 +102,8 @@ public class BookingController {
     public String removeBooking(@RequestParam UUID id, Model model){
         Booking booking = bookingService.getBookingById(id);
         bookingService.deleteBooking(booking);
-        model.addAttribute("errorMessage", "Canceled " + booking.getCustomer().getName() + " at " + booking.getDate().toString());
+        model.addAttribute("errorMessage", "Canceled " + booking.getCustomer().getName() +
+                " at " + booking.getDate().toLocalDate() + " | " + booking.getDate().toLocalTime());
         return "admin/bookings";
     }
 
@@ -194,6 +195,12 @@ public class BookingController {
                                           @RequestParam(required = false) Boolean depositPaid, Model model){
         LocalDateTime startDateAndTime = date.atTime(startTime);
         LocalDateTime endDateAndTime = date.atTime(endTime);
+
+        if(startTime.equals(LocalTime.of(0,0)) || endTime.equals(LocalTime.of(23, 59))){
+            model.addAttribute("landingPageSingleLineMessage",
+                    "Can't set start time to 00:00 or end time to 23:59");
+            return "admin/admin-landing-page";
+        }
 
         if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
             model.addAttribute("landingPageSingleLineMessage", "Can't book at already booked hours");

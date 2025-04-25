@@ -145,15 +145,13 @@ public class BookableDateService {
                 .toList();
     }
 
-
-    @Transactional
     public void setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(BookableDate bookableDate, List<Booking> bookingsAtDate){
         boolean fullyBooked = true;
 
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
             if(bookingsAtDate.stream().filter(b ->
                             LocalTime.from(b.getDate()).minusMinutes(1).isBefore(bookableHour.getHour())
-                                    && LocalTime.from(b.getEndTime()).plusMinutes(1).isAfter(bookableHour.getHour()))
+                                    && LocalTime.from(b.getEndTime()).isAfter(bookableHour.getHour()))
                             .toList()
                             .isEmpty()){
                 bookableHour.setBooked(false);
@@ -161,7 +159,6 @@ public class BookableDateService {
             }
         }
         bookableDate.setFullyBooked(fullyBooked);
-        saveBookableDate(bookableDate);
     }
 
     public List<LocalDate> getAvailableDatesBetweenTwoDates(LocalDate from, LocalDate to) {
@@ -186,7 +183,7 @@ public class BookableDateService {
         for (DateEntry entry : dateForm.getDateList()) {
             BookableDate bookableDate = BookableDate.builder()
                     .date(entry.getDate())
-                    .fullyBooked(false)
+                    .fullyBooked(true)
                     .build();
 
             if(entry.getType() != null){
@@ -201,7 +198,7 @@ public class BookableDateService {
                 bookableDate.setBookableHours(entry.getHours().stream()
                         .map(hour -> BookableHour.builder()
                                 .hour(hour)
-                                .booked(false)
+                                .booked(true)
                                 .build())
                         .toList());
             }else if(bookableDate.isDropIn()){

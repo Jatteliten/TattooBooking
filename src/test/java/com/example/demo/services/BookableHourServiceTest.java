@@ -20,9 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:application-test.properties")
 class BookableHourServiceTest {
     @Autowired
-    BookableHourRepo bookableHourRepo;
+    private BookableHourRepo bookableHourRepo;
     @Autowired
-    BookableHourService bookableHourService;
+    private BookableHourService bookableHourService;
 
     private static final LocalTime TEN_O_CLOCK = LocalTime.of(10, 0);
     private static final LocalTime ELEVEN_O_CLOCK = LocalTime.of(11, 0);

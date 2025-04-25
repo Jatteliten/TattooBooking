@@ -57,6 +57,8 @@ public class BookingService {
         }
         TattooImage tattooImage = booking.getTattooImage();
 
+        bookingRepo.delete(booking);
+
         if(tattooImage != null){
             String url = tattooImage.getUrl();
             tattooImageService.deleteTattooImage(tattooImage);
@@ -64,8 +66,6 @@ public class BookingService {
                 s3ImageService.deleteImage(url);
             }
         }
-
-        bookingRepo.delete(booking);
     }
 
     public void deleteBookings(List<Booking> bookings){
@@ -84,6 +84,8 @@ public class BookingService {
             bookableDates.add(setBookableHoursRelatedToBookingToAvailable(booking));
         }
 
+        bookingRepo.deleteAll(bookings);
+
         if(!bookableDates.isEmpty()){
             bookableDateService.saveListOfBookableDates(bookableDates);
         }
@@ -93,16 +95,10 @@ public class BookingService {
                 s3ImageService.deleteImages(tattooImageUrls);
             }
         }
-
-        bookingRepo.deleteAll(bookings);
-    }
-
-    public List<Booking> getBookingsByDate(LocalDate date){
-        return bookingRepo.findByDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
     }
 
     @Transactional
-    public void deleteFutureBookingsAndSetPastBookingsCustomerToNull(List<Booking> bookings){
+    public void deleteFutureBookingsAndSetPastBookingsToNull(List<Booking> bookings){
         List<Booking> bookingsToSetCustomerToNull = new ArrayList<>();
         List<Booking> bookingsToDelete = new ArrayList<>();
         List<BookableDate> bookableDatesToUpdate = new ArrayList<>();
@@ -144,6 +140,14 @@ public class BookingService {
         }
     }
 
+    public List<Booking> getBookingsByDate(LocalDate date){
+        return bookingRepo.findByDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
+    }
+
+    public List<Booking> getBookingsBetweenTwoGivenDates(LocalDateTime fromDate, LocalDateTime toDate){
+        return bookingRepo.findByDateBetween(fromDate, toDate);
+    }
+
     public BookableDate setBookableHoursRelatedToBookingToAvailable(Booking booking){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(LocalDate.from(booking.getDate()));
         if(bookableDate != null) {
@@ -165,12 +169,8 @@ public class BookingService {
     }
 
     public boolean checkIfBookingOverlapsWithAlreadyBookedHours(LocalDateTime startTime, LocalDateTime endTime){
-        return !bookingRepo.findByDateBetween(startTime, endTime.minusMinutes(1)).isEmpty() ||
-                !bookingRepo.findByEndTimeBetween(startTime.plusMinutes(1), endTime).isEmpty();
-    }
-
-    public List<Booking> getBookingsBetweenTwoGivenDates(LocalDateTime fromDate, LocalDateTime toDate){
-        return bookingRepo.findByDateBetween(fromDate, toDate);
+        return !bookingRepo.findByDateBetween(startTime.plusMinutes(1), endTime.minusMinutes(1)).isEmpty() ||
+                !bookingRepo.findByEndTimeBetween(startTime.plusMinutes(1), endTime.minusMinutes(1)).isEmpty();
     }
 
     @Transactional

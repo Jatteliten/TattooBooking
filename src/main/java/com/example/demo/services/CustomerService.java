@@ -36,7 +36,7 @@ public class CustomerService {
         String customerName = customer.getName();
 
         if(customer.getBookings() != null && !customer.getBookings().isEmpty()){
-            bookingService.deleteFutureBookingsAndSetPastBookingsCustomerToNull(customer.getBookings());
+            bookingService.deleteFutureBookingsAndSetPastBookingsToNull(customer.getBookings());
         }
 
         customerRepo.delete(customer);

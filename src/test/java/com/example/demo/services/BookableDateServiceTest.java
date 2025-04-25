@@ -26,9 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:application-test.properties")
 class BookableDateServiceTest {
     @Autowired
-    BookableDateRepo bookableDateRepo;
+    private BookableDateRepo bookableDateRepo;
     @Autowired
-    BookableDateService bookableDateService;
+    private BookableDateService bookableDateService;
 
     private static final LocalDate TODAY = LocalDate.now();
     private static final LocalTime TEN_O_CLOCK = LocalTime.of(10, 0);

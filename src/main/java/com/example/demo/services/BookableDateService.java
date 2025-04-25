@@ -63,7 +63,7 @@ public class BookableDateService {
     @Transactional
     public BookableDate getBookableDateByDate(LocalDate date){
         BookableDate bookableDate = bookableDateRepo.findByDate(date);
-        if(bookableDate != null && !bookableDate.getBookableHours().isEmpty()){
+        if(bookableDate != null && bookableDate.getBookableHours().size() > 1){
             bookableDate.getBookableHours().sort(Comparator.comparing(BookableHour::getHour));
         }
         return bookableDate;

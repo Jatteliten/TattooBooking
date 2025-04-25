@@ -65,8 +65,9 @@ public class BookableDatesController {
         List<BookableDate> bookableDates = bookableDateService.createBookableDatesFromDateForm(dateForm);
 
         for(BookableDate bookableDate: bookableDates){
-            bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
-                    bookableDate, bookingService.getBookingsByDate(bookableDate.getDate()));
+            bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(bookableDate,
+                    bookingService.sortBookingsByStartDateAndTime(
+                            bookingService.getBookingsByDate(bookableDate.getDate())));
         }
         bookableDateService.saveListOfBookableDates(bookableDates);
 
@@ -99,7 +100,7 @@ public class BookableDatesController {
     public String makeDateAvailable(@RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
-                bookableDate, bookingService.getBookingsByDate(date));
+                bookableDate, bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date)));
         bookableDateService.saveBookableDate(bookableDate);
 
         if(bookableDate.isFullyBooked()){
@@ -141,7 +142,8 @@ public class BookableDatesController {
                 .orElse(null);
 
         if(bookableHour != null){
-            if(bookableDateService.checkIfHourIsAvailable(hour, bookingService.getBookingsByDate(date))){
+            if(bookableDateService.checkIfHourIsAvailable(
+                    hour, bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date)))){
                 bookableDateService.setBookableDateAndBookableHourToAvailable(bookableDate, bookableHour);
 
                 model.addAttribute("positiveFeedback", hour + " set as available.");
@@ -157,7 +159,7 @@ public class BookableDatesController {
 
     @PostMapping("/add-new-hour")
     public String addNewHourToBookableDate(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
-        List<Booking> bookings = bookingService.getBookingsByDate(date);
+        List<Booking> bookings = bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date));
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
 
         if(bookableDateService.checkIfHourIsAvailable(hour, bookings)){
@@ -178,7 +180,7 @@ public class BookableDatesController {
     private String addBookableDateAndBookingsToModelAndReturnBookableDateView(BookableDate bookableDate, LocalDate date, Model model){
         model.addAttribute("bookableDate", bookableDate);
         model.addAttribute("bookings", bookingService.sortBookingsByStartDateAndTime(
-                bookingService.getBookingsByDate(date)));
+                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         return "admin/change-bookable-date";
     }
 

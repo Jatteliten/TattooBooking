@@ -51,12 +51,15 @@ public class BookingService {
 
     @Transactional
     public void deleteBooking(Booking booking){
-        setBookableHoursRelatedToBookingToAvailable(booking);
+        bookableDateService.saveBookableDate(setBookableHoursRelatedToBookingToAvailable(booking));
         TattooImage tattooImage = booking.getTattooImage();
 
-        if(tattooImage != null && tattooImage.getUrl() != null){
-            s3ImageService.deleteImage(booking.getTattooImage().getUrl());
+        if(tattooImage != null){
+            String url = tattooImage.getUrl();
             tattooImageService.deleteTattooImage(tattooImage);
+            if(url != null){
+                s3ImageService.deleteImage(url);
+            }
         }
 
         bookingRepo.delete(booking);
@@ -64,57 +67,81 @@ public class BookingService {
 
     public void deleteBookings(List<Booking> bookings){
         List<TattooImage> tattooImages = new ArrayList<>();
+        List<String> tattooImageUrls = new ArrayList<>();
+        List<BookableDate> bookableDates = new ArrayList<>();
         for(Booking booking: bookings){
             TattooImage tattooImage = booking.getTattooImage();
             if(tattooImage!= null){
                 tattooImages.add(tattooImage);
-                s3ImageService.deleteImage(tattooImage.getUrl());
+                String url = tattooImage.getUrl();
+                if(url != null){
+                    tattooImageUrls.add(url);
+                }
             }
-            setBookableHoursRelatedToBookingToAvailable(booking);
+            bookableDates.add(setBookableHoursRelatedToBookingToAvailable(booking));
         }
 
+        if(!bookableDates.isEmpty()){
+            bookableDateService.saveListOfBookableDates(bookableDates);
+        }
         if(!tattooImages.isEmpty()){
             tattooImageService.deleteListOfTattooImages(tattooImages);
+            if(!tattooImageUrls.isEmpty()){
+                s3ImageService.deleteImages(tattooImageUrls);
+            }
         }
 
         bookingRepo.deleteAll(bookings);
     }
 
     public List<Booking> getBookingsByDate(LocalDate date){
-        return bookingRepo.findByDateBetween(
-                        date.atStartOfDay(),
-                        date.atTime(23, 59, 59))
-                .stream()
-                .sorted(Comparator.comparing(Booking::getDate))
-                .toList();
+        return bookingRepo.findByDateBetween(date.atStartOfDay(), date.atTime(23, 59, 59));
     }
 
+    @Transactional
     public void deleteFutureBookingsAndSetPastBookingsCustomerToNull(List<Booking> bookings){
         List<Booking> bookingsToSetCustomerToNull = new ArrayList<>();
         List<Booking> bookingsToDelete = new ArrayList<>();
+        List<BookableDate> bookableDatesToUpdate = new ArrayList<>();
+        List<TattooImage> tattooImagesToDelete = new ArrayList<>();
+        List<String> urlsToDeleteFromS3 = new ArrayList<>();
 
         for(Booking booking: bookings){
             if(booking.getDate().isBefore(LocalDateTime.now())){
-                s3ImageService.deleteImage(booking.getTattooImage().getUrl());
-                tattooImageService.deleteTattooImage(booking.getTattooImage());
+                TattooImage tattooImage = booking.getTattooImage();
+                if(tattooImage != null){
+                    tattooImagesToDelete.add(tattooImage);
+                    String url = tattooImage.getUrl();
+                    if(url != null){
+                        urlsToDeleteFromS3.add(url);
+                    }
+                }
                 booking.setCustomer(null);
                 bookingsToSetCustomerToNull.add(booking);
             }else{
                 bookingsToDelete.add(booking);
-                setBookableHoursRelatedToBookingToAvailable(booking);
+                bookableDatesToUpdate.add(setBookableHoursRelatedToBookingToAvailable(booking));
             }
         }
 
+        if(!bookableDatesToUpdate.isEmpty()){
+            bookableDateService.saveListOfBookableDates(bookableDatesToUpdate);
+        }
         if(!bookingsToSetCustomerToNull.isEmpty()){
             saveListOfBookings(bookingsToSetCustomerToNull);
         }
-
         if(!bookingsToDelete.isEmpty()){
             deleteBookings(bookingsToDelete);
         }
+        if(!tattooImagesToDelete.isEmpty()){
+            tattooImageService.deleteListOfTattooImages(tattooImagesToDelete);
+        }
+        if(!urlsToDeleteFromS3.isEmpty()){
+            s3ImageService.deleteImages(urlsToDeleteFromS3);
+        }
     }
 
-    private void setBookableHoursRelatedToBookingToAvailable(Booking booking){
+    public BookableDate setBookableHoursRelatedToBookingToAvailable(Booking booking){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(LocalDate.from(booking.getDate()));
         if(bookableDate != null) {
             List<BookableHour> bookableHoursOnDate = bookableDate.getBookableHours();
@@ -130,9 +157,8 @@ public class BookingService {
                     }
                 }
             }
-
-            bookableDateService.saveBookableDate(bookableDate);
         }
+        return bookableDate;
     }
 
     public boolean checkIfBookingOverlapsWithAlreadyBookedHours(LocalDateTime startTime, LocalDateTime endTime){
@@ -182,21 +208,15 @@ public class BookingService {
     }
 
     @Transactional
-    public Booking deleteTattooImage(UUID bookingId) {
-        Booking booking = getBookingById(bookingId);
-        if (booking == null) {
-            throw new RuntimeException("Could not get booking");
+    public void deleteTattooImageFromBooking(Booking booking) {
+        TattooImage tattooImage = booking.getTattooImage();
+        if (tattooImage == null) {
+            throw new RuntimeException("Booking does not have a tattoo image.");
         }
 
-        TattooImage tattooImage = booking.getTattooImage();
         booking.setTattooImage(null);
-        saveBooking(booking);
-
         s3ImageService.deleteImage(tattooImage.getUrl());
-
         tattooImageService.deleteTattooImage(tattooImage);
-
-        return booking;
     }
 
     public List<Booking> sortBookingsByStartDateAndTime(List<Booking> bookings){

@@ -69,7 +69,7 @@ public class BookingController {
                     LocalDateTime.of(toDate, LocalTime.of(23,59))));
         }else{
             bookings = bookingService.sortBookingsByStartDateAndTime(
-                    bookingService.getBookingsByDate(LocalDate.now()));
+                    bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(LocalDate.now())));
         }
 
         if(!bookings.isEmpty()){
@@ -130,8 +130,10 @@ public class BookingController {
     @PostMapping("/delete-image")
     public String deleteTattooImage(@RequestParam UUID bookingId, Model model){
         try {
-            return populateModelOnBookingUpdate(model, bookingService.deleteTattooImage(bookingId),
-                    "Tattoo image deleted!");
+            Booking booking = bookingService.getBookingById(bookingId);
+            bookingService.deleteTattooImageFromBooking(booking);
+            bookingService.saveBooking(booking);
+            return populateModelOnBookingUpdate(model, booking, "Tattoo image deleted!");
         } catch (Exception e) {
             return populateModelOnFailedBookingUpdate(model, bookingService.getBookingById(bookingId),
                     "Failed to delete image.");
@@ -142,7 +144,7 @@ public class BookingController {
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
         model.addAttribute("selectedDate", date);
         model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
-                bookingService.getBookingsByDate(date)));
+                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
 
@@ -151,7 +153,7 @@ public class BookingController {
                                  Model model){
         model.addAttribute("selectedDate", date);
         model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
-                bookingService.getBookingsByDate(date)));
+                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         Customer customer = customerService.findCustomerByAnyField(searchInput);
 
         model.addAttribute("searchResult", Objects.requireNonNullElse(customer, "No customer found"));

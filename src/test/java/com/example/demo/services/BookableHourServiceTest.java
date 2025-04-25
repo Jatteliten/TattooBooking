@@ -24,6 +24,10 @@ class BookableHourServiceTest {
     @Autowired
     BookableHourService bookableHourService;
 
+    private static final LocalTime TEN_O_CLOCK = LocalTime.of(10, 0);
+    private static final LocalTime ELEVEN_O_CLOCK = LocalTime.of(11, 0);
+    private static final LocalTime TWELVE_O_CLOCK = LocalTime.of(12, 0);
+
     @Test
     void saveAllBookableHours_shouldSaveAllBookableHours(){
         BookableHour bookableHourOne = new BookableHour();
@@ -38,13 +42,12 @@ class BookableHourServiceTest {
 
     @Test
     void setBookableHoursInBookableDateToBookedBetweenStartAndEndTime_shouldSetBookableHoursBetweenHoursToBooked(){
-        LocalTime now = LocalTime.now();
         BookableHour bookableHourOne = BookableHour.builder()
-                .hour(now.plusHours(1))
+                .hour(ELEVEN_O_CLOCK)
                 .booked(false)
                 .build();
         BookableHour bookableHourTwo = BookableHour.builder()
-                .hour(now.plusHours(2))
+                .hour(TWELVE_O_CLOCK)
                 .booked(false)
                 .build();
         BookableDate bookableDate = BookableDate.builder()
@@ -52,7 +55,7 @@ class BookableHourServiceTest {
                 .build();
 
         bookableHourService.setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
-                bookableDate, now, now.plusHours(3));
+                bookableDate, TEN_O_CLOCK, TEN_O_CLOCK.plusHours(3));
 
         assertTrue(bookableHourOne.isBooked());
         assertTrue(bookableHourTwo.isBooked());
@@ -60,13 +63,12 @@ class BookableHourServiceTest {
 
     @Test
     void setBookableHoursInBookableDateToBookedBetweenStartAndEndTime_shouldNotSetBookableHoursOutsideHoursRangeToBooked(){
-        LocalTime now = LocalTime.now();
         BookableHour bookableHourOne = BookableHour.builder()
-                .hour(now)
+                .hour(TEN_O_CLOCK)
                 .booked(false)
                 .build();
         BookableHour bookableHourTwo = BookableHour.builder()
-                .hour(now.plusHours(1))
+                .hour(ELEVEN_O_CLOCK)
                 .booked(false)
                 .build();
         BookableDate bookableDate = BookableDate.builder()
@@ -74,7 +76,7 @@ class BookableHourServiceTest {
                 .build();
 
         bookableHourService.setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
-                bookableDate, now.plusHours(2), now.plusHours(3));
+                bookableDate, TWELVE_O_CLOCK, TWELVE_O_CLOCK.plusHours(1));
 
         assertFalse(bookableHourOne.isBooked());
         assertFalse(bookableHourTwo.isBooked());
@@ -82,14 +84,12 @@ class BookableHourServiceTest {
 
     @Test
     void convertBookableHourToBookableHourForCalendarDto_shouldConvertAttributesCorrectly(){
-        LocalTime now = LocalTime.now();
-        LocalTime inOneHour = LocalTime.now().plusHours(1);
         BookableHour bookableHourOne = BookableHour.builder()
-                .hour(now)
+                .hour(TEN_O_CLOCK)
                 .booked(false)
                 .build();
         BookableHour bookableHourTwo = BookableHour.builder()
-                .hour(inOneHour)
+                .hour(ELEVEN_O_CLOCK)
                 .booked(true)
                 .build();
 
@@ -98,8 +98,8 @@ class BookableHourServiceTest {
         BookableHourForCalendarDto bookableHourForCalendarDtoTwo =
                 bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHourTwo);
 
-        assertEquals(bookableHourForCalendarDtoOne.getHour(), now);
-        assertEquals(bookableHourForCalendarDtoTwo.getHour(), inOneHour);
+        assertEquals(bookableHourForCalendarDtoOne.getHour(), TEN_O_CLOCK);
+        assertEquals(bookableHourForCalendarDtoTwo.getHour(), ELEVEN_O_CLOCK);
         assertFalse(bookableHourForCalendarDtoOne.isBooked());
         assertTrue(bookableHourForCalendarDtoTwo.isBooked());
     }

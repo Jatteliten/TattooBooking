@@ -51,7 +51,10 @@ public class BookingService {
 
     @Transactional
     public void deleteBooking(Booking booking){
-        bookableDateService.saveBookableDate(setBookableHoursRelatedToBookingToAvailable(booking));
+        BookableDate bookableDate = setBookableHoursRelatedToBookingToAvailable(booking);
+        if(bookableDate != null){
+            bookableDateService.saveBookableDate(bookableDate);
+        }
         TattooImage tattooImage = booking.getTattooImage();
 
         if(tattooImage != null){

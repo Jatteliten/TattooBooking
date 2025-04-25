@@ -2,7 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.model.CustomerPageText;
 import com.example.demo.repos.CustomerPageTextRepo;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ class CustomerPageTextServiceTest {
     private CustomerPageTextService customerPageTextService;
     private static final String TEST_STRING = "test";
 
-    @BeforeEach
+    @AfterEach
     void deleteAll(){
         customerPageTextRepo.deleteAll();
     }

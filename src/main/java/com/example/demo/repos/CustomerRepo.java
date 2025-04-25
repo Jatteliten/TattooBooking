@@ -14,4 +14,7 @@ public interface CustomerRepo extends JpaRepository<Customer, UUID> {
     Optional<Customer> findByAnyContactMethod(@Param("input") String input);
 
     List<Customer> findByNameContainingIgnoreCase(String input);
+    Customer findByPhone(String phone);
+    Customer findByInstagram(String instagram);
+    Customer findByEmail(String email);
 }

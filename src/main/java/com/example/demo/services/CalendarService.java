@@ -38,7 +38,7 @@ public class CalendarService {
         model.addAttribute("nextYear", selectedDate.plusMonths(1).getYear());
     }
 
-    private List<BookableDateForCalendarDto> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
+    public List<BookableDateForCalendarDto> createDaysInMonthFromSelectedDate(LocalDate selectedDate) {
         LocalDate firstDayOfMonth = selectedDate.withDayOfMonth(1);
         LocalDate firstDayOfCalendar = firstDayOfMonth.with(DayOfWeek.MONDAY);
         LocalDate lastDayOfMonth = selectedDate.withDayOfMonth(selectedDate.lengthOfMonth());

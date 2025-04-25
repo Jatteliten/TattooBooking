@@ -20,10 +20,6 @@ public class FlashImageService {
         this.flashImageRepo = flashImageRepo;
     }
 
-    @Cacheable(value = "flashImagesById", key = "#id")
-    public FlashImage getFlashImageById(UUID id){
-        return flashImageRepo.findById(id).orElse(null);
-    }
     @CacheEvict(value = {"flashImageById", "flashImagesByCategory"}, allEntries = true)
     public void saveFlashImage(FlashImage flashImage){
         flashImageRepo.save(flashImage);
@@ -37,6 +33,11 @@ public class FlashImageService {
     @CacheEvict(value = {"flashImageById", "flashImagesByCategory"}, allEntries = true)
     public void deleteFlashImage(FlashImage flashImage){
         flashImageRepo.delete(flashImage);
+    }
+
+    @Cacheable(value = "flashImageById", key = "#id")
+    public FlashImage getFlashImageById(UUID id){
+        return flashImageRepo.findById(id).orElse(null);
     }
 
     @Cacheable(value = "flashImagesByCategory", key = "#imageCategory.id")

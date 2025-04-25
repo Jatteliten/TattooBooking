@@ -25,14 +25,8 @@ public class CustomerService {
         customerRepo.save(customer);
     }
 
-    public List<Customer> findCustomerByNameContaining(String input){
-        return customerRepo.findByNameContainingIgnoreCase(input)
-                .stream().sorted(Comparator.comparing(Customer::getName)).toList();
-    }
-
     @Transactional
-    public String deleteCustomerAndChangeAssociatedBookingsById(UUID id){
-        Customer customer = findCustomerById(id);
+    public String deleteCustomerAndChangeAssociatedBookings(Customer customer){
         String customerName = customer.getName();
 
         if(customer.getBookings() != null && !customer.getBookings().isEmpty()){
@@ -44,49 +38,60 @@ public class CustomerService {
         return customerName;
     }
 
-    public Customer findCustomerById(UUID id){
+    public Customer getCustomerById(UUID id){
         return customerRepo.findById(id).orElse(null);
     }
 
-    public Customer findCustomerIfAtLeastOneContactMethodMatches(Customer customer) {
+    public List<Customer> getCustomerByNameContaining(String input){
+        return customerRepo.findByNameContainingIgnoreCase(input)
+                .stream().sorted(Comparator.comparing(Customer::getName)).toList();
+    }
+
+    public Customer getCustomerIfAtLeastOneContactMethodMatches(Customer customer) {
         Customer customerToFind;
-        if (customer.getPhone() != null && !customer.getPhone().isEmpty()) {
-            customerToFind = findCustomerByAnyField(customer.getPhone());
+        String phone = customer.getPhone();
+        String instagram = customer.getInstagram();
+        String email = customer.getEmail();
+        if (phone != null && !phone.isEmpty()) {
+            customerToFind = customerRepo.findByPhone(phone);
             if (customerToFind != null){
                 return customerToFind;
             }
         }
-        if (customer.getInstagram() != null && !customer.getInstagram().isEmpty()) {
-            customerToFind = findCustomerByAnyField(customer.getInstagram());
+        if (instagram != null && !instagram.isEmpty()) {
+            customerToFind = customerRepo.findByInstagram(instagram);
             if (customerToFind != null){
                 return customerToFind;
             }
         }
-        if (customer.getEmail() != null && !customer.getEmail().isEmpty()) {
-            return findCustomerByAnyField(customer.getEmail());
+        if (email != null && !email.isEmpty()) {
+            return customerRepo.findByEmail(customer.getEmail());
         }
         return null;
     }
 
-    public Customer findCustomerByAnyField(String input) {
+    public Customer getCustomerByAnyField(String input) {
         return customerRepo.findByAnyContactMethod(input).orElse(null);
+    }
+
+    public List<Booking> getCustomersEligiblePreviousBookingsForTouchUp(Customer customer, Booking booking){
+        List<Booking> touchedUpBookings = new ArrayList<>();
+        List<Booking> customersBookings = customer.getBookings();
+
+        for(Booking customerBooking: customersBookings){
+            if(customerBooking.getPreviousBooking() != null){
+                touchedUpBookings.add(customerBooking.getPreviousBooking());
+            }
+        }
+
+        return customersBookings.stream()
+                .filter(b ->
+                        !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b))
+                .toList();
     }
 
     public List<Booking> sortCustomerBookings(Customer customer){
         return bookingService.sortBookingsByStartDateAndTime(customer.getBookings());
-    }
-
-    public List<Booking> getCustomersEligiblePreviousBookingsForTouchUp(Customer customer, Booking booking){
-        List<UUID> touchedUpBookings = new ArrayList<>();
-        for(Booking customerBooking: customer.getBookings()){
-            if(customerBooking.getPreviousBooking() != null){
-                touchedUpBookings.add(customerBooking.getPreviousBooking().getId());
-            }
-        }
-
-        return customer.getBookings().stream()
-                .filter(b -> !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b.getId()))
-                .toList();
     }
 
 }

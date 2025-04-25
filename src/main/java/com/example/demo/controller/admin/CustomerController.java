@@ -33,20 +33,20 @@ public class CustomerController {
     @GetMapping("/customer")
     public String getCustomerById(@RequestParam UUID id, Model model){
         return populateModelIfCustomerExists(
-                customerService.findCustomerById(id),
+                customerService.getCustomerById(id),
                 "Can't find customer with ID \"" + id + "\"", model);
     }
 
     @GetMapping("/search-customer")
     public String searchCustomerByContactInformation(@RequestParam String searchInput, Model model){
         return populateModelIfCustomerExists(
-                customerService.findCustomerByAnyField(searchInput),
+                customerService.getCustomerByAnyField(searchInput),
                 "Can't find customer with information \"" + searchInput + "\"", model);
     }
 
     @GetMapping("/search-customer-name")
     public String searchCustomersByName(@RequestParam String searchInput, Model model){
-        List<Customer> customerList = customerService.findCustomerByNameContaining(searchInput);
+        List<Customer> customerList = customerService.getCustomerByNameContaining(searchInput);
         if(!customerList.isEmpty()){
             model.addAttribute("customerList", customerList);
         }else{
@@ -59,7 +59,8 @@ public class CustomerController {
 
     @PostMapping("/delete-customer")
     public String deleteCustomer(@RequestParam UUID customerId, Model model){
-        String customerName = customerService.deleteCustomerAndChangeAssociatedBookingsById(customerId);
+        String customerName = customerService.deleteCustomerAndChangeAssociatedBookings(
+                customerService.getCustomerById(customerId));
 
         model.addAttribute("deletedCustomer", customerName + " removed.");
         return "admin/customer";

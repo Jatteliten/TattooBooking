@@ -37,8 +37,9 @@ public class BookingController {
     private final BookableHourService bookableHourService;
     private final ImageCategoryService imageCategoryService;
 
-    public BookingController(CalendarService calendarService, BookingService bookingService, CustomerService customerService,
-                             BookableDateService bookableDateService, BookableHourService bookableHourService, ImageCategoryService imageCategoryService){
+    public BookingController(CalendarService calendarService, BookingService bookingService,
+                             CustomerService customerService, BookableDateService bookableDateService,
+                             BookableHourService bookableHourService, ImageCategoryService imageCategoryService){
         this.calendarService = calendarService;
         this.bookingService = bookingService;
         this.customerService = customerService;
@@ -156,7 +157,8 @@ public class BookingController {
                 bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         Customer customer = customerService.findCustomerByAnyField(searchInput);
 
-        model.addAttribute("searchResult", Objects.requireNonNullElse(customer, "No customer found"));
+        model.addAttribute("searchResult",
+                Objects.requireNonNullElse(customer, "No customer found"));
 
         return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
@@ -205,7 +207,8 @@ public class BookingController {
         }
 
         if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
-            model.addAttribute("landingPageSingleLineMessage", "Can't book at already booked hours");
+            model.addAttribute("landingPageSingleLineMessage",
+                    "Can't book at already booked hours");
             return "admin/admin-landing-page";
         }
 
@@ -245,15 +248,18 @@ public class BookingController {
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{
-            model.addAttribute("landingPageSingleLineMessage", "Something went wrong with non existing customer");
+            model.addAttribute("landingPageSingleLineMessage",
+                    "Something went wrong with non existing customer");
         }
 
         return "admin/admin-landing-page";
     }
 
     @GetMapping("/set-previous-booking-for-touch-up")
-    public String setPreviousBookingForTouchUp(Booking booking, BookableDate bookableDate, Customer customer, Model model){
-        List<Booking> previousBookings = customerService.getCustomersEligiblePreviousBookingsForTouchUp(customer, booking);
+    public String setPreviousBookingForTouchUp(
+            Booking booking, BookableDate bookableDate, Customer customer, Model model){
+        List<Booking> previousBookings = customerService.getCustomersEligiblePreviousBookingsForTouchUp(
+                customer, booking);
 
         if(previousBookings.isEmpty()){
             model.addAttribute("landingPageSingleLineMessage",
@@ -270,8 +276,10 @@ public class BookingController {
     }
 
     @PostMapping("/confirm-touch-up-booking")
-    public String confirmTouchUpBooking(@RequestParam UUID previousBookingId, @RequestParam LocalDateTime startDateAndTime,
-                                        @RequestParam LocalDateTime endDateAndTime, @RequestParam UUID customerId,
+    public String confirmTouchUpBooking(@RequestParam UUID previousBookingId,
+                                        @RequestParam LocalDateTime startDateAndTime,
+                                        @RequestParam LocalDateTime endDateAndTime,
+                                        @RequestParam UUID customerId,
                                         Model model){
         Customer customer = customerService.findCustomerById(customerId);
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(startDateAndTime.toLocalDate());
@@ -299,7 +307,8 @@ public class BookingController {
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{
-            model.addAttribute("landingPageSingleLineMessage", "Something went wrong with non existing customer");
+            model.addAttribute("landingPageSingleLineMessage",
+                    "Something went wrong with non existing customer");
         }
 
         return "admin/admin-landing-page";

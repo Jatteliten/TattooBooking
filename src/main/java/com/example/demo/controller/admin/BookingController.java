@@ -155,7 +155,7 @@ public class BookingController {
         model.addAttribute("selectedDate", date);
         model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
                 bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
-        Customer customer = customerService.findCustomerByAnyField(searchInput);
+        Customer customer = customerService.getCustomerByAnyField(searchInput);
 
         model.addAttribute("searchResult",
                 Objects.requireNonNullElse(customer, "No customer found"));
@@ -176,7 +176,7 @@ public class BookingController {
                 .email(email)
                 .build();
 
-        Customer existingCustomer = customerService.findCustomerIfAtLeastOneContactMethodMatches(customer);
+        Customer existingCustomer = customerService.getCustomerIfAtLeastOneContactMethodMatches(customer);
         if (existingCustomer == null) {
             customerService.saveCustomer(customer);
             model.addAttribute("searchResult", customer);
@@ -212,7 +212,7 @@ public class BookingController {
             return "admin/admin-landing-page";
         }
 
-        Customer customerToBook = customerService.findCustomerIfAtLeastOneContactMethodMatches(
+        Customer customerToBook = customerService.getCustomerIfAtLeastOneContactMethodMatches(
                 Customer.builder()
                         .email(customerEmail)
                         .phone(customerPhone)
@@ -258,8 +258,9 @@ public class BookingController {
     @GetMapping("/set-previous-booking-for-touch-up")
     public String setPreviousBookingForTouchUp(
             Booking booking, BookableDate bookableDate, Customer customer, Model model){
-        List<Booking> previousBookings = customerService.getCustomersEligiblePreviousBookingsForTouchUp(
-                customer, booking);
+        List<Booking> previousBookings = bookingService.sortBookingsByStartDateAndTime(
+                customerService.getCustomersEligiblePreviousBookingsForTouchUp(
+                customer, booking));
 
         if(previousBookings.isEmpty()){
             model.addAttribute("landingPageSingleLineMessage",
@@ -281,7 +282,7 @@ public class BookingController {
                                         @RequestParam LocalDateTime endDateAndTime,
                                         @RequestParam UUID customerId,
                                         Model model){
-        Customer customer = customerService.findCustomerById(customerId);
+        Customer customer = customerService.getCustomerById(customerId);
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(startDateAndTime.toLocalDate());
 
         if(customer != null){

@@ -230,8 +230,9 @@ public class BookingController {
             model.addAttribute("bookableDate", bookableDate);
 
             if(bookableDate != null){
-                bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
-                        bookableDate, startTime,endTime);
+                bookableHourService.setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
+                        bookableDate, startTime, endTime);
+                bookableHourService.saveAllBookableHours(bookableDate.getBookableHours());
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{
@@ -283,8 +284,9 @@ public class BookingController {
             model.addAttribute("bookableDate", bookableDate);
 
             if(bookableDate != null){
-                bookableHourService.iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+                bookableHourService.setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
                         bookableDate, startDateAndTime.toLocalTime(), endDateAndTime.toLocalTime());
+                bookableHourService.saveAllBookableHours(bookableDate.getBookableHours());
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{

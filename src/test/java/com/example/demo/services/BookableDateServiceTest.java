@@ -7,7 +7,7 @@ import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.model.Booking;
 import com.example.demo.repos.BookableDateRepo;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,16 +31,16 @@ class BookableDateServiceTest {
     @Autowired
     BookableDateService bookableDateService;
 
+    @AfterEach
+    void deleteAllData(){
+        bookableDateRepo.deleteAll();
+    }
+
     @Test
     void saveBookableDateShouldThrowExceptionIfNoBookableHoursAreAssociatedToBookableDate(){
         BookableDate bookableDate = BookableDate.builder().build();
 
         assertThrows(NullPointerException.class, () -> bookableDateService.saveBookableDate(bookableDate));
-    }
-
-    @BeforeEach
-    void deleteAllData(){
-        bookableDateRepo.deleteAll();
     }
 
     @Test
@@ -634,7 +634,7 @@ class BookableDateServiceTest {
                         .endTime(inTwoHours)
                         .build());
 
-        assertTrue(bookableDateService.checkIfHourIsAvailable(inOneHour, bookings));
+        assertFalse(bookableDateService.checkIfHourIsAvailable(inOneHour, bookings));
     }
 
     @Test

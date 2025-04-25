@@ -4,6 +4,7 @@ import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.repos.BookableHourRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -17,15 +18,12 @@ public class BookableHourService {
         this.bookableHourRepo = bookableHourRepo;
     }
 
-    public void saveBookableHour(BookableHour bookableHour){
-        bookableHourRepo.save(bookableHour);
-    }
-
+    @Transactional
     public void saveAllBookableHours(List<BookableHour> hourList){
         bookableHourRepo.saveAll(hourList);
     }
 
-    public void iterateThroughBookableHoursAndSetToBookedIfTheyAreBetweenStartAndEndTimeOfBooking(
+    public void setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
             BookableDate bookableDate, LocalTime startTime, LocalTime endTime){
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
             if(bookableHour.getHour().isAfter(startTime.minusMinutes(1))
@@ -33,7 +31,6 @@ public class BookableHourService {
                 bookableHour.setBooked(true);
             }
         }
-        saveAllBookableHours(bookableDate.getBookableHours());
     }
 
     public BookableHourForCalendarDto convertBookableHourToBookableHourForCalendarDto(BookableHour bookableHour){

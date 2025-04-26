@@ -40,9 +40,7 @@ class ImageCategoryServiceTest {
 
     @Test
     void saveImageCategory_shouldSaveImageCategory() {
-        ImageCategory imageCategory = ImageCategory.builder()
-                .category("test")
-                .build();
+        ImageCategory imageCategory = new ImageCategory();
 
         imageCategoryService.saveImageCategory(imageCategory);
 

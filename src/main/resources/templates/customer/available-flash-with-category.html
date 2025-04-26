@@ -20,31 +20,18 @@
                   data-bs-toggle="modal"
                   data-bs-target="#imageModal"
                   th:attr="data-bs-image=${flash.url}, data-bs-caption=${category}">
-            <img th:src="${flash.url}" class="img-fluid rounded" alt="Flash Image" />
+            <img th:src="${flash.url}" class="img-fluid" alt="Flash Image"/>
           </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header primary-pink-background">
-          <h5 id="modalCaption"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <img id="modalImage" src="" alt="Larger Image" class="img-fluid" />
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<div th:replace="~{layouts/image-modal :: image-modal}"></div>
 <div th:replace="~{layouts/customer-layout :: footer}"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="/js/display-flash-image-modal.js"></script>
+<script src="/js/display-image-modal.js"></script>
 </body>
 </html>

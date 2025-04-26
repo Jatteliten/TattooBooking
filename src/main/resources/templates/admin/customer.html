@@ -72,19 +72,39 @@
             </table>
         </div>
     </div>
-    <div th:if="${customer != null}">
-        <h2 th:text="${customer.name}"></h2>
-        <div th:if="${customer.bookings.size()} > 0" class="container">
-            <div class="card">
-                <h4 class="card-header">Bookings:</h4>
-                <div th:each="booking : ${customer.bookings}" class="card-body">
-                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                        <span th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}"></span>
+    <div th:if="${customer != null}" class="card">
+        <div class="card-header" th:text="${customer.name}"></div>
+        <table th:if="${customer.bookings.size()} > 0" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Touch up</th>
+                <th scope="col">Previous session</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${customer.bookings}">
+                <td>
+                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                       th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}">
                     </a>
-                </div>
-            </div>
-        </div>
-
+                </td>
+                <td>
+                    <p th:if="${booking.notes != null}" th:text="${booking.notes}"></p>
+                </td>
+                <td>
+                    <p th:if="${booking.touchUp}" class="text-success">Yes</p>
+                    <p th:if="${!booking.touchUp}" class="text-danger">No</p>
+                </td>
+                <td>
+                    <a th:if="${booking.touchUp}" th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}"
+                       th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.previousBooking.endTime, 'HH:mm')}">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <div th:if="${customer.bookings.size()} == 0">
             <p class="text-danger">Customer has no booked sessions.</p>
         </div>

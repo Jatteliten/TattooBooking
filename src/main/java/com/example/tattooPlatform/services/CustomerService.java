@@ -75,19 +75,19 @@ public class CustomerService {
     }
 
     public List<Booking> getCustomersEligiblePreviousBookingsForTouchUp(Customer customer, Booking booking){
-        List<Booking> touchedUpBookings = new ArrayList<>();
-        List<Booking> customersBookings = customer.getBookings();
+        List<Booking> eligibleBookings = new ArrayList<>(customer.getBookings());
 
-        for(Booking customerBooking: customersBookings){
-            if(customerBooking.getPreviousBooking() != null){
-                touchedUpBookings.add(customerBooking.getPreviousBooking());
+        for(Booking customerBooking: customer.getBookings()){
+            Booking previousBooking = customerBooking.getPreviousBooking();
+            if(previousBooking != null && !eligibleBookings.contains(previousBooking)){
+                eligibleBookings.remove(previousBooking);
+            }
+            if(customerBooking.isTouchUp() || customerBooking.getDate().isAfter(booking.getDate())){
+                eligibleBookings.remove(customerBooking);
             }
         }
 
-        return customersBookings.stream()
-                .filter(b ->
-                        !b.isTouchUp() && b.getDate().isBefore(booking.getDate()) && !touchedUpBookings.contains(b))
-                .toList();
+        return eligibleBookings;
     }
 
     public List<Booking> sortCustomerBookings(Customer customer){

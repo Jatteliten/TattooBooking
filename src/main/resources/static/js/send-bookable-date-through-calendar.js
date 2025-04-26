@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const baseLink = table.getAttribute("data-base-link");
 
-    document.querySelectorAll(".customer-calendar-column").forEach(function (cell) {
+    document.querySelectorAll(".calendar-column").forEach(function (cell) {
         const selectedDate = cell.getAttribute("data-date");
         if (selectedDate && !cell.classList.contains("not-current-month")) {
             const link = document.createElement("a");

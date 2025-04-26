@@ -49,10 +49,18 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item">
         <div class="row">
-          <img th:src="${product.imageUrl}" th:alt="${product.name + ' image'}" class="img-fluid col-6" style="width:40%;">
+          <a data-bs-toggle="modal"
+             data-bs-target="#imageModal"
+             th:attr="data-bs-image=${product.imageUrl}, data-bs-caption=${product.name}"
+             class="col-4">
+            <img th:src="${product.imageUrl}"
+                 alt="Tattoo image preview"
+                 class="img-fluid"
+                 style="cursor: pointer;">
+          </a>
           <form th:action="@{/admin/products/change-product-description}"
                 method="post"
-                class="col-6 d-flex flex-column"
+                class="col-8 d-flex flex-column"
                 style="height: 100%;">
             <label>
               <textarea th:text="${product.description}"
@@ -88,6 +96,9 @@
   </div>
 </div>
 
+<div th:replace="~{layouts/image-modal :: image-modal}"></div>
+
+<script src="/js/display-image-modal.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -15,18 +15,14 @@ public class InstagramEmbedService {
         this.instagramEmbedRepo = instagramEmbedRepo;
     }
 
-    public InstagramEmbed getLatestEmbed(){
-        return instagramEmbedRepo.findAll().stream().findFirst().orElse(null);
+    @CacheEvict(value = "instagramEmbedHtml", allEntries = true)
+    public void saveInstagramEmbed(InstagramEmbed instagramEmbed){
+        instagramEmbedRepo.save(instagramEmbed);
     }
 
-    @CacheEvict(value = "instagramEmbedHtml", allEntries = true)
-    public void saveOrUpdateEmbed(String embedURL){
-        InstagramEmbed existingEmbed = getLatestEmbed();
-        if(existingEmbed == null){
-            existingEmbed = new InstagramEmbed();
-        }
-        existingEmbed.setEmbeddedLink(embedURL);
-        instagramEmbedRepo.save(existingEmbed);
+    @Cacheable(value="instagramEmbedHtml")
+    public InstagramEmbed getLatestEmbed(){
+        return instagramEmbedRepo.findFirstByOrderByCreatedAtDesc();
     }
 
     public String generateEmbedHtmlFromUrl(String url){

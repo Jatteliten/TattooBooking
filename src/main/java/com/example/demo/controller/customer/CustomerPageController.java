@@ -2,6 +2,7 @@ package com.example.demo.controller.customer;
 
 import com.example.demo.model.CustomerPageText;
 import com.example.demo.model.ImageCategory;
+import com.example.demo.model.InstagramEmbed;
 import com.example.demo.model.ProductCategory;
 import com.example.demo.services.CustomerPageTextService;
 import com.example.demo.services.FlashImageService;
@@ -71,11 +72,11 @@ public class CustomerPageController {
 
     @GetMapping("/portfolio")
     public String portfolio(Model model) {
-        String instagramEmbedHtml = instagramEmbedService.generateEmbedHtmlFromUrl(
-                instagramEmbedService.getLatestEmbed().getEmbeddedLink());
-        if(instagramEmbedHtml == null){
+        InstagramEmbed latestInstagramPost = instagramEmbedService.getLatestEmbed();
+        if(latestInstagramPost == null){
             model.addAttribute("noEmbedLink", "No instagram post exists with portfolio..");
         }else{
+            String instagramEmbedHtml = instagramEmbedService.generateEmbedHtmlFromUrl(latestInstagramPost.getEmbeddedLink());
             model.addAttribute("embedHtml", instagramEmbedHtml);
         }
 

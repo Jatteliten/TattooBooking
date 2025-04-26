@@ -1,6 +1,7 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.model.CustomerPageText;
+import com.example.demo.model.InstagramEmbed;
 import com.example.demo.services.CustomerPageTextService;
 import com.example.demo.services.InstagramEmbedService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
@@ -65,13 +67,17 @@ public class CustomizeWebPageController {
 
     @GetMapping("/instagram-post")
     public String customizeInstagramLink(Model model){
-        String url = instagramEmbedService.getLatestEmbed().getEmbeddedLink();
-        String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromUrl(url);
-        if(instagramEmbedUrl == null){
+        InstagramEmbed latestInstagramPost = instagramEmbedService.getLatestEmbed();
+        String url = "empty";
+
+        if(latestInstagramPost == null){
             model.addAttribute("noEmbedLink", "No instagram post exists with portfolio");
         }else{
+            url = latestInstagramPost.getEmbeddedLink();
+            String instagramEmbedUrl = instagramEmbedService.generateEmbedHtmlFromUrl(url);
             model.addAttribute("embedHtml", instagramEmbedUrl);
         }
+
 
         model.addAttribute("currentURL", url);
 
@@ -80,7 +86,10 @@ public class CustomizeWebPageController {
 
     @PostMapping("/update-instagram-link")
     public String updateInstagramLink(@RequestParam String updatedInstagramLink, Model model){
-        instagramEmbedService.saveOrUpdateEmbed(updatedInstagramLink);
+        instagramEmbedService.saveInstagramEmbed(InstagramEmbed.builder()
+                .embeddedLink(updatedInstagramLink)
+                .createdAt(LocalDateTime.now())
+                .build());
         model.addAttribute("currentURL", updatedInstagramLink);
         model.addAttribute("embedHtml", instagramEmbedService.generateEmbedHtmlFromUrl(updatedInstagramLink));
 

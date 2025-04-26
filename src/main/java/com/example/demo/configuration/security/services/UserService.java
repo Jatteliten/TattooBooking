@@ -20,12 +20,9 @@ public class UserService {
         return userRepository.findByUsername(name);
     }
 
-    public String saveUserIfItDoesNotAlreadyExist(User user){
+    public void saveUserIfItDoesNotAlreadyExist(User user){
         if(findUserByUserName(user.getUsername()) == null){
             saveUser(user);
-            return "Admin saved";
-        }else{
-            return "Admin role already exists in database";
         }
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 @Profile("!test")
 @Component
 public class AddAdmin implements CommandLineRunner {
-
     private final RoleService roleService;
     private final UserService userService;
 
@@ -40,13 +39,12 @@ public class AddAdmin implements CommandLineRunner {
 
     private void addAdminUser() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        System.out.println(userService.saveUserIfItDoesNotAlreadyExist(User.builder()
+        userService.saveUserIfItDoesNotAlreadyExist(User.builder()
                 .enabled(true)
                 .password(encoder.encode(adminPassword))
                 .username(adminUsername)
                 .roles(List.of(roleService.findRoleByName(adminRoleName)))
-                .build()));
+                .build());
     }
 
 }

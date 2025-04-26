@@ -22,18 +22,16 @@ public class ProductService {
         this.s3ImageService = s3ImageService;
     }
 
-    public List<Product> getAll(){
-        return productRepo.findAll();
-    }
-
     public void saveProduct(Product product){
         productRepo.save(product);
     }
 
     @Transactional
     public void deleteProduct(Product product){
-        s3ImageService.deleteImage(product.getImageUrl());
-        System.out.println(product.getImageUrl());
+        String imageUrl = product.getImageUrl();
+        if(imageUrl != null){
+            s3ImageService.deleteImage(imageUrl);
+        }
         productRepo.delete(product);
     }
 
@@ -42,18 +40,15 @@ public class ProductService {
     }
 
     @Transactional
-    public Product createAndSaveProduct(ProductCategory category, String name, String description,
-                                        double price, MultipartFile file){
-        if(category == null || name == null || description == null || price == 0 || file == null){
+    public Product createAndSaveProductWithAllAttributes(ProductCategory category, String name, String description,
+                                                         double price, MultipartFile file){
+        if(category == null || name == null || description == null || price <= 0 || file == null){
             return null;
         }
 
-        Product product;
-        String imageUrl;
-
         try {
-            imageUrl = s3ImageService.uploadImage(file, "Products");
-            product = Product.builder()
+            String imageUrl = s3ImageService.uploadImage(file, "Products");
+            Product product = Product.builder()
                 .category(category)
                 .name(name)
                 .description(description)
@@ -61,7 +56,8 @@ public class ProductService {
                 .imageUrl(imageUrl)
                 .build();
 
-            return productRepo.save(product);
+            saveProduct(product);
+            return product;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

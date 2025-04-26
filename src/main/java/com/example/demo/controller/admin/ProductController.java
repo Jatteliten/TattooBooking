@@ -76,7 +76,7 @@ public class ProductController {
                               @RequestParam("file") MultipartFile file,
                               Model model){
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
-        Product product = productService.createAndSaveProduct(productCategory, name, description, price, file);
+        Product product = productService.createAndSaveProductWithAllAttributes(productCategory, name, description, price, file);
         if(product == null) {
             model.addAttribute("error", "Could not save product.");
             return populateProductCategoriesAndReturnManageProductCategories(model);

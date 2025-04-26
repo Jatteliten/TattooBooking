@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
@@ -95,17 +95,15 @@ public class CustomerPageController {
         return "customer/flash-categories";
     }
 
-    @GetMapping("/flash-with-category")
-    public String viewFlashesWithCategories(@RequestParam String categoryName, Model model){
+    @GetMapping("/flash/{categoryName}")
+    public String viewFlashesWithCategories(@PathVariable String categoryName, Model model){
         ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
         if(imageCategory.getFlashImages().isEmpty()){
             return "error";
         }else{
             model.addAttribute("category", categoryName);
             model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
-                    flashImageService.getFlashImagesByCategory(
-                            imageCategoryService.getImageCategoryByCategoryName(
-                                    categoryName))));
+                    flashImageService.getFlashImagesByCategory(imageCategory)));
 
             return "customer/available-flash-with-category";
         }
@@ -129,8 +127,8 @@ public class CustomerPageController {
         return "customer/product-categories";
     }
 
-    @GetMapping("/products-with-category")
-    public String viewProductsByCategory(@RequestParam String categoryName, Model model){
+    @GetMapping("/products/{categoryName}")
+    public String viewProductsByCategory(@PathVariable String categoryName, Model model){
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
 
         model.addAttribute("products",

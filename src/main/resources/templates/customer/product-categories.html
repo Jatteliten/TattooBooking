@@ -13,12 +13,11 @@
   <div class="container">
     <h5>Produktkategorier</h5>
     <div th:each="category: ${categories}">
-      <form th:action="@{/products-with-category}">
-        <input type="hidden" name="categoryName" th:value="${category.name}">
-        <div class="card-body">
+      <div class="card-body">
+        <a th:href="@{/products/{categoryName}(categoryName=${category.name})}">
           <button type="submit" class="btn primary-pink-background text-black" th:text="${category.name}" style="width:100%"></button>
-        </div>
-      </form>
+        </a>
+      </div>
     </div>
   </div>
 </div>

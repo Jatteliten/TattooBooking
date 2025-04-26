@@ -4,7 +4,6 @@ import com.example.demo.dtos.FlashImagedtos.FlashImageOnlyUrlDto;
 import com.example.demo.model.FlashImage;
 import com.example.demo.model.ImageCategory;
 import com.example.demo.repos.FlashImageRepo;
-import com.example.demo.repos.ImageCategoryRepo;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,25 +24,21 @@ class FlashImageServiceTest {
     FlashImageRepo flashImageRepo;
     @Autowired
     FlashImageService flashImageService;
-    @Autowired
-    ImageCategoryRepo imageCategoryRepo;
 
     @AfterEach
     void deleteAll(){
         flashImageRepo.deleteAll();
-        imageCategoryRepo.deleteAll();
     }
+
     @Test
     void saveFlashImage_shouldSaveFlashImage() {
         flashImageService.saveFlashImage(new FlashImage());
-
         assertEquals(1, flashImageRepo.findAll().size());
     }
 
     @Test
     void saveListOfFlashImages_shouldSaveFlashImages() {
         flashImageService.saveListOfFlashImages(List.of(new FlashImage(), new FlashImage()));
-
         assertEquals(2, flashImageRepo.findAll().size());
     }
 
@@ -52,7 +48,6 @@ class FlashImageServiceTest {
         flashImageRepo.save(flashImage);
 
         flashImageService.deleteFlashImage(flashImage);
-
         assertEquals(0, flashImageRepo.findAll().size());
     }
 
@@ -72,16 +67,17 @@ class FlashImageServiceTest {
         ImageCategory imageCategory = ImageCategory.builder()
                 .category("test")
                 .build();
-        imageCategoryRepo.save(imageCategory);
+
         FlashImage flashImage = FlashImage.builder()
                 .name("testImage")
                 .categories(List.of(imageCategory))
                 .build();
         flashImageRepo.save(flashImage);
 
-        assertFalse(flashImageService.getFlashImagesByCategory(imageCategory).isEmpty());
-        assertEquals("testImage",
-                flashImageService.getFlashImagesByCategory(imageCategory).get(0).getName());
+        List<FlashImage> result = flashImageService.getFlashImagesByCategory(imageCategory);
+
+        assertFalse(result.isEmpty());
+        assertEquals("testImage", result.get(0).getName());
     }
 
     @Test
@@ -91,8 +87,9 @@ class FlashImageServiceTest {
                 .build();
         ImageCategory imageCategoryTwo = ImageCategory.builder()
                 .category("testTwo")
+                .id(UUID.randomUUID())
                 .build();
-        imageCategoryRepo.saveAll(List.of(imageCategoryOne, imageCategoryTwo));
+
         FlashImage flashImage = FlashImage.builder()
                 .name("testImage")
                 .categories(List.of(imageCategoryOne))
@@ -108,10 +105,9 @@ class FlashImageServiceTest {
                 .url("test")
                 .build();
 
-        FlashImageOnlyUrlDto flashImageOnlyUrlDto =
-                flashImageService.convertFlashImageToFlashImageOnlyUrlDTO(flashImage);
+        FlashImageOnlyUrlDto dto = flashImageService.convertFlashImageToFlashImageOnlyUrlDTO(flashImage);
 
-        assertEquals(flashImage.getUrl(), flashImageOnlyUrlDto.getUrl());
+        assertEquals(flashImage.getUrl(), dto.getUrl());
     }
 
     @Test
@@ -123,11 +119,10 @@ class FlashImageServiceTest {
                 .url("test2")
                 .build();
 
-        List<FlashImageOnlyUrlDto> flashImageOnlyUrlDTOs =
-                flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
-                        List.of(flashImageOne, flashImageTwo));
+        List<FlashImageOnlyUrlDto> dtos = flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+                List.of(flashImageOne, flashImageTwo));
 
-        assertEquals(flashImageOne.getUrl(), flashImageOnlyUrlDTOs.getFirst().getUrl());
-        assertEquals(flashImageTwo.getUrl(), flashImageOnlyUrlDTOs.getLast().getUrl());
+        assertEquals(flashImageOne.getUrl(), dtos.get(0).getUrl());
+        assertEquals(flashImageTwo.getUrl(), dtos.get(1).getUrl());
     }
 }

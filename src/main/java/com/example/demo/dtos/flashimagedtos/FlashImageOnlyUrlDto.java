@@ -1,4 +1,4 @@
-package com.example.demo.dtos.FlashImagedtos;
+package com.example.demo.dtos.flashimagedtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

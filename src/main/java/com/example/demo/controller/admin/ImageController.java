@@ -21,9 +21,9 @@ import java.util.UUID;
 @RequestMapping("/admin/images")
 @PreAuthorize("hasAuthority('Admin')")
 public class ImageController {
-    ImageCategoryService imageCategoryService;
-    FlashImageService flashImageService;
-    S3ImageService s3ImageService;
+    private final ImageCategoryService imageCategoryService;
+    private final FlashImageService flashImageService;
+    private final S3ImageService s3ImageService;
 
     public ImageController(ImageCategoryService imageCategoryService, FlashImageService flashImageService,
                            S3ImageService s3ImageService){

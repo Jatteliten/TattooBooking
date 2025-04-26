@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dtos.FlashImagedtos.FlashImageOnlyUrlDto;
+import com.example.demo.dtos.flashimagedtos.FlashImageOnlyUrlDto;
 import com.example.demo.model.FlashImage;
 import com.example.demo.model.ImageCategory;
 import com.example.demo.repos.FlashImageRepo;

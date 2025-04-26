@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "3.3.4"
+    id("org.springframework.boot") version "3.3.5"
     id("io.spring.dependency-management") version "1.1.6"
 }
 
@@ -29,8 +29,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
-    implementation("org.jboss.logging:jboss-logging:3.5.0.Final")
-    implementation("software.amazon.awssdk:s3:2.20.85")
+    implementation("org.jboss.logging:jboss-logging:3.6.1.Final")
+    implementation("software.amazon.awssdk:s3:2.31.26")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

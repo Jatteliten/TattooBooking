@@ -39,7 +39,12 @@ public class CustomerPageController {
     private final ProductCategoryService productCategoryService;
     private final ProductService productService;
 
-    public CustomerPageController(CustomerPageTextService customerPageTextService, InstagramEmbedService instagramEmbedService, FlashImageService flashImageService, ImageCategoryService imageCategoryService, ProductCategoryService productCategoryService, ProductService productService){
+    public CustomerPageController(CustomerPageTextService customerPageTextService,
+                                  InstagramEmbedService instagramEmbedService,
+                                  FlashImageService flashImageService,
+                                  ImageCategoryService imageCategoryService,
+                                  ProductCategoryService productCategoryService,
+                                  ProductService productService){
         this.customerPageTextService = customerPageTextService;
         this.instagramEmbedService = instagramEmbedService;
         this.flashImageService = flashImageService;
@@ -119,7 +124,8 @@ public class CustomerPageController {
 
     @GetMapping("/products")
     public String viewProductCategories(Model model){
-        model.addAttribute("categories", productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(
+        model.addAttribute("categories",
+                productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(
                 productCategoryService.filterOutProductCategoriesWithoutProducts(
                         productCategoryService.getAllProductCategories())));
 

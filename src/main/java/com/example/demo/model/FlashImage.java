@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class FlashImage {
     private String url;
     private long size;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "flash_image_categories",
             joinColumns = @JoinColumn(name = "flash_image_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))

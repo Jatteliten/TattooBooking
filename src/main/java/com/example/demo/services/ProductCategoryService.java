@@ -33,7 +33,7 @@ public class ProductCategoryService {
         return productCategoryRepo.findByName(name);
     }
 
-    public ProductCategoryOnlyName convertProductcategoryToProductCategoryOnlyName(
+    public ProductCategoryOnlyName convertProductCategoryToProductCategoryOnlyNameDTO(
             ProductCategory productcategory){
         return ProductCategoryOnlyName.builder().name(productcategory.getName()).build();
     }
@@ -41,7 +41,7 @@ public class ProductCategoryService {
     public List<ProductCategoryOnlyName> convertProductCategoryListToProductCategoryOnlyNameDTOList(
             List<ProductCategory> productCategories){
         return productCategories.stream()
-                .map(this::convertProductcategoryToProductCategoryOnlyName).toList();
+                .map(this::convertProductCategoryToProductCategoryOnlyNameDTO).toList();
     }
 
     public List<ProductCategory> filterOutProductCategoriesWithoutProducts(List<ProductCategory> productCategories){

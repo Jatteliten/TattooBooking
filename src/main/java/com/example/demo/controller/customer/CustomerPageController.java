@@ -94,14 +94,14 @@ public class CustomerPageController {
 
     @GetMapping("/flash-with-category")
     public String viewFlashesWithCategories(@RequestParam String categoryName, Model model){
-        ImageCategory imageCategory = imageCategoryService.findImageCategoryByCategoryName(categoryName);
+        ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
         if(imageCategory.getFlashImages().isEmpty()){
             return "error";
         }else{
             model.addAttribute("category", categoryName);
             model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
                     flashImageService.getFlashImagesByCategory(
-                            imageCategoryService.findImageCategoryByCategoryName(
+                            imageCategoryService.getImageCategoryByCategoryName(
                                     categoryName))));
 
             return "customer/available-flash-with-category";

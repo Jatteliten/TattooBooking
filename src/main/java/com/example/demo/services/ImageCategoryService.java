@@ -29,14 +29,6 @@ public class ImageCategoryService {
         imageCategoryRepo.save(imageCategory);
     }
 
-    public List<ImageCategory> getAllImageCategories(){
-        return imageCategoryRepo.findAll();
-    }
-
-    public List<ImageCategory> getCategoriesByIds(List<UUID> ids) {
-        return imageCategoryRepo.findAllById(ids);
-    }
-
     @Transactional
     public void deleteImageCategory(ImageCategory imageCategory){
         List<TattooImage> tattooImages = imageCategory.getTattooImages();
@@ -64,7 +56,16 @@ public class ImageCategoryService {
         imageCategoryRepo.delete(imageCategory);
     }
 
-    public ImageCategory findImageCategoryByCategoryName(String category){
+    public List<ImageCategory> getAllImageCategories(){
+        return imageCategoryRepo.findAll();
+    }
+
+    public List<ImageCategory> getCategoriesByIds(List<UUID> ids) {
+        return imageCategoryRepo.findAllById(ids);
+    }
+
+
+    public ImageCategory getImageCategoryByCategoryName(String category){
         return imageCategoryRepo.findByCategory(category);
     }
 

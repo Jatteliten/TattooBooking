@@ -131,8 +131,7 @@ class CustomerPageControllerTest {
         when(flashImageService.getFlashImagesByCategory(imageCategory)).thenReturn(List.of(new FlashImage()));
         when(flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(Mockito.anyList())).thenReturn(List.of());
 
-        mockMvc.perform(get("/flash-with-category")
-                        .param("categoryName", "testCategory"))
+        mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/available-flash-with-category"))
                 .andExpect(model().attributeExists("category"))
@@ -148,8 +147,7 @@ class CustomerPageControllerTest {
 
         when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
 
-        mockMvc.perform(get("/flash-with-category")
-                        .param("categoryName", "testCategory"))
+        mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error"));
     }
@@ -191,8 +189,7 @@ class CustomerPageControllerTest {
         when(productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
                 productCategory.getProducts())).thenReturn(productDTOs);
 
-        mockMvc.perform(get("/products-with-category")
-                        .param("categoryName", "testCategory"))
+        mockMvc.perform(get("/products/" + productCategory.getName()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("customer/products-with-category"))
                 .andExpect(model().attribute("products", productDTOs))

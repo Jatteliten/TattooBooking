@@ -36,7 +36,7 @@ class BookableDateServiceTest {
     private static final LocalTime TWELVE_O_CLOCK = LocalTime.of(12, 0);
 
     @AfterEach
-    void deleteAllData(){
+    void deleteAll(){
         bookableDateRepo.deleteAll();
     }
 

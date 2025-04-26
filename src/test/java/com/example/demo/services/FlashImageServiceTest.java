@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,16 +86,22 @@ class FlashImageServiceTest {
                 .build();
         ImageCategory imageCategoryTwo = ImageCategory.builder()
                 .category("testTwo")
-                .id(UUID.randomUUID())
                 .build();
 
-        FlashImage flashImage = FlashImage.builder()
-                .name("testImage")
+        FlashImage flashImageOne = FlashImage.builder()
+                .name("testImageOne")
                 .categories(List.of(imageCategoryOne))
                 .build();
-        flashImageRepo.save(flashImage);
+        FlashImage flashImageTwo = FlashImage.builder()
+                .name("testImageTwo")
+                .categories(List.of(imageCategoryTwo))
+                .build();
+        flashImageRepo.saveAll(List.of(flashImageOne, flashImageTwo));
 
-        assertTrue(flashImageService.getFlashImagesByCategory(imageCategoryTwo).isEmpty());
+        List<FlashImage> foundFlashImages = flashImageService.getFlashImagesByCategory(imageCategoryOne);
+
+        assertEquals(foundFlashImages.getFirst().getName(), flashImageOne.getName());
+        assertEquals(1, foundFlashImages.size());
     }
 
     @Test
@@ -119,10 +124,10 @@ class FlashImageServiceTest {
                 .url("test2")
                 .build();
 
-        List<FlashImageOnlyUrlDto> dtos = flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+        List<FlashImageOnlyUrlDto> DTOs = flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
                 List.of(flashImageOne, flashImageTwo));
 
-        assertEquals(flashImageOne.getUrl(), dtos.get(0).getUrl());
-        assertEquals(flashImageTwo.getUrl(), dtos.get(1).getUrl());
+        assertEquals(flashImageOne.getUrl(), DTOs.get(0).getUrl());
+        assertEquals(flashImageTwo.getUrl(), DTOs.get(1).getUrl());
     }
 }

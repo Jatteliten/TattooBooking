@@ -35,12 +35,12 @@ public class FlashImageService {
         flashImageRepo.delete(flashImage);
     }
 
-    @Cacheable(value = "flashImageById", key = "#id")
+    @Cacheable(value = "flashImageById")
     public FlashImage getFlashImageById(UUID id){
         return flashImageRepo.findById(id).orElse(null);
     }
 
-    @Cacheable(value = "flashImagesByCategory", key = "#imageCategory.id")
+    @Cacheable(value = "flashImagesByCategory")
     public List<FlashImage> getFlashImagesByCategory(ImageCategory imageCategory){
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }

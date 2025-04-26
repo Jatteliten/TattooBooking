@@ -40,9 +40,8 @@ class ImageCategoryServiceTest {
 
     @Test
     void saveImageCategory_shouldSaveImageCategory() {
-        ImageCategory imageCategory = new ImageCategory();
-
-        imageCategoryService.saveImageCategory(imageCategory);
+        imageCategoryRepo.deleteAll();
+        imageCategoryService.saveImageCategory(new ImageCategory());
 
         assertEquals(1, imageCategoryRepo.findAll().size());
     }

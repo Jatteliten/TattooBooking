@@ -4,6 +4,7 @@ import com.example.demo.dtos.bokablehourdtos.BookableHourForCalendarDto;
 import com.example.demo.model.BookableDate;
 import com.example.demo.model.BookableHour;
 import com.example.demo.repos.BookableHourRepo;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +28,11 @@ class BookableHourServiceTest {
     private static final LocalTime TEN_O_CLOCK = LocalTime.of(10, 0);
     private static final LocalTime ELEVEN_O_CLOCK = LocalTime.of(11, 0);
     private static final LocalTime TWELVE_O_CLOCK = LocalTime.of(12, 0);
+
+    @AfterEach
+    void deleteAll(){
+        bookableHourRepo.deleteAll();
+    }
 
     @Test
     void saveAllBookableHours_shouldSaveAllBookableHours(){

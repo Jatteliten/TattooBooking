@@ -71,7 +71,7 @@ public class BookableDatesController {
         }
         bookableDateService.saveListOfBookableDates(bookableDates);
 
-        model.addAttribute("landingPageSingleLineMessage",
+        model.addAttribute("successMessage",
                 bookableDates.size() + " dates added!");
         return "admin/admin-landing-page";
     }

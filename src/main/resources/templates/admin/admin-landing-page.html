@@ -9,9 +9,8 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<div th:if="${landingPageSingleLineMessage != null}">
-    <p th:text="${landingPageSingleLineMessage}"></p>
-</div>
+<p th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></p>
+<p th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></p>
 
 <div th:if="${bookingAdded != null}">
     <p th:text="${bookingAdded}"></p>
@@ -27,5 +26,6 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

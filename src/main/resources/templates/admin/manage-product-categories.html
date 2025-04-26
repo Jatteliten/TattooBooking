@@ -12,35 +12,57 @@
 <p th:if="${error != null}" th:text="${error}" class="text-danger"></p>
 <p th:if="${success != null}" th:text="${success}" class="text-success"></p>
 
-<div class="card">
-    <span class="card-header">Categories</span>
-    <div class="card-body">
-        <div th:if="${!categories.isEmpty()}">
-            <div th:each="category : ${categories}" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px">
-                <a th:href="@{/admin/products/products-by-category(category=${category.name})}">
-                    <button th:text="${category.name}" class="btn btn-outline-secondary"></button>
-                </a>
-                <span th:if="${category.getProducts() != null}" th:text="${'(' + category.getProducts().size() + ')'}"></span>
-                <span th:if="${category.getProducts() == null}">(0)</span>
-
-                <form th:if="${category.getProducts() == null or category.getProducts().isEmpty()}"
-                      th:action="@{/admin/products/delete-category}" method="post" style="margin: 0;">
-                    <input type="hidden" name="name" th:value="${category.name}">
-                    <button type="submit" class="btn btn-danger btn-sm" style="margin-left: 8px;">Delete</button>
-                </form>
-            </div>
+<div class="card-body">
+    <div th:if="${!categories.isEmpty()}" class="card">
+        <div class="card-header">Categories</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Products</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td>
+                        <span th:text="${category.name}"></span>
+                    </td>
+                    <td>
+                        <span th:if="${category.getProducts() != null}" th:text="${category.getProducts().size()}"></span>
+                        <span th:if="${category.getProducts() == null}">0</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/products/products-by-category(category=${category.name})}">
+                            <button class="btn btn-outline-secondary">Manage products</button>
+                        </a>
+                    </td>
+                    <td>
+                        <form th:if="${category.getProducts() == null or category.getProducts().isEmpty()}"
+                              th:action="@{/admin/products/delete-category}" method="post" style="margin: 0;">
+                            <input type="hidden" name="name" th:value="${category.name}">
+                            <button type="submit" class="btn btn-danger" style="margin-left: 8px;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-
-        <span th:if="${categories.isEmpty()}" class="text-danger">No categories exist..</span>
-
-
-        <form th:action="@{/admin/products/add-category}" method="post">
-            <label>
-                <input type="text" name="name">
-            </label>
-            <button type="submit" class="btn btn-success">Add category</button>
-        </form>
     </div>
+
+    <span th:if="${categories.isEmpty()}" class="text-danger">No categories exist..</span>
+
+
+    <form th:action="@{/admin/products/add-category}" method="post" style="margin-top:30px">
+        <label>
+            <input type="text" name="name" placeholder="Enter category name..">
+        </label>
+        <button type="submit" class="btn btn-success">Add category</button>
+    </form>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

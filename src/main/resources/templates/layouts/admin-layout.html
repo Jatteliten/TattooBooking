@@ -1,17 +1,35 @@
 <div th:fragment="header">
   <header>
     <div>
-      <nav class="navbar navbar-expand-md w-100 navbar-light bg-light front-page-navbar">
+      <nav class="navbar navbar-expand-md w-100 navbar-light bg-light" style="margin-bottom:20px">
           <div class="navbar-nav justify-content-between w-100">
-            <a class="nav-item nav-link active" th:href="@{/}">Home</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/customize/}">Customize Site</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/add-dates/}">Bookable dates</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/booking/book-tattoo}">Book Tattoo</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/booking/bookings}">View Bookings</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/images/image-categories}">Categories</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/images/view-flash-images}">Flash</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/customers/}">Customer Information</a>
-            <a class="nav-item nav-link active" th:href="@{/admin/products/}">Products</a>
+            <ul class="navbar-nav w-100 justify-content-between">
+              <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+              <li class="nav-item"><a class="nav-link" th:href="@{/admin/customize/}">Customize Site</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                  Booking
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" th:href="@{/admin/add-dates/}">Bookable dates</a></li>
+                  <li><a class="dropdown-item" th:href="@{/admin/booking/book-tattoo}">Book Tattoo</a></li>
+                  <li><a class="dropdown-item" th:href="@{/admin/booking/bookings}">View Bookings</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                  Images
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                  <li><a class="dropdown-item" th:href="@{/admin/images/image-categories}">Categories</a></li>
+                  <li><a class="dropdown-item" th:href="@{/admin/images/view-flash-images}">Flash</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a class="nav-link" th:href="@{/admin/customers/}">Customer Information</a></li>
+              <li class="nav-item"><a class="nav-link" th:href="@{/admin/products/}">Products</a></li>
+            </ul>
           </div>
       </nav>
     </div>

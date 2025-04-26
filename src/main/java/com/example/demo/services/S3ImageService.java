@@ -27,10 +27,13 @@ public class S3ImageService {
 
     private final S3Client s3Client;
     private final String bucketName;
+    private final String regionName;
 
-    public S3ImageService(S3Client s3Client, @Value("${aws.s3.bucket-name}") String bucketName) {
+    public S3ImageService(S3Client s3Client, @Value("${aws.s3.bucket-name}") String bucketName,
+                          @Value("${aws.region}") String regionName) {
         this.s3Client = s3Client;
         this.bucketName = bucketName;
+        this.regionName = regionName;
     }
 
     public String uploadImage(MultipartFile file, String folder) throws IOException {
@@ -52,7 +55,7 @@ public class S3ImageService {
                     RequestBody.fromInputStream(inputStream, Files.size(tempFile)));
         }
 
-        return "https://" + bucketName + ".s3.eu-north-1.amazonaws.com/" + s3Key;
+        return "https://" + bucketName + ".s3." + regionName + ".amazonaws.com/" + s3Key;
     }
 
 

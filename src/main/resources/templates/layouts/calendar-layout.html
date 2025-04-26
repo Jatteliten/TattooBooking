@@ -1,35 +1,18 @@
 <div th:fragment="calendar">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
 
-        td {
-            width: 14%;
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #ccc;
-            position: relative;
-        }
-
-        th {
-            text-align: center;
-        }
-    </style>
-
-    <table>
+    <table class="calendar-table">
         <tr>
-            <th>Mon</th>
-            <th>Tue</th>
-            <th>Wed</th>
-            <th>Thu</th>
-            <th>Fri</th>
-            <th>Sat</th>
-            <th class="text-danger">Sun</th>
+            <th class="calendar-table-header">Mon</th>
+            <th class="calendar-table-header">Tue</th>
+            <th class="calendar-table-header">Wed</th>
+            <th class="calendar-table-header">Thu</th>
+            <th class="calendar-table-header">Fri</th>
+            <th class="calendar-table-header">Sat</th>
+            <th class="calendar-table-header text-danger">Sun</th>
         </tr>
         <tr th:each="week : ${#numbers.sequence(0, days.size() / 7 - 1)}">
-            <td class="customer-calendar-column" th:each="i : ${#numbers.sequence(0, 6)}"
+            <td class="calendar-column"
+                th:each="i : ${#numbers.sequence(0, 6)}"
                 th:with="day=${days[week * 7 + i]}"
                 th:text="${day.date.dayOfMonth}"
                 th:classappend="${day.currentMonth ?
@@ -39,12 +22,7 @@
                                 (day.bookable ? 'available-hours':
                                     'not-bookable'))))
                                         : 'not-current-month'}"
-                th:attr="data-date=${day.date}, data-hours=${day.hours}"
-                onclick="showTooltip(event, this)"
-                onmouseover="showTooltip(event, this)"
-                onmousemove="moveTooltip(event)"
-                onmouseout="hideTooltip()"
-            >
+                th:attr="data-date=${day.date}, data-hours=${day.hours}">
             </td>
         </tr>
     </table>
@@ -57,7 +35,7 @@
         <div class="calendar-bottom-columns no-available-hours col-md-3 col-sm-6">Fullbokat</div>
     </div>
 
-    <div class="card" id="hoursDisplay"></div>
+    <div class="card tooltip-hidden" id="hoursDisplay"></div>
 
     <script src="/js/show-hours-tooltip-on-date-mouseover.js"></script>
 </div>

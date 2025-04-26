@@ -1,0 +1,198 @@
+package com.example.tattooPlatform.controller.customer;
+
+import com.example.tattooPlatform.dtos.productdtos.ProductWithNameDescriptionPriceImageUrlDto;
+import com.example.tattooPlatform.model.CustomerPageText;
+import com.example.tattooPlatform.model.FlashImage;
+import com.example.tattooPlatform.model.ImageCategory;
+import com.example.tattooPlatform.model.InstagramEmbed;
+import com.example.tattooPlatform.model.Product;
+import com.example.tattooPlatform.model.ProductCategory;
+import com.example.tattooPlatform.services.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(CustomerPageController.class)
+@AutoConfigureMockMvc(addFilters = false)
+class CustomerPageControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private CustomerPageTextService customerPageTextService;
+
+    @MockBean
+    private InstagramEmbedService instagramEmbedService;
+
+    @MockBean
+    private FlashImageService flashImageService;
+
+    @MockBean
+    private ImageCategoryService imageCategoryService;
+
+    @MockBean
+    private ProductCategoryService productCategoryService;
+
+    @MockBean
+    private ProductService productService;
+
+    @Test
+    void frontPage_withNews_displaysNews() throws Exception {
+        CustomerPageText customerPageText = CustomerPageText.builder()
+                .text("Latest news")
+                .build();
+
+        when(customerPageTextService.getLatestCustomerPageTextByPageAndSection("index", "latest-news"))
+                .thenReturn(customerPageText);
+
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attribute("frontPageNews", "Latest news"));
+    }
+
+    @Test
+    void frontPage_withoutNews_displaysDefaultMessage() throws Exception {
+        when(customerPageTextService.getLatestCustomerPageTextByPageAndSection("index", "latest-news"))
+                .thenReturn(null);
+
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"))
+                .andExpect(model().attribute("frontPageNews", "No news to report"));
+    }
+
+    @Test
+    void aboutMe_returnsAboutMePage() throws Exception {
+        mockMvc.perform(get("/about-me"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/about-me"));
+    }
+
+    @Test
+    void bookingForm_returnsBookingFormPage() throws Exception {
+        mockMvc.perform(get("/booking-form"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/booking-form"));
+    }
+
+    @Test
+    void portfolio_displaysPortfolio_ifInstagramEmbedLinkIsPresent() throws Exception{
+        when(instagramEmbedService.getLatestEmbed()).thenReturn(InstagramEmbed.builder().embeddedLink("test").build());
+        when(instagramEmbedService.generateEmbedHtmlFromUrl(Mockito.anyString())).thenReturn("test");
+
+        mockMvc.perform(get("/portfolio"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/portfolio"))
+                .andExpect(model().attribute("embedHtml", "test"));
+    }
+
+    @Test
+    void portfolio_displaysNoPortfolio_ifInstagramEmbedLinkIsNotPresent() throws Exception {
+        when(instagramEmbedService.getLatestEmbed()).thenReturn(null);
+
+        mockMvc.perform(get("/portfolio"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/portfolio"))
+                .andExpect(model().attribute("noEmbedLink", "No instagram post exists with portfolio.."));
+    }
+
+    @Test
+    void viewFlashCategories_returnsFlashCategories() throws Exception {
+        when(imageCategoryService.getAllImageCategories()).thenReturn(List.of());
+        when(imageCategoryService.filterImageCategoriesWithoutFlashImages(Mockito.anyList())).thenReturn(List.of());
+        when(imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(Mockito.anyList())).thenReturn(List.of());
+
+        mockMvc.perform(get("/flash"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/flash-categories"))
+                .andExpect(model().attributeExists("categories"));
+    }
+
+    @Test
+    void viewFlashesWithCategories_returnsAvailableFlashPage_whenFlashImagesExist() throws Exception {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .category("testCategory")
+                .flashImages(List.of(new FlashImage()))
+                .build();
+
+        when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
+        when(flashImageService.getFlashImagesByCategory(imageCategory)).thenReturn(List.of(new FlashImage()));
+        when(flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(Mockito.anyList())).thenReturn(List.of());
+
+        mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/available-flash-with-category"))
+                .andExpect(model().attributeExists("category"))
+                .andExpect(model().attributeExists("flashes"));
+    }
+
+    @Test
+    void viewFlashesWithCategories_returnsErrorPage_whenFlashImageListIsEmpty() throws Exception {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .category("testCategory")
+                .flashImages(List.of())
+                .build();
+
+        when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
+
+        mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error"));
+    }
+
+
+    @Test
+    void viewFrequentlyAskedQuestions_returnsFaqPage() throws Exception {
+        when(customerPageTextService.getCustomerPageTextListByPage("frequently-asked-questions"))
+                .thenReturn(List.of());
+
+        mockMvc.perform(get("/frequently-asked-questions"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/frequently-asked-questions"))
+                .andExpect(model().attributeExists("questions"));
+    }
+
+    @Test
+    void viewProductCategories_returnsProductCategoriesPage() throws Exception {
+        when(productCategoryService.getAllProductCategories()).thenReturn(List.of());
+        when(productCategoryService.filterOutProductCategoriesWithoutProducts(Mockito.anyList())).thenReturn(List.of());
+        when(productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(Mockito.anyList())).thenReturn(List.of());
+
+        mockMvc.perform(get("/products"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/product-categories"))
+                .andExpect(model().attributeExists("categories"));
+    }
+
+    @Test
+    void viewProductsByCategory_displaysProducts_fromCategory() throws Exception {
+        ProductCategory productCategory = ProductCategory.builder()
+                .name("testCategory")
+                .products(List.of(new Product()))
+                .build();
+        List<ProductWithNameDescriptionPriceImageUrlDto> productDTOs =
+                List.of(new ProductWithNameDescriptionPriceImageUrlDto());
+
+        when(productCategoryService.getProductCategoryByName("testCategory")).thenReturn(productCategory);
+        when(productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
+                productCategory.getProducts())).thenReturn(productDTOs);
+
+        mockMvc.perform(get("/products/" + productCategory.getName()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/products-with-category"))
+                .andExpect(model().attribute("products", productDTOs))
+                .andExpect(model().attribute("category", productCategory.getName()));
+    }
+}

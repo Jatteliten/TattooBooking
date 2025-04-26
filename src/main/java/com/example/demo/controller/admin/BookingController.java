@@ -201,13 +201,13 @@ public class BookingController {
         LocalDateTime endDateAndTime = date.atTime(endTime);
 
         if(startTime.equals(LocalTime.of(0,0)) || endTime.equals(LocalTime.of(23, 59))){
-            model.addAttribute("landingPageSingleLineMessage",
+            model.addAttribute("errorMessage",
                     "Can't set start time to 00:00 or end time to 23:59");
             return "admin/admin-landing-page";
         }
 
         if(bookingService.checkIfBookingOverlapsWithAlreadyBookedHours(startDateAndTime, endDateAndTime)){
-            model.addAttribute("landingPageSingleLineMessage",
+            model.addAttribute("errorMessage",
                     "Can't book at already booked hours");
             return "admin/admin-landing-page";
         }
@@ -248,7 +248,7 @@ public class BookingController {
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{
-            model.addAttribute("landingPageSingleLineMessage",
+            model.addAttribute("errorMessage",
                     "Something went wrong with non existing customer");
         }
 
@@ -263,7 +263,7 @@ public class BookingController {
                 customer, booking));
 
         if(previousBookings.isEmpty()){
-            model.addAttribute("landingPageSingleLineMessage",
+            model.addAttribute("errorMessage",
                     "Customer does not have any previous bookings");
             return "admin/admin-landing-page";
         }
@@ -308,7 +308,7 @@ public class BookingController {
                 bookableDateService.setBookableDateToFullyBookedIfAllHoursAreBooked(bookableDate);
             }
         }else{
-            model.addAttribute("landingPageSingleLineMessage",
+            model.addAttribute("errorMessage",
                     "Something went wrong with non existing customer");
         }
 

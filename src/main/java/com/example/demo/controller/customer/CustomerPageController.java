@@ -22,13 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CustomerPageController {
     @Value("${artist.mail}")
     private String artistMail;
-
     @Value("${artist.instagram}")
     private String artistInstagram;
-
     @Value("${artist.tiktok}")
     private String artistTiktok;
-
     @Value("${artist.facebook.link}")
     private String artistFacebookLink;
 
@@ -141,6 +138,12 @@ public class CustomerPageController {
                         productCategory.getProducts()));
         model.addAttribute("category", productCategory.getName());
         return "customer/products-with-category";
+    }
+
+    @GetMapping("/mail-confirmation")
+    public String mailConfirmation(Model model, @ModelAttribute("mailSent") Boolean mailSent){
+        model.addAttribute("mailSent", mailSent);
+        return "customer/mail-confirmation";
     }
 
     @ModelAttribute("artistMail")

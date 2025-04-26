@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Bokningsförfrågan</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+</head>
+<body class="container">
+<div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
+
+<div th:if="${mailSent}" class="centered">
+  <h2>Bokningsförfrågan skickad!</h2>
+  <p>Tack för din förfrågan. Jag återkommer så snart jag kan.</p>
+</div>
+
+<div th:if="${!mailSent}" class="centered">
+  <h2>Fel!</h2>
+  <p>Det gick inte att skicka din förfrågan. Var vänlig försök igen senare.</p>
+</div>
+
+<div th:replace="~{layouts/customer-layout :: footer}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

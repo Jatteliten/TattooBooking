@@ -10,6 +10,7 @@ import com.example.demo.controller.admin.ProductController;
 import com.example.demo.controller.authorization.AuthController;
 import com.example.demo.controller.customer.CalendarController;
 import com.example.demo.controller.customer.CustomerPageController;
+import com.example.demo.controller.customer.MailController;
 import com.example.demo.controller.error.MyErrorController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ class Demo3ApplicationTests {
     private CustomerPageController customerPageController;
     @Autowired
     private MyErrorController myErrorController;
+    @Autowired
+    private MailController mailController;
 
     @Test
     void contextLoads() {
@@ -59,6 +62,7 @@ class Demo3ApplicationTests {
         assertNotNull(calendarController);
         assertNotNull(customerPageController);
         assertNotNull(myErrorController);
+        assertNotNull(mailController);
     }
 
 }

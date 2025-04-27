@@ -15,11 +15,11 @@
     <form class="booking-form" id="bookingForm" method="POST" action="/send-booking-request">
       <input type="hidden" name="_csrf" value="${_csrf.token}" />
       <div class="form-group">
-        <label for="name">Namn *</label>
+        <label for="name">Namn (*)</label>
         <input type="text" class="form-control" name="name" id="name" required>
       </div>
       <div class="form-group">
-        <label for="phone">Telefon *</label>
+        <label for="phone">Telefon (*)</label>
         <input type="tel" class="form-control" name="phone" id="phone" required>
       </div>
       <div class="form-group">
@@ -33,9 +33,12 @@
         </div>
         <input type="text" class="form-control" name="instagram" id="instagram" aria-describedby="at">
       </div>
-      <div id="contactError" class="text-danger mb-2" style="display: none;"></div>
+      <div class="form-group">
+        <label for="pronoun">Föredraget pronomen</label>
+        <input type="text" class="form-control" name="pronoun" id="pronoun">
+      </div>
       <label for="size">Storlek</label>
-      <div class="input-group mb-3">
+      <div class="input-group">
         <input type="number" class="form-control" name="size" id="size" aria-describedby="cm">
         <div class="input-group-append">
           <span class="input-group-text" id="cm">cm</span>
@@ -49,8 +52,12 @@
         <label for="inspiration">Länkar till inspirations-bilder (rå länk till bild, länk till google drive etc)</label>
         <input type="text" class="form-control" name="inspiration" id="inspiration" placeholder="https://">
       </div>
-      <br/>
-      <span>* Obligatorisk</span><br>
+      <div class="form-group">
+        <label for="misc">Övrigt</label>
+        <input type="text" class="form-control" name="misc" id="misc">
+      </div>
+      <br>
+      <p>(*)Obligatorisk</p>
       <button type="submit" class="btn btn-success">Skicka</button>
     </form>
   </div>
@@ -64,7 +71,8 @@
     <p class="card-text">
       Vid varje bokning tas en deposition i förhand på 500kr.<br/>
       Utan betalad deposition är inte en bokning komplett och anses därav inte bekräftad.<br/>
-      Betald deposition dras av på slutpriset av slutfört jobb.
+      Betald deposition dras av på slutpriset av slutfört jobb.<br/>
+      Vid avbokning mindre än 24 timmar innan bokning betalas ej deposition tillbaka.
     </p>
 
     <h5 class="card-title">Touch up</h5>

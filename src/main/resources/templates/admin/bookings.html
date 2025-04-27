@@ -56,8 +56,11 @@
                 <a th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}">
                 </a>
             </td>
-            <td th:if="${booking.customer != null}">
-                <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}" th:text="${booking.customer.name}"></a>
+            <td>
+                <a th:if="${booking.customer != null}"
+                   th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
+                   th:text="${booking.customer.name}"></a>
+                <span th:if="${booking.customer == null}">Customer deleted</span>
             </td>
         </tr>
         </tbody>

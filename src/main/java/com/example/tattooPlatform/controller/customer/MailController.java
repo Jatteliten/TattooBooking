@@ -31,9 +31,11 @@ public class MailController {
             @RequestParam String phone,
             @RequestParam(required = false) String mail,
             @RequestParam(required = false) String instagram,
+            @RequestParam(required = false) String pronoun,
             @RequestParam(required = false) String size,
             @RequestParam(required = false) String placement,
             @RequestParam(required = false) String inspiration,
+            @RequestParam(required = false) String misc,
             RedirectAttributes redirectAttributes){
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -44,12 +46,14 @@ public class MailController {
             helper.setSubject("Bokningsförfrågan: " + name);
 
             String htmlContent = "<p><b>Namn:</b> " + name + "</p>"
+                    + (pronoun != null && !pronoun.isEmpty() ? "<p><b>Pronoun:</b> " + pronoun + "</p>" : "")
                     + "<p><b>Telefon:</b> " + phone + "</p>"
                     + (mail != null && !mail.isEmpty() ? "<p><b>Email:</b> " + mail + "</p>" : "")
                     + (instagram != null && !instagram.isEmpty() ? "<p><b>Instagram:</b> @" + instagram + "</p>" : "")
                     + (size != null && !size.isEmpty() ? "<p><b>Storlek:</b> " + size + " cm</p>" : "")
                     + (placement != null && !placement.isEmpty() ? "<p><b>Placering:</b> " + placement + "</p>" : "")
-                    + (inspiration != null && !inspiration.isEmpty() ? "<p><b>Inspiration:</b> <a href='" + inspiration + "'>" + inspiration + "</a></p>" : "");
+                    + (inspiration != null && !inspiration.isEmpty() ? "<p><b>Inspiration:</b> <a href='" + inspiration + "'>" + inspiration + "</a></p>" : "")
+                    + (misc != null && !misc.isEmpty() ? "<p><b>Övrigt:</b> " + misc + "</p>" : "");
 
             helper.setText(htmlContent, true);
 

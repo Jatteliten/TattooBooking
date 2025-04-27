@@ -48,6 +48,7 @@
                 <a th:if="${booking.touchUp}" th:href="@{/admin/booking/booking-information(id=${booking.id})}"
                    th:text="'(' + ${booking.previousBooking.date.getYear() + ' ' + booking.previousBooking.date.getDayOfMonth() + ' '
                                     + #strings.capitalize(booking.previousBooking.date.getMonth().toString().toLowerCase())} + ')'"
+                   class="link-success"
                    style="white-space: nowrap;">
                 </a>
             </td>

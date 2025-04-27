@@ -350,4 +350,35 @@ class CustomerServiceTest {
         assertFalse(bookingsForTouchUp.contains(previousTouchedUpBooking));
         assertTrue(bookingsForTouchUp.contains(previousNonTouchedUpBooking));
     }
+
+    @Test
+    void calculateCustomersTotalPaid_shouldReturnCorrectAmount(){
+        int price = 1000;
+        Customer customer = Customer.builder()
+                .bookings(
+                        List.of(Booking.builder()
+                                .finalPrice(price/2)
+                                .build(),
+                        Booking.builder()
+                                .finalPrice(price/2)
+                                .build()))
+                .build();
+
+        assertEquals(price, customerService.calculateCustomersTotalPaid(customer));
+    }
+
+    @Test
+    void calculateCustomersTotalPaid_shouldNotInclude_bookingsWithoutFinalPrice(){
+        int price = 1000;
+        Customer customer = Customer.builder()
+                .bookings(
+                        List.of(Booking.builder()
+                                        .finalPrice(price/2)
+                                        .build(),
+                                Booking.builder()
+                                        .build()))
+                .build();
+
+        assertEquals(price/2, customerService.calculateCustomersTotalPaid(customer));
+    }
 }

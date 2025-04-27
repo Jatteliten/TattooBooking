@@ -35,14 +35,31 @@
         <div class="card-header">
             Bookings on this date
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item" th:each="booking : ${bookingsAtDate}">
-                <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-                    <span th:text="${#temporals.format(booking.date, 'HH:mm')}  + '-' + ${#temporals.format(booking.endTime, 'HH:mm')} + ' | ' + ${booking.customer.name}"
-                          class="text-success"></span>
-                </a>
-            </li>
-        </ul>
+
+        <table th:if="${bookingsAtDate != null}" class="table">
+            <thead>
+            <tr>
+                <th scope="col">Hours</th>
+                <th scope="col">Customer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="booking : ${bookingsAtDate}">
+                <td>
+                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                       th:text="${#temporals.format(booking.date, 'HH:mm')} + '-' + ${#temporals.format(booking.endTime, 'HH:mm')}"
+                        target="_blank">
+                    </a>
+                </td>
+                <td th:if="${booking.customer != null}">
+                    <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
+                       th:text="${booking.customer.name}"
+                       target="_blank">
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="card" style="width: 18rem; margin-top:10px; margin-bottom:10px">

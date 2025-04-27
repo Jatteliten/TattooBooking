@@ -9,20 +9,58 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<p th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></p>
-<p th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></p>
+<h5 th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></h5>
+<h5 th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></h5>
+
+<div th:if="${bookableDates != null}">
+    <div class="card">
+        <p class="card-header">Dates</p>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Hours</th>
+                        <th scope="col">Touch up</th>
+                        <th scope="col">Drop in</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="date: ${bookableDates}">
+                        <td>
+                            <a th:href="@{/admin/add-dates/change-bookable-date}" th:text="${date.date}"></a>
+                        </td>
+                        <td>
+                            <span th:each="hour: ${date.bookableHours}" th:text="${hour.hour} + ' '"></span>
+                        </td>
+                        <td>
+                            <span th:if="${date.touchUp}">&#10003;</span>
+                        </td>
+                        <td>
+                            <span th:if="${date.dropIn}">&#10003;</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <div th:if="${bookingAdded != null}">
-    <p th:text="${bookingAdded}"></p>
-    <div th:if="${bookableDate != null}">
-        Bookable hours available:
-        <span th:each="time : ${bookableDate.getBookableHours()}"
-              th:text="${time.hour} + ' '"
-              th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
-        <br>
-        <a th:href="@{/admin/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
-            <button class="btn btn-secondary">Change available hours</button>
-        </a>
+    <div class="card">
+        <div th:if="${bookableDate != null}">
+            <p class="card-header">Bookable hours on current date</p>
+            <div class="card-body">
+                <span th:each="time : ${bookableDate.getBookableHours()}"
+                      th:text="${time.hour} + ' '"
+                      th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'"></span>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/admin/add-dates/change-bookable-date(date=${bookableDate.getDate()})}">
+                    <button class="btn btn-secondary">Change available hours</button>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -9,7 +9,6 @@ import com.example.tattooPlatform.dtos.bookabledatedtos.BookableDateForCalendarD
 import com.example.tattooPlatform.model.Booking;
 import com.example.tattooPlatform.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -25,12 +24,6 @@ public class BookableDateService {
 
     private final BookableDateRepo bookableDateRepo;
     private final BookableHourService bookableHourService;
-
-    @Value("${dropin.hour}")
-    private int dropInStartHour;
-
-    @Value("${dropin.minute}")
-    private int dropInStartMinute;
 
     public BookableDateService(BookableDateRepo bookableDateRepo, BookableHourService bookableHourService){
         this.bookableDateRepo = bookableDateRepo;
@@ -194,17 +187,13 @@ public class BookableDateService {
                 bookableDate.setDropIn(false);
             }
 
-            if(!bookableDate.isDropIn() && entry.getHours() != null){
+            if(entry.getHours() != null){
                 bookableDate.setBookableHours(entry.getHours().stream()
                         .map(hour -> BookableHour.builder()
                                 .hour(hour)
                                 .booked(true)
                                 .build())
                         .toList());
-            }else if(bookableDate.isDropIn()){
-                bookableDate.setBookableHours(List.of(BookableHour.builder()
-                        .hour(LocalTime.of(dropInStartHour, dropInStartMinute))
-                        .build()));
             }
 
             if(bookableDate.getBookableHours() != null){

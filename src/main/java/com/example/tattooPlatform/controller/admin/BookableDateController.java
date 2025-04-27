@@ -23,12 +23,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/add-dates")
 @PreAuthorize("hasAuthority('Admin')")
-public class BookableDatesController {
+public class BookableDateController {
     private final BookableDateService bookableDateService;
     private final CalendarService calendarService;
     private final BookingService bookingService;
 
-    public BookableDatesController(BookableDateService bookableDateService, CalendarService calendarService, BookingService bookingService){
+    public BookableDateController(BookableDateService bookableDateService, CalendarService calendarService, BookingService bookingService){
         this.bookableDateService = bookableDateService;
         this.calendarService = calendarService;
         this.bookingService = bookingService;
@@ -72,7 +72,8 @@ public class BookableDatesController {
         bookableDateService.saveListOfBookableDates(bookableDates);
 
         model.addAttribute("successMessage",
-                bookableDates.size() + " dates added!");
+                bookableDates.size() + " date(s) added!");
+        model.addAttribute("bookableDates", bookableDates);
         return "admin/admin-landing-page";
     }
 

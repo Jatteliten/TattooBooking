@@ -530,6 +530,7 @@ class BookableDateServiceTest {
                         DateEntry.builder()
                                 .date(TODAY.plusDays(1))
                                 .type("dropin")
+                                .hours(List.of(TWELVE_O_CLOCK))
                                 .build()))
                 .build();
         List<BookableDate> bookableDates = bookableDateService.createBookableDatesFromDateForm(dateForm);
@@ -543,11 +544,12 @@ class BookableDateServiceTest {
     }
 
     @Test
-    void createBookableDatesFromDateForm_shouldSetDropinToCorrectStartHour(){
+    void createBookableDatesFromDateForm_shouldSetDropInToCorrectStartHour(){
         DateForm dateForm = DateForm.builder()
                 .dateList(List.of(DateEntry.builder()
                                 .date(TODAY.plusDays(1))
                                 .type("dropin")
+                                .hours(List.of(TWELVE_O_CLOCK))
                                 .build()))
                 .build();
         List<BookableDate> bookableDates = bookableDateService.createBookableDatesFromDateForm(dateForm);

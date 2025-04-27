@@ -1,7 +1,7 @@
 package com.example.tattooPlatform;
 
 import com.example.tattooPlatform.controller.admin.AdminController;
-import com.example.tattooPlatform.controller.admin.BookableDatesController;
+import com.example.tattooPlatform.controller.admin.BookableDateController;
 import com.example.tattooPlatform.controller.admin.BookingController;
 import com.example.tattooPlatform.controller.admin.CustomerController;
 import com.example.tattooPlatform.controller.admin.CustomizeWebPageController;
@@ -27,7 +27,7 @@ class TattooPlatformTests {
     @Autowired
     private AdminController adminController;
     @Autowired
-    private BookableDatesController bookableDatesController;
+    private BookableDateController bookableDateController;
     @Autowired
     private BookingController bookingController;
     @Autowired
@@ -52,7 +52,7 @@ class TattooPlatformTests {
     @Test
     void contextLoads() {
         assertNotNull(adminController);
-        assertNotNull(bookableDatesController);
+        assertNotNull(bookableDateController);
         assertNotNull(bookingController);
         assertNotNull(customerController);
         assertNotNull(customizeWebPageController);

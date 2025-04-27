@@ -230,11 +230,11 @@ public class BookingController {
             }
 
             bookingService.saveBooking(booking);
-            model.addAttribute("bookingAdded", bookingService.createBookingSuccessMessage(
+            model.addAttribute("successMessage", bookingService.createBookingSuccessMessage(
                     customerToBook, startTime, endTime, date));
             model.addAttribute("bookableDate", bookableDate);
 
-            if(bookableDate != null){
+            if(bookableDate != null && !bookableDate.isDropIn()){
                 bookableHourService.setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
                         bookableDate, startTime, endTime);
                 bookableHourService.saveAllBookableHours(bookableDate.getBookableHours());

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
@@ -61,7 +62,7 @@ class CustomerServiceTest {
 
         customerService.deleteCustomerAndChangeAssociatedBookings(customer);
 
-        verify(bookingService).deleteFutureBookingsAndSetPastBookingsToNull(customer.getBookings());
+        verify(bookingService).deleteFutureBookingsAndSetPastBookingsToNull(anyList());
     }
 
     @Test

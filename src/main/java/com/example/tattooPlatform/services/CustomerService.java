@@ -31,6 +31,7 @@ public class CustomerService {
 
         if(customer.getBookings() != null && !customer.getBookings().isEmpty()){
             bookingService.deleteFutureBookingsAndSetPastBookingsToNull(customer.getBookings());
+            customer.setBookings(null);
         }
 
         customerRepo.delete(customer);
@@ -79,7 +80,7 @@ public class CustomerService {
 
         for(Booking customerBooking: customer.getBookings()){
             Booking previousBooking = customerBooking.getPreviousBooking();
-            if(previousBooking != null && !eligibleBookings.contains(previousBooking)){
+            if(previousBooking != null){
                 eligibleBookings.remove(previousBooking);
             }
             if(customerBooking.isTouchUp() || customerBooking.getDate().isAfter(booking.getDate())){

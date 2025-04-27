@@ -36,7 +36,7 @@
             Bookings on this date
         </div>
 
-        <table th:if="${bookingsAtDate != null}" class="table">
+        <table th:if="${bookingsAtDate != null} and ${!bookingsAtDate.isEmpty()}" class="table">
             <thead>
             <tr>
                 <th scope="col">Hours</th>

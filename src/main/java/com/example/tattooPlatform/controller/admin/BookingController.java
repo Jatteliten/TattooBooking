@@ -143,20 +143,13 @@ public class BookingController {
 
     @GetMapping("/book-tattoo-at-date")
     public String bookTattooWithGivenDate(@RequestParam LocalDate date, Model model){
-        model.addAttribute("selectedDate", date);
-        model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
-                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
     }
 
     @GetMapping("/search-customer")
     public String searchCustomer(@RequestParam String searchInput, @RequestParam LocalDate date,
                                  Model model){
-        model.addAttribute("selectedDate", date);
-        model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
-                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
         Customer customer = customerService.getCustomerByAnyField(searchInput);
-
         model.addAttribute("searchResult",
                 Objects.requireNonNullElse(customer, "No customer found"));
 
@@ -338,6 +331,9 @@ public class BookingController {
     }
 
     private String addBookableHoursToModelIfBookableDateExistsByDate(LocalDate date, Model model) {
+        model.addAttribute("bookingsAtDate", bookingService.sortBookingsByStartDateAndTime(
+                bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date))));
+        model.addAttribute("selectedDate", date);
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
         if(bookableDate != null) {
             model.addAttribute("bookableHours", bookableDate.getBookableHours());

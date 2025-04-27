@@ -12,7 +12,7 @@
 <h4 th:if="${booking.touchUp == true}" class="text-success">Touch up</h4>
 <p th:text="${'Time: ' + #temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></p>
 <span>Customer: </span>
-<a th:href="@{/admin/customers/customer(id=${booking.customer.id})}">
+<a th:if="${booking.customer != null}" th:href="@{/admin/customers/customer(id=${booking.customer.id})}">
     <span th:text="${booking.customer.name}"></span>
 </a>
 <p th:if="${booking.touchUp == true}">

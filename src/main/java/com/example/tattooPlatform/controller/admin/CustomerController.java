@@ -70,6 +70,7 @@ public class CustomerController {
         if(customer != null){
             customer.setBookings(customerService.sortCustomerBookings(customer).reversed());
             model.addAttribute("customer", customer);
+            model.addAttribute("totalPaid", customerService.calculateCustomersTotalPaid(customer));
         }else{
             model.addAttribute("customerFindError", errorMessage);
         }

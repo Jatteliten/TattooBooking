@@ -27,7 +27,7 @@
                            th:text="${#temporals.format(booking.date, 'HH:mm')} + '-' + ${#temporals.format(booking.endTime, 'HH:mm')}">
                         </a>
                     </td>
-                    <td>
+                    <td th:if="${booking.customer != null}">
                         <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
                             th:text="${booking.customer.name}"></a>
                     </td>

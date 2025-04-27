@@ -94,4 +94,11 @@ public class CustomerService {
         return bookingService.sortBookingsByStartDateAndTime(customer.getBookings());
     }
 
+    public int calculateCustomersTotalPaid(Customer customer){
+        return customer.getBookings()
+                .stream()
+                .mapToInt(Booking::getFinalPrice)
+                .sum();
+    }
+
 }

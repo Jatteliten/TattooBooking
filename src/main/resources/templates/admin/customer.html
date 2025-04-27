@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>Customers</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin-style.css">
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
@@ -73,36 +73,40 @@
         </div>
     </div>
     <div th:if="${customer != null}" class="card">
-        <div class="card-header" th:text="${customer.name}"></div>
-        <table th:if="${customer.bookings.size()} > 0" class="table">
+        <h5 class="card-header" th:text="${customer.name}"></h5>
+        <p class="card-header">Bookings</p>
+        <table th:if="${customer.bookings.size()} > 0" class="table table-striped table-sm">
             <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Notes</th>
-                <th scope="col">Touch up</th>
-                <th scope="col">Previous session</th>
-            </tr>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Hours</th>
+                    <th scope="col">Notes</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="booking : ${customer.bookings}">
-                <td>
-                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
-                       th:text="${#temporals.format(booking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.endTime, 'HH:mm')}">
-                    </a>
-                </td>
-                <td>
-                    <p th:if="${booking.notes != null}" th:text="${booking.notes}"></p>
-                </td>
-                <td>
-                    <p th:if="${booking.touchUp}" class="text-success">Yes</p>
-                    <p th:if="${!booking.touchUp}" class="text-danger">No</p>
-                </td>
-                <td>
-                    <a th:if="${booking.touchUp}" th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}"
-                       th:text="${#temporals.format(booking.previousBooking.date, 'dd/MM | HH:mm') + '-' + #temporals.format(booking.previousBooking.endTime, 'HH:mm')}">
-                    </a>
-                </td>
-            </tr>
+                <tr th:each="booking : ${customer.bookings}" th:class="${booking.touchUp} ? 'table-warning' : 'table-light'">
+                    <td>
+                        <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                           th:text="${booking.date.getYear() + ' ' + booking.date.getDayOfMonth() + ' '
+                                + #strings.capitalize(booking.date.getMonth().toString().toLowerCase())}"
+                            style="white-space: nowrap;">
+                        </a>
+                        <br th:if="${booking.touchUp}">
+                        <a th:if="${booking.touchUp}" th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                           th:text="'(' + ${booking.previousBooking.date.getYear() + ' ' + booking.previousBooking.date.getDayOfMonth() + ' '
+                                + #strings.capitalize(booking.previousBooking.date.getMonth().toString().toLowerCase())} + ')'"
+                            style="white-space: nowrap;">
+                        </a>
+                    </td>
+                    <td>
+                        <a th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"
+                           style="white-space: nowrap;">
+                        </a>
+                    </td>
+                    <td>
+                        <p th:if="${booking.notes != null}" th:text="${booking.notes}"></p>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div th:if="${customer.bookings.size()} == 0">
@@ -111,7 +115,9 @@
 
         <br>
 
-        <form th:action="@{/admin/customers/delete-customer}" method="post">
+        <form th:action="@{/admin/customers/delete-customer}" method="post"
+              onsubmit="return confirm('Are you sure you want to delete this customer?\n' +
+               'This will delete every image and future session with the customer.')">
             <input type="hidden" name="customerId" th:value="${customer.id}">
             <button type="submit" class="btn btn-danger">Delete customer</button>
         </form>

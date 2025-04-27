@@ -9,7 +9,7 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div class="customer-page-margin">
+<div class="page-margin">
   <div class="container">
     <h5>Flashkategorier</h5>
     <div th:if="${categories != null}" th:each="category : ${categories}">

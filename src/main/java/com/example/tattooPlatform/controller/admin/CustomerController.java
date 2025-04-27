@@ -68,7 +68,7 @@ public class CustomerController {
 
     public String populateModelIfCustomerExists(Customer customer, String errorMessage, Model model){
         if(customer != null){
-            customer.setBookings(customerService.sortCustomerBookings(customer));
+            customer.setBookings(customerService.sortCustomerBookings(customer).reversed());
             model.addAttribute("customer", customer);
         }else{
             model.addAttribute("customerFindError", errorMessage);

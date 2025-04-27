@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <title>Customize Latest News</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin-style.css">
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
@@ -33,7 +33,7 @@
   <div class="card">
     <div class="card-header" th:text="${question.section}">
     </div>
-    <div class="card-body" th:text="${question.text}"></div>
+    <div class="card-body" th:text="${question.text}" style="white-space: pre-line"></div>
     <form th:action="@{/admin/customize/delete-frequently-asked-question}" method="post">
       <input type="hidden" name="id" th:value="${question.id}">
       <button type="submit" class="btn btn-danger" style="width:100%">Remove question</button>

@@ -9,13 +9,13 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div th:if="${categories != null}" class="customer-page-margin">
+<div th:if="${categories != null}" class="page-margin">
   <div class="container">
     <h5>Produktkategorier</h5>
     <div th:each="category: ${categories}">
       <div class="card-body">
         <a th:href="@{/products/{categoryName}(categoryName=${category.name})}">
-          <button type="submit" class="btn primary-pink-background text-black" th:text="${category.name}" style="width:100%"></button>
+          <button type="submit" class="btn primary-pink-background text-black" th:text="${category.name}" style="width:100%; margin-bottom: 10px;"></button>
         </a>
       </div>
     </div>

@@ -14,53 +14,25 @@
 .tertiary-pink-background{
     background-color: var(--tertiary-pink);
 }
-.page-margin{
-    margin-right: 12px;
-    margin-left: 12px;
+.top-padded-body{
+    padding-top: 5px;
 }
 .centered{
     margin: auto;
     text-align: center;
-}
-.front-page-navbar{
-    padding-left: 50px;
-    padding-right: 50px;
-    margin-bottom: 20px;
-}
-.front-page-card-text {
-    white-space: pre-line;
-}
-.logo{
-    padding-top: 10px;
-    margin: auto;
-}
-@media (min-width: 768px) {
-    .logo {
-        width: 100%;
-    }
-}
-@media (min-width: 992px) {
-    .logo {
-        width: 75%;
-    }
-}
-.booking-form-card{
-    display: flex;
-    margin-bottom: 20px;
-}
-.booking-form-body{
-    text-align: left;
-    padding: 10px;
-}
-.info-item{
-    margin-right: 8px;
-    margin-bottom: 10px;
 }
 .time-group {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
+}
+.confirm-date-button{
+    margin-top: 20px;
+}
+#dateInputs{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 .no-available-hours {
     color: #860000;
@@ -150,6 +122,10 @@
     padding: 0;
 }
 
+.booking-buttons{
+    margin-top: 10px;
+}
+
 .instagram-outer-container {
     opacity: 0;
     transition: opacity 0.4s ease-in-out;
@@ -182,31 +158,8 @@
     opacity: 1;
 }
 
-.spinner-border.custom-spinner{
-    color: var(--tertiary-pink);
-}
-
-.spinner-loading-text{
-    color: var(--quaternary-pink);
-    font-weight: bold;
-    font-size: 20px;
-    margin-left: 10px;
-    margin-bottom: 2px;
-}
-
 .hidden {
     display: none;
-}
-.product-header{
-    margin-bottom: 10px;
-    width:100%;
-    margin-left: auto;
-    margin-right: auto;
-}
-.product-body {
-    width:100%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .modal-body > .img-fluid {
@@ -215,18 +168,16 @@
     margin-right: auto;
 }
 
-.btn.primary-pink-background:hover {
-    background-color: var(--tertiary-pink)
+.btn-xs{
+    padding: .25rem .4rem;
+    font-size: .875rem;
+    line-height: .5;
+    border-radius: .2rem;
 }
 
-.footer-font {
-    color: var(--tertiary-pink);
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-.footer-font:hover{
-    color: var(--quaternary-pink);
+.fifteen-px-margin-top-bottom{
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .accordion-button:not(.collapsed) {

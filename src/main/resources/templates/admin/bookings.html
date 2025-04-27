@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>Bookings</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin-style.css">
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
@@ -21,21 +21,46 @@
     <button type="submit" class="btn btn-success booking-buttons btn-sm">Submit</button>
 </form>
 
+<br>
+
 <div th:if="${errorMessage != null}">
     <p th:text="${errorMessage}" class="text-danger"></p>
 </div>
-
-<div class="upcoming-bookings" th:each="booking:${upcomingBookings}">
-    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}">
-        <span th:text="|${#temporals.format(booking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.endTime, 'HH:mm')} : ${booking.customer.name}|"
-              class="text-success"></span>
-    </a>
-    <span th:if="${booking.touchUp == true}">(Touch up on: </span>
-    <a th:if="${booking.touchUp == true}" th:href="@{/admin/booking/booking-information(id=${booking.previousBooking.id})}">
-        <span th:text="|${#temporals.format(booking.previousBooking.date, 'dd/MM | HH:mm')} - ${#temporals.format(booking.previousBooking.endTime, 'HH:mm')}|"></span>
-    </a>
-
-    <span th:if="${booking.touchUp == true}">)</span>
+<div th:if="${upcomingBookings != null}" class="card">
+    <h4 class="card-header">Bookings</h4>
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Hours</th>
+            <th scope="col">Customer</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="booking : ${upcomingBookings}" th:class="${booking.touchUp} ? 'table-warning' : 'table-light'">
+            <td>
+                <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                   th:text="${booking.date.getYear() + ' ' + booking.date.getDayOfMonth() + ' '
+                                    + #strings.capitalize(booking.date.getMonth().toString().toLowerCase())}"
+                   style="white-space: nowrap;">
+                </a>
+                <br th:if="${booking.touchUp}">
+                <a th:if="${booking.touchUp}" th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                   th:text="'(' + ${booking.previousBooking.date.getYear() + ' ' + booking.previousBooking.date.getDayOfMonth() + ' '
+                                    + #strings.capitalize(booking.previousBooking.date.getMonth().toString().toLowerCase())} + ')'"
+                   style="white-space: nowrap;">
+                </a>
+            </td>
+            <td>
+                <a th:text="${#temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}">
+                </a>
+            </td>
+            <td>
+                <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}" th:text="${booking.customer.name}"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

@@ -9,7 +9,7 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div class="customer-page-margin">
+<div class="page-margin">
     <div class="month-picker">
         <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
         <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>

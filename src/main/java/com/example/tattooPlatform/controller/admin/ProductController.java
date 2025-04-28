@@ -64,6 +64,9 @@ public class ProductController {
 
     @GetMapping("/products-by-category")
     public String viewProductsByCategory(@RequestParam String category, Model model){
+        for(Product p: productCategoryService.getProductCategoryByName(category).getProducts()){
+            System.out.println(p.getImageUrl());
+        }
         model.addAttribute("category", productCategoryService.getProductCategoryByName(category));
         return "/admin/manage-products-by-category";
     }
@@ -118,7 +121,6 @@ public class ProductController {
         if(product == null){
             model.addAttribute("error", "Could not delete product.");
             return populateProductCategoriesAndReturnManageProductCategories(model);
-
         }else{
             ProductCategory category = product.getCategory();
             category.getProducts().remove(product);

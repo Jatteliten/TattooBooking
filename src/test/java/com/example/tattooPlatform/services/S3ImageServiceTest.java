@@ -27,11 +27,12 @@ class S3ImageServiceTest {
 
     private static final String BUCKET_NAME = "test-bucket";
     private static final String REGION_NAME = "test-region";
+    private static final String CLOUD_FRONT_URL = "test-cloudfront";
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        s3ImageService = new S3ImageService(s3Client, BUCKET_NAME, REGION_NAME);
+        s3ImageService = new S3ImageService(s3Client, BUCKET_NAME, CLOUD_FRONT_URL);
     }
 
     @Test

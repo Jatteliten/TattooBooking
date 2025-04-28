@@ -32,6 +32,7 @@ dependencies {
     implementation("org.jboss.logging:jboss-logging:3.6.1.Final")
     implementation("software.amazon.awssdk:s3:2.31.26")
     implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("net.coobird:thumbnailator:0.4.14")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

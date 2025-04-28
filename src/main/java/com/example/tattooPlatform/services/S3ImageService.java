@@ -41,26 +41,11 @@ public class S3ImageService {
         this.cloudFrontUrl = cloudFrontUrl;
     }
 
-
     public String uploadImage(MultipartFile file, String folder) throws IOException {
         ByteArrayInputStream resizedImage;
 
         if (file.getSize() > 1048576) {
-            System.out.println("hej");
-            BufferedImage originalImage = ImageIO.read(file.getInputStream());
-            int originalWidth = originalImage.getWidth();
-            int originalHeight = originalImage.getHeight();
-
-            int newWidth = originalWidth / 2;
-            int newHeight = originalHeight / 2;
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Thumbnails.of(file.getInputStream())
-                    .size(newWidth, newHeight)
-                    .outputFormat("jpeg")
-                    .toOutputStream(outputStream);
-
-            resizedImage = new ByteArrayInputStream(outputStream.toByteArray());
+            resizedImage = resizeImage(file);
         } else {
             resizedImage = new ByteArrayInputStream(file.getBytes());
         }
@@ -80,10 +65,27 @@ public class S3ImageService {
         } catch (Exception e) {
             throw new IOException("Error uploading image", e);
         }
-        System.out.println(cloudFrontUrl + "/" + s3Key);
 
         return cloudFrontUrl + "/" + s3Key;
     }
+
+    public ByteArrayInputStream resizeImage(MultipartFile file) throws IOException {
+        BufferedImage originalImage = ImageIO.read(file.getInputStream());
+        int originalWidth = originalImage.getWidth();
+        int originalHeight = originalImage.getHeight();
+
+        int newWidth = originalWidth / 2;
+        int newHeight = originalHeight / 2;
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Thumbnails.of(file.getInputStream())
+                .size(newWidth, newHeight)
+                .outputFormat("jpeg")
+                .toOutputStream(outputStream);
+
+        return new ByteArrayInputStream(outputStream.toByteArray());
+    }
+
     public void deleteImage(String imageUrl) {
         String key = imageUrl.replace(cloudFrontUrl + "/", "");
 

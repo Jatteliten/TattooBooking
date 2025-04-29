@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,11 +35,11 @@ public class TattooImageService {
 
     public Page<TattooImage> getPageOrderedByLatestBookingDate(ImageCategory category, int page, int amount){
         return tattooImageRepo.findByCategoriesInOrderByBookingDateDesc(
-                List.of(Collections.singletonList(category)), PageRequest.of(page, amount));
+                List.of(category), PageRequest.of(page, amount));
     }
 
     public int countTattooImagesByImageCategory(ImageCategory category){
-        return tattooImageRepo.countByCategoriesIn(List.of(Collections.singletonList(category)));
+        return tattooImageRepo.countByCategoriesIn(List.of(category));
     }
 
 }

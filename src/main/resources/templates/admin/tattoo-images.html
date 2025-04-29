@@ -10,6 +10,8 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
+<p th:if="${categories.isEmpty()}" class="text-danger">No category with tattoos exists.</p>
+
 <div class="d-flex flex-wrap gap-2 mt-3">
   <div th:each="category: ${categories}">
     <a th:href="@{/admin/images/view-tattoos-by-category(categoryName=${category.category}, page=0)}">

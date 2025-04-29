@@ -42,8 +42,9 @@
                     </form>
                 </td>
                 <td>
-                    <span th:if="${category.flashImages != null && !category.flashImages.isEmpty()}"
-                          th:text="${category.flashImages.size()}"></span>
+                    <a th:if="${category.flashImages != null && !category.flashImages.isEmpty()}"
+                       th:href="@{/admin/images/view-flash-images-by-category(category=${category.category})}"
+                       th:text="${category.flashImages.size()}"></a>
                     <span th:if="${category.flashImages == null || category.flashImages.isEmpty()}">0</span>
                 </td>
                 <td>

@@ -42,42 +42,6 @@
 
 
 <div th:if="${booking.touchUp != true}" class="row">
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card fifteen-px-margin-top-bottom">
-            <p class="card-header">Price</p>
-            <div class="card-body">
-                <form th:action="@{/admin/booking/update-booking-price}" method="post">
-                    <label>
-                        <input type="number" name="price" id="price" th:value="${booking.finalPrice}">
-                        <span>SEK</span>
-                    </label>
-                    <input type="hidden" name="bookingId" th:value="${booking.id}">
-                    <br>
-                    <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Change price</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-        <div class="card fifteen-px-margin-top-bottom">
-            <p class="card-header">Notes</p>
-            <div class="card-body">
-                <form th:action="@{/admin/booking/update-booking}" method="post">
-                    <label>
-                        <textarea th:text="${booking.notes}"
-                                  name="notes"
-                                  class="form-control"
-                                  rows="5"
-                                  required></textarea>
-                    </label>
-                    <input type="hidden" name="bookingId" th:value="${booking.id}">
-                    <br>
-                    <button type="submit" class="btn btn-primary">Save notes</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div th:if="${booking.tattooImage != null}" class="col-12 col-md-6 col-lg-4">
         <div class="fifteen-px-margin-top-bottom card">
             <p class="card-header">Image</p>
@@ -99,7 +63,7 @@
 
     <div th:if="${booking.tattooImage == null}" class="col-12 col-md-6 col-lg-4">
         <div class="fifteen-px-margin-top-bottom card">
-            <h3 class="card-header">Upload image</h3>
+            <p class="card-header">Upload image</p>
             <form th:action="@{/admin/booking/upload-image}" method="post" style="padding: 10px;"
                   enctype="multipart/form-data">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
@@ -126,6 +90,41 @@
 
                 <button type="submit" class="btn btn-primary mt-2">Upload</button>
             </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card fifteen-px-margin-top-bottom">
+            <p class="card-header">Notes</p>
+            <div class="card-body">
+                <form th:action="@{/admin/booking/update-booking}" method="post">
+                    <label>
+                        <textarea th:text="${booking.notes}"
+                                  name="notes"
+                                  class="form-control"
+                                  rows="5"
+                                  required></textarea>
+                    </label>
+                    <input type="hidden" name="bookingId" th:value="${booking.id}">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save notes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card fifteen-px-margin-top-bottom">
+            <p class="card-header">Price</p>
+            <div class="card-body">
+                <form th:action="@{/admin/booking/update-booking-price}" method="post">
+                    <label>
+                        <input type="number" name="price" id="price" th:value="${booking.finalPrice}">
+                        <span>SEK</span>
+                    </label>
+                    <input type="hidden" name="bookingId" th:value="${booking.id}">
+                    <br>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Change price</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

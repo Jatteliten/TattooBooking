@@ -34,7 +34,7 @@ public class ProductController {
 
     @PostMapping("/add-category")
     public String saveCategory(@RequestParam String name, Model model){
-        name = name.trim().toLowerCase();
+        name = name.trim().substring(0, 1).toUpperCase() + name.trim().substring(1).toLowerCase();
         if(productCategoryService.getProductCategoryByName(name) != null){
             model.addAttribute("error", "Category already exists.");
         }else{
@@ -47,7 +47,6 @@ public class ProductController {
 
     @PostMapping("/delete-category")
     public String deleteCategory(@RequestParam String name, Model model){
-        name = name.trim().toLowerCase();
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(name);
 
         if(productCategory == null){
@@ -78,6 +77,7 @@ public class ProductController {
                               @RequestParam double price,
                               @RequestParam("file") MultipartFile file,
                               Model model){
+        name = name.trim().substring(0, 1).toUpperCase() + name.trim().substring(1).toLowerCase();
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
         Product product = productService.createAndSaveProductWithAllAttributes(productCategory, name, description, price, file);
         if(product == null) {

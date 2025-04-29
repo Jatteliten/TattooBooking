@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Set previous appointment</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/admin-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<div class="d-flex flex-wrap gap-2 mt-3">
+  <div th:each="category: ${categories}">
+    <a th:href="@{/admin/images/view-tattoos-by-category(categoryName=${category.category}, page=0)}">
+      <button class="btn btn-outline-secondary" th:text="${category.category}"></button>
+    </a>
+  </div>
+</div>
+
+<div th:if="${images != null}" class="card" style="margin-bottom: 10px; margin-top: 10px;">
+  <div class="card-header bg-secondary text-white">
+    <h4 th:if="${categoryName != null}" th:text="${categoryName}"></h4>
+  </div>
+  <div class="card-body">
+    <div class="d-flex justify-content-center align-items-center mt-3" style="margin-bottom:10px;">
+      <ul class="pagination mb-0">
+        <li class="page-item">
+          <a class="page-link" th:if="${currentPage > 0}"
+             th:href="@{/admin/images/view-tattoos-by-category(categoryName=${categoryName}, page=${currentPage - 1})}">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+
+        <li class="page-item" th:each="page : ${pages}"
+            th:classappend="${page == currentPage} ? ' active'">
+          <a class="page-link"
+             th:href="@{/admin/images/view-tattoos-by-category(categoryName=${categoryName}, page=${page})}"
+             th:text="${page + 1}">1</a>
+        </li>
+
+        <li class="page-item">
+          <a class="page-link"
+             th:if="${images.numberOfElements == 20 and currentPage < pages.size() - 1}"
+             th:href="@{/admin/images/view-tattoos-by-category(categoryName=${categoryName}, page=${currentPage + 1})}">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="flex-grow-1 px-2">
+        <div class="row">
+          <div th:each="image: ${images}" class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+            <a th:href="@{/admin/booking/booking-information(id=${image.booking.id})}">
+              <img th:src="${image.url}" alt="Could not load" class="card-img-top img-fluid" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>

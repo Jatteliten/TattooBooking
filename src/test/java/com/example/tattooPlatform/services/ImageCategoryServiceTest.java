@@ -5,6 +5,7 @@ import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.TattooImage;
 import com.example.tattooPlatform.repos.ImageCategoryRepo;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +140,50 @@ class ImageCategoryServiceTest {
 
         assertEquals(imageCategory.getId(),
                 imageCategoryService.getImageCategoryByCategoryName(imageCategory.getCategory()).getId());
+    }
+
+    @Test
+    @Transactional
+    void getAllImageCategoriesWithFlashImages_shouldReturnImageCategories_withFlashImages() {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .flashImages(List.of(new FlashImage()))
+                .build();
+        imageCategoryRepo.save(imageCategory);
+
+        assertTrue(imageCategoryService.getAllImageCategoriesWithFlashImages().contains(imageCategory));
+    }
+
+    @Test
+    @Transactional
+    void getAllImageCategoriesWithFlashImages_shouldNotReturnImageCategories_withoutFlashImages() {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .flashImages(List.of())
+                .build();
+        imageCategoryRepo.save(imageCategory);
+
+        assertFalse(imageCategoryService.getAllImageCategoriesWithFlashImages().contains(imageCategory));
+    }
+
+    @Test
+    @Transactional
+    void getAllImageCategoriesWithTattooImages_shouldReturnImageCategories_withTattooImages() {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .tattooImages(List.of(new TattooImage()))
+                .build();
+        imageCategoryRepo.save(imageCategory);
+
+        assertTrue(imageCategoryService.getAllImageCategoriesWithTattooImages().contains(imageCategory));
+    }
+
+    @Test
+    @Transactional
+    void getAllImageCategoriesWithTattooImages_shouldNotReturnImageCategories_withoutTattooImages() {
+        ImageCategory imageCategory = ImageCategory.builder()
+                .tattooImages(List.of())
+                .build();
+        imageCategoryRepo.save(imageCategory);
+
+        assertFalse(imageCategoryService.getAllImageCategoriesWithTattooImages().contains(imageCategory));
     }
 
     @Test

@@ -48,9 +48,10 @@
                     <span th:if="${category.flashImages == null || category.flashImages.isEmpty()}">0</span>
                 </td>
                 <td>
-                    <span th:if="${category.flashImages != null && !category.tattooImages.isEmpty()}"
-                          th:text="${category.tattooImages.size()}"></span>
-                    <span th:if="${category.flashImages == null || category.tattooImages.isEmpty()}">0</span>
+                    <a th:if="${category.tattooImages != null && !category.tattooImages.isEmpty()}"
+                       th:href="@{/admin/images/view-tattoos-by-category(categoryName=${category.category}, page=0)}"
+                       th:text="${category.tattooImages.size()}"></a>
+                    <span th:if="${category.tattooImages == null || category.tattooImages.isEmpty()}">0</span>
                 </td>
             </tr>
         </table>

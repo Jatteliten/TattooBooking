@@ -1,9 +1,13 @@
 package com.example.tattooPlatform.services;
 
+import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.TattooImage;
 import com.example.tattooPlatform.repos.TattooImageRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,6 +32,15 @@ public class TattooImageService {
 
     public void deleteListOfTattooImages(List<TattooImage> tattooImages){
         tattooImageRepo.deleteAll(tattooImages);
+    }
+
+    public Page<TattooImage> getPageOrderedByLatestBookingDate(ImageCategory category, int page, int amount){
+        return tattooImageRepo.findByCategoriesInOrderByBookingDateDesc(
+                List.of(Collections.singletonList(category)), PageRequest.of(page, amount));
+    }
+
+    public int countTattooImagesByImageCategory(ImageCategory category){
+        return tattooImageRepo.countByCategoriesIn(List.of(Collections.singletonList(category)));
     }
 
 }

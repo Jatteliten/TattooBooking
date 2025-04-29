@@ -5,6 +5,7 @@ import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.services.FlashImageService;
 import com.example.tattooPlatform.services.ImageCategoryService;
 import com.example.tattooPlatform.services.S3ImageService;
+import com.example.tattooPlatform.services.TattooImageService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin/images")
@@ -23,12 +26,14 @@ import java.util.UUID;
 public class ImageController {
     private final ImageCategoryService imageCategoryService;
     private final FlashImageService flashImageService;
+    private final TattooImageService tattooImageService;
     private final S3ImageService s3ImageService;
 
     public ImageController(ImageCategoryService imageCategoryService, FlashImageService flashImageService,
-                           S3ImageService s3ImageService){
+                           TattooImageService tattooImageService, S3ImageService s3ImageService){
         this.imageCategoryService = imageCategoryService;
         this.flashImageService = flashImageService;
+        this.tattooImageService = tattooImageService;
         this.s3ImageService = s3ImageService;
     }
 
@@ -71,13 +76,13 @@ public class ImageController {
 
     @GetMapping("/view-flash-images")
     public String viewFlashImages(Model model){
-        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithFlashImages());
         return "admin/flash-images";
     }
 
     @GetMapping("/view-flash-images-by-category")
     public String viewFlashImagesByCategory(@RequestParam String category, Model model){
-        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
+        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithFlashImages());
         model.addAttribute("category", category);
         model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
                 imageCategoryService.getImageCategoryByCategoryName(category)));
@@ -136,5 +141,30 @@ public class ImageController {
         return "admin/flash-images";
     }
 
+    @GetMapping("/view-tattoo-images")
+    public String viewTattooImages(Model model){
+        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithTattooImages());
+        return "admin/tattoo-images";
+    }
+
+    @GetMapping("/view-tattoos-by-category")
+    public String viewTattooImagesByCategory(@RequestParam String categoryName,
+                                   @RequestParam int page,
+                                   Model model){
+        int amountOfImages = tattooImageService.countTattooImagesByImageCategory(
+                imageCategoryService.getImageCategoryByCategoryName(categoryName));
+        List<Integer> pages = IntStream.range(0, (amountOfImages + 19) / 20)
+                .boxed()
+                .collect(Collectors.toList());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pages", pages);
+        model.addAttribute("amountOfImagesInCategory", amountOfImages);
+        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithTattooImages());
+        model.addAttribute("categoryName", categoryName);
+        model.addAttribute("images", tattooImageService.getPageOrderedByLatestBookingDate(
+                imageCategoryService.getImageCategoryByCategoryName(categoryName), page, 20));
+        return "admin/tattoo-images";
+    }
 
 }

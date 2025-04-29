@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,9 +29,11 @@ public class ImageCategory {
     @Column(unique = true)
     private String category;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "categories")
     private List<TattooImage> tattooImages;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "categories")
     private List<FlashImage> flashImages;
 }

@@ -64,9 +64,16 @@ public class ImageCategoryService {
         return imageCategoryRepo.findAllById(ids);
     }
 
-
     public ImageCategory getImageCategoryByCategoryName(String category){
         return imageCategoryRepo.findByCategory(category);
+    }
+
+    public List<ImageCategory> getAllImageCategoriesWithFlashImages(){
+        return imageCategoryRepo.findAll().stream().filter(category -> !category.getFlashImages().isEmpty()).toList();
+    }
+
+    public List<ImageCategory> getAllImageCategoriesWithTattooImages(){
+        return imageCategoryRepo.findAll().stream().filter(category -> !category.getTattooImages().isEmpty()).toList();
     }
 
     public ImageCategoryWithOnlyCategoryDto convertImageCategoryToImageCategoryWithOnlyCategory(ImageCategory imageCategory){

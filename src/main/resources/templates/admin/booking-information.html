@@ -117,7 +117,7 @@
             <div class="card-body">
                 <form th:action="@{/admin/booking/update-booking-price}" method="post">
                     <label>
-                        <input type="number" name="price" id="price" th:value="${booking.finalPrice}">
+                        <input type="number" name="price" id="price" min="0" th:value="${booking.finalPrice}">
                         <span>SEK</span>
                     </label>
                     <input type="hidden" name="bookingId" th:value="${booking.id}">

@@ -651,4 +651,17 @@ class BookingServiceTest {
                 bookingService.createBookingSuccessMessage(customer, TEN_O_CLOCK, ELEVEN_O_CLOCK, TODAY));
     }
 
+    @Test
+    void calculateTotalCostForBookings_shouldCalculateCorrectly() {
+        int price = 500;
+        Booking bookingOne = Booking.builder()
+                .finalPrice(price)
+                .build();
+        Booking bookingTwo = Booking.builder()
+                .finalPrice(price*2)
+                .build();
+
+        assertEquals(price*3, bookingService.calculateTotalCostForBookings(List.of(bookingOne, bookingTwo)));
+    }
+
 }

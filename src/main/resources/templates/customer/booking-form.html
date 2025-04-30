@@ -39,7 +39,7 @@
       </div>
       <label for="size">Storlek</label>
       <div class="input-group">
-        <input type="number" class="form-control" name="size" id="size" aria-describedby="cm">
+        <input type="number" class="form-control" name="size" id="size" min="0" aria-describedby="cm">
         <div class="input-group-append">
           <span class="input-group-text" id="cm">cm</span>
         </div>
@@ -67,11 +67,13 @@
 <div class="card page-margin">
   <h5 class="card-header secondary-pink-background">Bokningsinformation</h5>
   <div class="card-body">
+    <p class="text-danger">Observera att ovan formulär endast är till för att starta en dialog om din tatuering.<br>
+    Bestämmelse av datum sker vid ett senare tillfälle.</p>
     <h5 class="card-title">Deposition</h5>
     <p class="card-text">
-      Vid varje bokning tas en deposition i förhand på 500kr.<br/>
-      Utan betalad deposition är inte en bokning komplett och anses därav inte bekräftad.<br/>
-      Betald deposition dras av på slutpriset av slutfört jobb.<br/>
+      Vid varje bokning tas en deposition i förhand på 500kr.<br>
+      Utan betalad deposition är inte en bokning komplett och anses därav inte bekräftad.<br>
+      Betald deposition dras av på slutpriset av slutfört jobb.<br>
       Vid avbokning mindre än 24 timmar innan bokning betalas ej deposition tillbaka.
     </p>
 

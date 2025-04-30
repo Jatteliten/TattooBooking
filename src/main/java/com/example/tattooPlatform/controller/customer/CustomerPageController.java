@@ -62,6 +62,12 @@ public class CustomerPageController {
         return "index";
     }
 
+    @GetMapping("/care-advice")
+    public String careAdvice(){ return "customer/care-advice";}
+
+    @GetMapping("/before-your-visit")
+    public String beforeYourVisit() { return "customer/before-your-visit"; }
+
     @GetMapping("/about-me")
     public String aboutMe(){
         return "customer/about-me";

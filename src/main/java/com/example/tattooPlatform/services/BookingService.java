@@ -232,4 +232,11 @@ public class BookingService {
         return customer.getName() + " booked at " + startTime + " - " + endTime + " on " + date;
     }
 
+    public int calculateTotalCostForBookings(List<Booking> bookings){
+        return bookings
+                .stream()
+                .mapToInt(Booking::getFinalPrice)
+                .sum();
+    }
+
 }

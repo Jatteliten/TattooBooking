@@ -34,6 +34,7 @@
                 <th scope="col">Date</th>
                 <th scope="col">Hours</th>
                 <th scope="col">Customer</th>
+                <th scope="col">Price</th>
             </tr>
         </thead>
         <tbody>
@@ -61,6 +62,17 @@
                    th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
                    th:text="${booking.customer.name}"></a>
                 <span th:if="${booking.customer == null}">Customer deleted</span>
+            </td>
+            <td>
+                <p th:if="${booking.finalPrice != 0}" th:text="${booking.finalPrice + ':-'}"></p>
+            </td>
+        </tr>
+        <tr>
+            <th scope="col">Total price</th>
+        </tr>
+        <tr class="table-primary">
+            <td>
+                <p th:text="${totalCost + ':-'}"></p>
             </td>
         </tr>
         </tbody>

@@ -74,6 +74,7 @@ public class BookingController {
         }
 
         if(!bookings.isEmpty()){
+            model.addAttribute("totalCost", bookingService.calculateTotalCostForBookings(bookings));
             model.addAttribute("upcomingBookings", bookings);
         }else if(fromDate != null && toDate != null){
             model.addAttribute("errorMessage", "No bookings on given dates");

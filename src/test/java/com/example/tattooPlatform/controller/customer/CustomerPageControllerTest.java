@@ -1,7 +1,7 @@
 package com.example.tattooPlatform.controller.customer;
 
+import com.example.tattooPlatform.dto.customerpagetext.CustomerPageTextDto;
 import com.example.tattooPlatform.dto.product.ProductCustomerViewDto;
-import com.example.tattooPlatform.model.CustomerPageText;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.InstagramEmbed;
@@ -49,11 +49,13 @@ class CustomerPageControllerTest {
 
     @Test
     void frontPage_withNews_displaysNews() throws Exception {
-        CustomerPageText customerPageText = CustomerPageText.builder()
+        CustomerPageTextDto customerPageText = CustomerPageTextDto.builder()
                 .text("Latest news")
                 .build();
 
-        when(customerPageTextService.getLatestCustomerPageTextByPageAndSection("index", "latest-news"))
+        when(customerPageTextService.convertCustomerPageTextToCustomerPageTextDto(
+                        customerPageTextService.getLatestCustomerPageTextByPageAndSection(
+                                "index", "latest-news")))
                 .thenReturn(customerPageText);
 
         mockMvc.perform(get("/"))
@@ -71,6 +73,20 @@ class CustomerPageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
                 .andExpect(model().attribute("frontPageNews", "No news to report"));
+    }
+
+    @Test
+    void careAdvice_returnsCareAdvicePage() throws Exception {
+        mockMvc.perform(get("/care-advice"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/care-advice"));
+    }
+
+    @Test
+    void beforeYourVisit_returnsBeforeYourVisitPage() throws Exception {
+        mockMvc.perform(get("/before-your-visit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("customer/before-your-visit"));
     }
 
     @Test

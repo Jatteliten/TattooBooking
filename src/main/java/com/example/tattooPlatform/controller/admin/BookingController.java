@@ -120,7 +120,7 @@ public class BookingController {
         }else{
             try {
                 return populateModelOnBookingUpdate(model,
-                        bookingService.uploadTattooImage(bookingId, file, categoryIds),
+                        bookingService.uploadTattooImage(bookingService.getBookingById(bookingId), file, categoryIds),
                         "Tattoo image uploaded!");
             } catch (Exception e) {
                 return populateModelOnFailedBookingUpdate(model, bookingService.getBookingById(bookingId),

@@ -550,9 +550,9 @@ class BookingServiceTest {
     }
 
     @Test
-    void uploadTattooImage_shouldThrowError_ifBookingDoesNotExist(){
+    void uploadTattooImage_shouldThrowError_ifBookingIsNull(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                bookingService.uploadTattooImage(UUID.randomUUID(), null, null));
+                bookingService.uploadTattooImage(null, null, null));
 
         assertEquals("Booking not found", exception.getMessage());
     }
@@ -563,7 +563,7 @@ class BookingServiceTest {
         bookingRepo.save(booking);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                bookingService.uploadTattooImage(booking.getId(), null, null));
+                bookingService.uploadTattooImage(new Booking(), null, null));
 
         assertEquals("At least one category must be selected", exception.getMessage());
     }
@@ -574,7 +574,7 @@ class BookingServiceTest {
         bookingRepo.save(booking);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                bookingService.uploadTattooImage(booking.getId(), null, List.of()));
+                bookingService.uploadTattooImage(new Booking(), null, List.of()));
 
         assertEquals("At least one category must be selected", exception.getMessage());
     }

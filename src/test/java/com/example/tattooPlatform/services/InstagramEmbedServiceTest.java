@@ -29,8 +29,7 @@ class InstagramEmbedServiceTest {
 
     @Test
     void saveInstagramEmbed_shouldSaveInstagramEmbed() {
-        InstagramEmbed instagramEmbed = InstagramEmbed.builder().build();
-        instagramEmbedService.saveInstagramEmbed(instagramEmbed);
+        instagramEmbedService.saveInstagramEmbed(InstagramEmbed.builder().build());
 
         assertEquals(1, instagramEmbedRepo.findAll().size());
     }

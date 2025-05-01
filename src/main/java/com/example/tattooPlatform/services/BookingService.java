@@ -174,8 +174,7 @@ public class BookingService {
     }
 
     @Transactional
-    public Booking uploadTattooImage(UUID bookingId, MultipartFile file, List<UUID> categoryIds) {
-        Booking booking = getBookingById(bookingId);
+    public Booking uploadTattooImage(Booking booking, MultipartFile file, List<UUID> categoryIds) {
         if (booking == null) {
             throw new IllegalArgumentException("Booking not found");
         }

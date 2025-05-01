@@ -82,12 +82,7 @@ public class ImageController {
 
     @GetMapping("/view-flash-images-by-category")
     public String viewFlashImagesByCategory(@RequestParam String category, Model model){
-        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithFlashImages());
-        model.addAttribute("category", category);
-        model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
-                imageCategoryService.getImageCategoryByCategoryName(category)));
-
-        return "admin/flash-images";
+        return populateFlashImagesModelByCategory(category, model);
     }
 
     @PostMapping("/upload-flash")
@@ -124,7 +119,7 @@ public class ImageController {
     }
 
     @PostMapping("/delete-flash")
-    public String deleteFlashImage(@RequestParam UUID flashId, Model model){
+    public String deleteFlashImage(@RequestParam UUID flashId, @RequestParam String category, Model model){
         FlashImage flashImage = flashImageService.getFlashImageById(flashId);
         if(flashImage != null){
             String flashImageUrl = flashImage.getUrl();
@@ -136,9 +131,7 @@ public class ImageController {
             model.addAttribute("failFeedback", "Image could not be deleted");
         }
 
-        model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-
-        return "admin/flash-images";
+        return populateFlashImagesModelByCategory(category, model);
     }
 
     @GetMapping("/view-tattoo-images")
@@ -165,6 +158,15 @@ public class ImageController {
         model.addAttribute("images", tattooImageService.getPageOrderedByLatestBookingDate(
                 imageCategoryService.getImageCategoryByCategoryName(categoryName), page, 20));
         return "admin/tattoo-images";
+    }
+
+    private String populateFlashImagesModelByCategory(String category, Model model) {
+        model.addAttribute("categories", imageCategoryService.getAllImageCategoriesWithFlashImages());
+        model.addAttribute("category", category);
+        model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
+                imageCategoryService.getImageCategoryByCategoryName(category)));
+
+        return "admin/flash-images";
     }
 
 }

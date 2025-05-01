@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.tattooPlatform.dto.bookabledate.BookableDateCalendarDto;
 import com.example.tattooPlatform.model.BookableDate;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -144,9 +144,9 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_middleOfCalendar_shouldAlwaysBeCurrentMonth(){
-        List<BookableDateForCalendarDto> bookableDateForCalendarDto =
+        List<BookableDateCalendarDto> bookableDateCalendarDto =
                 calendarService.createDaysInMonthFromSelectedDate(LocalDate.now());
-        assertTrue(bookableDateForCalendarDto.get(bookableDateForCalendarDto.size()/2).isCurrentMonth());
+        assertTrue(bookableDateCalendarDto.get(bookableDateCalendarDto.size()/2).isCurrentMonth());
     }
 
     @Test
@@ -156,7 +156,7 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldEndWithFebruarySecond_whenCreatingJanuary2025(){
-        List<BookableDateForCalendarDto> january2025Calendar =
+        List<BookableDateCalendarDto> january2025Calendar =
                 calendarService.createDaysInMonthFromSelectedDate(LocalDate.of(2025, 1, 1));
         assertEquals(LocalDate.of(2025, 2, 2),
                 january2025Calendar.getLast().getDate());
@@ -164,15 +164,15 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetAllDaysToUnBookable_ifAllDatesAreInThePast(){
-        List<BookableDateForCalendarDto> january2025Calendar =
+        List<BookableDateCalendarDto> january2025Calendar =
                 calendarService.createDaysInMonthFromSelectedDate(LocalDate.of(2025, 1, 1));
 
-        assertFalse(january2025Calendar.stream().anyMatch(BookableDateForCalendarDto::isBookable));
+        assertFalse(january2025Calendar.stream().anyMatch(BookableDateCalendarDto::isBookable));
     }
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsTouchUp_ifTouchUpDateExists(){
-        List<BookableDateForCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
+        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
                 mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(true, false, false));
 
         assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isTouchUp()));
@@ -180,7 +180,7 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsDropIn_ifDropInDateExists(){
-        List<BookableDateForCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
+        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
                 mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, true, false));
 
         assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isDropIn()));
@@ -188,7 +188,7 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsFullyBooked_ifFullyBookedDateExists(){
-        List<BookableDateForCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
+        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
                 mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, false, true));
 
         assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isFullyBooked()));
@@ -196,15 +196,15 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldNotSetAnyDateToDropInOrTouchUp_ifNoneSuchDatesExist(){
-        List<BookableDateForCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
+        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
                 mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, false, false));
 
-        assertFalse(calendar.stream().anyMatch(BookableDateForCalendarDto::isDropIn));
-        assertFalse(calendar.stream().anyMatch(BookableDateForCalendarDto::isTouchUp));
-        assertFalse(calendar.stream().anyMatch(BookableDateForCalendarDto::isFullyBooked));
+        assertFalse(calendar.stream().anyMatch(BookableDateCalendarDto::isDropIn));
+        assertFalse(calendar.stream().anyMatch(BookableDateCalendarDto::isTouchUp));
+        assertFalse(calendar.stream().anyMatch(BookableDateCalendarDto::isFullyBooked));
     }
 
-    private List<BookableDateForCalendarDto> createJanuary2025Calendar(){
+    private List<BookableDateCalendarDto> createJanuary2025Calendar(){
         return calendarService.createDaysInMonthFromSelectedDate(LocalDate.of(2025, 1, 1));
     }
 
@@ -234,8 +234,8 @@ class CalendarServiceTest {
         Mockito.when(bookableDateService.getBookableDatesBetweenTwoDates(startOfMonth, endOfMonth))
                 .thenReturn(fakeBookableDates);
 
-        Mockito.when(bookableDateService.convertListOfBookableDatesToBookableDateForCalendarDto(fakeBookableDates))
-                .thenReturn(List.of(BookableDateForCalendarDto.builder()
+        Mockito.when(bookableDateService.convertListOfBookableDatesToBookableDateCalendarDto(fakeBookableDates))
+                .thenReturn(List.of(BookableDateCalendarDto.builder()
                         .date(testDate)
                         .touchUp(touchUp)
                         .dropIn(dropIn)

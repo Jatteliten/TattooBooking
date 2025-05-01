@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.bookabledatedtos;
+package com.example.tattooPlatform.dto.bookabledate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

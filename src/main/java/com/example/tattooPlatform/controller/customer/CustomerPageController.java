@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.controller.customer;
 
-import com.example.tattooPlatform.model.CustomerPageText;
+import com.example.tattooPlatform.dto.customerpagetext.CustomerPageTextDto;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.InstagramEmbed;
 import com.example.tattooPlatform.model.ProductCategory;
@@ -52,8 +52,9 @@ public class CustomerPageController {
 
     @GetMapping("/")
     public String frontPage(Model model){
-        CustomerPageText currentText = customerPageTextService.getLatestCustomerPageTextByPageAndSection(
-                "index", "latest-news");
+        CustomerPageTextDto currentText = customerPageTextService.convertCustomerPageTextToCustomerPageTextDto(
+                customerPageTextService.getLatestCustomerPageTextByPageAndSection(
+                "index", "latest-news"));
         if(currentText == null){
             model.addAttribute("frontPageNews", "No news to report");
         }else{
@@ -94,7 +95,7 @@ public class CustomerPageController {
     @GetMapping("/flash")
     public String viewFlashCategories(Model model){
         model.addAttribute("categories",
-                imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(
+                imageCategoryService.convertImageCategoryListToImageCategoryDtoList(
                         imageCategoryService.filterImageCategoriesWithoutFlashImages(
                         imageCategoryService.getAllImageCategories())));
 
@@ -108,7 +109,7 @@ public class CustomerPageController {
             return "error";
         }else{
             model.addAttribute("category", categoryName);
-            model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+            model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesUrlDto(
                     flashImageService.getFlashImagesByCategory(imageCategory)));
 
             return "customer/available-flash-with-category";
@@ -118,7 +119,8 @@ public class CustomerPageController {
     @GetMapping("/frequently-asked-questions")
     public String viewFrequentlyAskedQuestions(Model model){
         model.addAttribute("questions",
-                customerPageTextService.getCustomerPageTextListByPage("frequently-asked-questions"));
+                customerPageTextService.convertCustomerPageTextListToCustomerPageTextPrioritizedDtoList(
+                customerPageTextService.getCustomerPageTextListByPageSortedByPriority("frequently-asked-questions")));
 
         return "customer/frequently-asked-questions";
     }
@@ -126,7 +128,7 @@ public class CustomerPageController {
     @GetMapping("/products")
     public String viewProductCategories(Model model){
         model.addAttribute("categories",
-                productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(
+                productCategoryService.convertProductCategoryListToProductCategoryDtoList(
                 productCategoryService.filterOutProductCategoriesWithoutProducts(
                         productCategoryService.getAllProductCategories())));
 
@@ -138,7 +140,7 @@ public class CustomerPageController {
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
 
         model.addAttribute("products",
-                productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
+                productService.convertProductListToProductCustomerViewDtoList(
                         productCategory.getProducts()));
         model.addAttribute("category", productCategory.getName());
         return "customer/products-with-category";

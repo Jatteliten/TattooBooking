@@ -5,22 +5,31 @@
   <title>Customize Latest News</title>
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/admin-style.css">
+  <style>
+    .arrow-buttons {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .arrow-buttons form {
+      display: inline;
+    }
+  </style>
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
-
 
 <div class="card">
   <p class="card-header">Add new frequently asked question</p>
   <form class="card-body" th:action="@{/admin/customize/add-frequently-asked-question}" method="post">
     <div class="form-group">
       <label for="question">Question</label>
-        <input class="form-control" type="text" id="question" name="question" required>
+      <input class="form-control" type="text" id="question" name="question" required>
     </div>
     <br>
     <div class="form-group">
-      <label for="answer">Question</label>
-        <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
+      <label for="answer">Answer</label>
+      <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
     </div>
     <br>
     <button type="submit" class="btn btn-success">Save</button>
@@ -29,18 +38,34 @@
 
 <br>
 
-<div th:if="${!questions.isEmpty()}" th:each="question : ${questions}">
-  <div class="card">
-    <div class="card-header" th:text="${question.section}">
+<div th:if="${!questions.isEmpty()}">
+  <div th:each="question, iterStat : ${questions}">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span th:text="${question.section}"></span>
+        <div class="arrow-buttons">
+          <form th:if="${!iterStat.first}" th:action="@{/admin/customize/change-frequently-asked-question-priority}" method="post">
+            <input type="hidden" name="id" th:value="${question.id}">
+            <input type="hidden" name="increment" value="false">
+            <button type="submit" class="btn btn-sm btn-primary" title="Move Up">&#8679;</button>
+          </form>
+          <form th:if="${!iterStat.last}" th:action="@{/admin/customize/change-frequently-asked-question-priority}" method="post">
+            <input type="hidden" name="id" th:value="${question.id}">
+            <input type="hidden" name="increment" value="true">
+            <button type="submit" class="btn btn-sm btn-primary" title="Move Down">&#8681;</button>
+          </form>
+        </div>
+      </div>
+      <div class="card-body" th:text="${question.text}" style="white-space: pre-line"></div>
+      <form th:action="@{/admin/customize/delete-frequently-asked-question}" method="post">
+        <input type="hidden" name="id" th:value="${question.id}">
+        <button type="submit" class="btn btn-danger" style="width:100%">Remove question</button>
+      </form>
     </div>
-    <div class="card-body" th:text="${question.text}" style="white-space: pre-line"></div>
-    <form th:action="@{/admin/customize/delete-frequently-asked-question}" method="post">
-      <input type="hidden" name="id" th:value="${question.id}">
-      <button type="submit" class="btn btn-danger" style="width:100%">Remove question</button>
-    </form>
+    <br>
   </div>
-  <br>
 </div>
+
 <div th:if="${questions.isEmpty()}">
   <h4 class="text-danger">No frequently asked questions here</h4>
 </div>

@@ -1,16 +1,14 @@
-package com.example.tattooPlatform.dtos.bookabledatedtos;
+package com.example.tattooPlatform.dto.imagecategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DateForm {
-    private List<DateEntry> dateList;
+public class ImageCategoryDto {
+    private String category;
 }

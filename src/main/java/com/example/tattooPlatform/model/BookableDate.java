@@ -28,11 +28,11 @@ public class BookableDate {
 
 
     @Column(unique = true)
-    LocalDate date;
+    private LocalDate date;
     boolean fullyBooked;
     boolean touchUp;
     boolean dropIn;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    List<BookableHour> bookableHours;
+    private List<BookableHour> bookableHours;
 }

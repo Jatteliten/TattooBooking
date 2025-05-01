@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.productcategorydtos.ProductCategoryOnlyName;
+import com.example.tattooPlatform.dto.productcategory.ProductCategoryDto;
 import com.example.tattooPlatform.model.ProductCategory;
 import com.example.tattooPlatform.repos.ProductCategoryRepo;
 import jakarta.transaction.Transactional;
@@ -33,15 +33,15 @@ public class ProductCategoryService {
         return productCategoryRepo.findByName(name);
     }
 
-    public ProductCategoryOnlyName convertProductCategoryToProductCategoryOnlyNameDTO(
+    public ProductCategoryDto convertProductCategoryToProductCategoryDto(
             ProductCategory productcategory){
-        return ProductCategoryOnlyName.builder().name(productcategory.getName()).build();
+        return ProductCategoryDto.builder().name(productcategory.getName()).build();
     }
 
-    public List<ProductCategoryOnlyName> convertProductCategoryListToProductCategoryOnlyNameDTOList(
+    public List<ProductCategoryDto> convertProductCategoryListToProductCategoryDtoList(
             List<ProductCategory> productCategories){
         return productCategories.stream()
-                .map(this::convertProductCategoryToProductCategoryOnlyNameDTO).toList();
+                .map(this::convertProductCategoryToProductCategoryDto).toList();
     }
 
     public List<ProductCategory> filterOutProductCategoriesWithoutProducts(List<ProductCategory> productCategories){

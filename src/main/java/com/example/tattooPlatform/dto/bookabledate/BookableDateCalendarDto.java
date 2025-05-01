@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.bookabledatedtos;
+package com.example.tattooPlatform.dto.bookabledate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookableDateForCalendarDto {
+public class BookableDateCalendarDto {
     private LocalDate date;
     private List<String> hours;
     private boolean bookable;

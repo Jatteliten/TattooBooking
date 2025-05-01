@@ -2,7 +2,7 @@ package com.example.tattooPlatform.services;
 
 import com.example.tattooPlatform.model.BookableDate;
 import com.example.tattooPlatform.model.BookableHour;
-import com.example.tattooPlatform.dtos.bokablehourdtos.BookableHourForCalendarDto;
+import com.example.tattooPlatform.dto.bookablehour.BookableHourCalendarDto;
 import com.example.tattooPlatform.repos.BookableHourRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,8 @@ public class BookableHourService {
         }
     }
 
-    public BookableHourForCalendarDto convertBookableHourToBookableHourForCalendarDto(BookableHour bookableHour){
-        return BookableHourForCalendarDto.builder()
+    public BookableHourCalendarDto convertBookableHourToBookableHourCalendarDto(BookableHour bookableHour){
+        return BookableHourCalendarDto.builder()
                 .hour(bookableHour.getHour())
                 .booked(bookableHour.isBooked())
                 .build();

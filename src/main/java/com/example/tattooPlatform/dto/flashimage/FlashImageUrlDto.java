@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.flashimagedtos;
+package com.example.tattooPlatform.dto.flashimage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlashImageOnlyUrlDto {
+public class FlashImageUrlDto {
     private String url;
 }

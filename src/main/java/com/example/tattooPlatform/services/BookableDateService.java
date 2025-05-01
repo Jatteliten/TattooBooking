@@ -1,11 +1,11 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.bookabledatedtos.DateEntry;
-import com.example.tattooPlatform.dtos.bookabledatedtos.DateForm;
+import com.example.tattooPlatform.dto.bookabledate.DateEntry;
+import com.example.tattooPlatform.dto.bookabledate.DateForm;
 import com.example.tattooPlatform.model.BookableDate;
 import com.example.tattooPlatform.model.BookableHour;
-import com.example.tattooPlatform.dtos.bokablehourdtos.BookableHourForCalendarDto;
-import com.example.tattooPlatform.dtos.bookabledatedtos.BookableDateForCalendarDto;
+import com.example.tattooPlatform.dto.bookablehour.BookableHourCalendarDto;
+import com.example.tattooPlatform.dto.bookabledate.BookableDateCalendarDto;
 import com.example.tattooPlatform.model.Booking;
 import com.example.tattooPlatform.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
@@ -108,19 +108,19 @@ public class BookableDateService {
         }
     }
 
-    public BookableDateForCalendarDto convertBookableDateToBookableDateForCalendarDto(BookableDate bookableDate){
+    public BookableDateCalendarDto convertBookableDateToBookableDateCalendarDto(BookableDate bookableDate){
         List<String> bookableHoursStringsForCalendarList = new ArrayList<>();
 
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
-            BookableHourForCalendarDto bookableHourForCalendarDto =
-                    bookableHourService.convertBookableHourToBookableHourForCalendarDto(bookableHour);
-            bookableHoursStringsForCalendarList.add(bookableHourForCalendarDto.getHour() + "-"
-                    + bookableHourForCalendarDto.isBooked());
+            BookableHourCalendarDto bookableHourCalendarDto =
+                    bookableHourService.convertBookableHourToBookableHourCalendarDto(bookableHour);
+            bookableHoursStringsForCalendarList.add(bookableHourCalendarDto.getHour() + "-"
+                    + bookableHourCalendarDto.isBooked());
         }
 
         Collections.sort(bookableHoursStringsForCalendarList);
 
-        return BookableDateForCalendarDto.builder()
+        return BookableDateCalendarDto.builder()
                 .date(bookableDate.getDate())
                 .bookable(true)
                 .hours(bookableHoursStringsForCalendarList)
@@ -131,10 +131,10 @@ public class BookableDateService {
                 .build();
     }
 
-    public List<BookableDateForCalendarDto> convertListOfBookableDatesToBookableDateForCalendarDto(
+    public List<BookableDateCalendarDto> convertListOfBookableDatesToBookableDateCalendarDto(
             List<BookableDate> bookableDateList){
         return bookableDateList.stream()
-                .map(this::convertBookableDateToBookableDateForCalendarDto)
+                .map(this::convertBookableDateToBookableDateCalendarDto)
                 .toList();
     }
 

@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.controller.admin;
 
-import com.example.tattooPlatform.dtos.bookabledatedtos.DateForm;
+import com.example.tattooPlatform.dto.bookabledate.DateForm;
 import com.example.tattooPlatform.model.BookableDate;
 import com.example.tattooPlatform.model.BookableHour;
 import com.example.tattooPlatform.model.Booking;

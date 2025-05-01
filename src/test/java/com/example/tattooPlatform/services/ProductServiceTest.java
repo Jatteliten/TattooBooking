@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.productdtos.ProductWithNameDescriptionPriceImageUrlDto;
+import com.example.tattooPlatform.dto.product.ProductCustomerViewDto;
 import com.example.tattooPlatform.model.Product;
 import com.example.tattooPlatform.model.ProductCategory;
 import com.example.tattooPlatform.repos.ProductRepo;
@@ -107,7 +107,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void convertProductToProductWithNameDescriptionPriceImageUrlDto_shouldConvertCorrectly() {
+    void convertProductToProductCustomerViewDto_shouldConvertCorrectly() {
         Product product = Product.builder()
                 .name(NAME)
                 .description(DESCRIPTION)
@@ -115,8 +115,8 @@ class ProductServiceTest {
                 .imageUrl("test")
                 .build();
 
-        ProductWithNameDescriptionPriceImageUrlDto productDto =
-                productService.convertProductToProductWithNameDescriptionPriceImageUrlDto(product);
+        ProductCustomerViewDto productDto =
+                productService.convertProductToProductCustomerViewDto(product);
 
         assertEquals(NAME, productDto.getName());
         assertEquals(DESCRIPTION, productDto.getDescription());
@@ -125,7 +125,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void convertProductListToProductWithNameDescriptionPriceImageUrlDtoList_shouldConvertListCorrectly() {
+    void convertProductListToProductCustomerViewDtoList_shouldConvertListCorrectly() {
         Product productOne = Product.builder()
                 .name(NAME + 1)
                 .description(DESCRIPTION + 1)
@@ -141,8 +141,8 @@ class ProductServiceTest {
 
         List<Product> products = List.of(productOne, productTwo);
 
-        List<ProductWithNameDescriptionPriceImageUrlDto> productDtoList =
-                productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(products);
+        List<ProductCustomerViewDto> productDtoList =
+                productService.convertProductListToProductCustomerViewDtoList(products);
 
         for(int i = 0; i < products.size(); i++){
             assertEquals(products.get(i).getName(), productDtoList.get(i).getName());

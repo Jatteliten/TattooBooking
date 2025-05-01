@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.flashimagedtos.FlashImageOnlyUrlDto;
+import com.example.tattooPlatform.dto.flashimage.FlashImageUrlDto;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.repos.FlashImageRepo;
@@ -45,15 +45,15 @@ public class FlashImageService {
         return flashImageRepo.findByCategoriesContaining(imageCategory);
     }
 
-    public FlashImageOnlyUrlDto convertFlashImageToFlashImageOnlyUrlDTO(FlashImage flashImage){
-        return FlashImageOnlyUrlDto.builder()
+    public FlashImageUrlDto convertFlashImageToFlashImageUrlDto(FlashImage flashImage){
+        return FlashImageUrlDto.builder()
                 .url(flashImage.getUrl())
                 .build();
     }
 
-    public List<FlashImageOnlyUrlDto> convertFlashImageListToFlashImagesOnlyUrlDTO(List<FlashImage> flashImages){
+    public List<FlashImageUrlDto> convertFlashImageListToFlashImagesUrlDto(List<FlashImage> flashImages){
         return flashImages.stream()
-                .map(this::convertFlashImageToFlashImageOnlyUrlDTO)
+                .map(this::convertFlashImageToFlashImageUrlDto)
                 .collect(Collectors.toList());
     }
 

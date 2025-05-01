@@ -25,9 +25,9 @@ public class BookableHour {
     private UUID id;
 
     @Column(name = "\"hour\"")
-    LocalTime hour;
-    boolean booked;
+    private LocalTime hour;
+    private boolean booked;
 
     @ManyToOne
-    BookableDate date;
+    private BookableDate date;
 }

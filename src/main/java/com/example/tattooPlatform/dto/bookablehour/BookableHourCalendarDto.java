@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.bokablehourdtos;
+package com.example.tattooPlatform.dto.bookablehour;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookableHourForCalendarDto {
+public class BookableHourCalendarDto {
     private LocalTime hour;
     private boolean booked;
 }

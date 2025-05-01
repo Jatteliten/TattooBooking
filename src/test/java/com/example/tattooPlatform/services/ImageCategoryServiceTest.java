@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.imagecategorydtos.ImageCategoryWithOnlyCategoryDto;
+import com.example.tattooPlatform.dto.imagecategory.ImageCategoryDto;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.TattooImage;
@@ -187,17 +187,17 @@ class ImageCategoryServiceTest {
     }
 
     @Test
-    void convertImageCategoryToImageCategoryWithOnlyCategory_shouldConvertCorrectly() {
+    void convertImageCategoryToImageCategoryDto_shouldConvertCorrectly() {
         ImageCategory imageCategory = ImageCategory.builder()
                 .category("test")
                 .build();
 
         assertEquals(imageCategory.getCategory(),
-                imageCategoryService.convertImageCategoryToImageCategoryWithOnlyCategory(imageCategory).getCategory());
+                imageCategoryService.convertImageCategoryToImageCategoryDto(imageCategory).getCategory());
     }
 
     @Test
-    void convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList_shouldConvertCorrectly() {
+    void convertImageCategoryListToImageCategoryDtoList_shouldConvertCorrectly() {
         ImageCategory imageCategoryOne = ImageCategory.builder()
                 .category("test1")
                 .build();
@@ -206,8 +206,8 @@ class ImageCategoryServiceTest {
                 .build();
         List<ImageCategory> imageCategories = List.of(imageCategoryOne, imageCategoryTwo);
 
-        List<ImageCategoryWithOnlyCategoryDto> convertedList =
-                imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(imageCategories);
+        List<ImageCategoryDto> convertedList =
+                imageCategoryService.convertImageCategoryListToImageCategoryDtoList(imageCategories);
 
         assertEquals(imageCategoryOne.getCategory(), convertedList.getFirst().getCategory());
         assertEquals(imageCategoryTwo.getCategory(), convertedList.getLast().getCategory());

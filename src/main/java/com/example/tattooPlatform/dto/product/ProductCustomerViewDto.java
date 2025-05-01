@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.productdtos;
+package com.example.tattooPlatform.dto.product;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductWithNameDescriptionPriceImageUrlDto {
+public class ProductCustomerViewDto {
     private String name;
     private String description;
     private double price;

@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.flashimagedtos.FlashImageOnlyUrlDto;
+import com.example.tattooPlatform.dto.flashimage.FlashImageUrlDto;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.repos.FlashImageRepo;
@@ -105,18 +105,18 @@ class FlashImageServiceTest {
     }
 
     @Test
-    void convertFlashImageToFlashImageOnlyUrlDTO_shouldConvertCorrectly() {
+    void convertFlashImageToFlashImageUrlDto_shouldConvertCorrectly() {
         FlashImage flashImage = FlashImage.builder()
                 .url("test")
                 .build();
 
-        FlashImageOnlyUrlDto dto = flashImageService.convertFlashImageToFlashImageOnlyUrlDTO(flashImage);
+        FlashImageUrlDto dto = flashImageService.convertFlashImageToFlashImageUrlDto(flashImage);
 
         assertEquals(flashImage.getUrl(), dto.getUrl());
     }
 
     @Test
-    void convertFlashImageListToFlashImagesOnlyUrlDTO_shouldConvertCorrectly() {
+    void convertFlashImageListToFlashImagesUrlDto_shouldConvertCorrectly() {
         FlashImage flashImageOne = FlashImage.builder()
                 .url("test1")
                 .build();
@@ -124,7 +124,7 @@ class FlashImageServiceTest {
                 .url("test2")
                 .build();
 
-        List<FlashImageOnlyUrlDto> DTOs = flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(
+        List<FlashImageUrlDto> DTOs = flashImageService.convertFlashImageListToFlashImagesUrlDto(
                 List.of(flashImageOne, flashImageTwo));
 
         assertEquals(flashImageOne.getUrl(), DTOs.get(0).getUrl());

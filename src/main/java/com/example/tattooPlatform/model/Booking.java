@@ -38,6 +38,6 @@ public class Booking {
     private Customer customer;
 
     @OneToOne
-    Booking previousBooking;
+    private Booking previousBooking;
 
 }

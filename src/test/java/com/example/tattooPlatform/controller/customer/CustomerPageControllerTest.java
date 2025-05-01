@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.controller.customer;
 
-import com.example.tattooPlatform.dtos.productdtos.ProductWithNameDescriptionPriceImageUrlDto;
+import com.example.tattooPlatform.dto.product.ProductCustomerViewDto;
 import com.example.tattooPlatform.model.CustomerPageText;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
@@ -112,7 +112,7 @@ class CustomerPageControllerTest {
     void viewFlashCategories_returnsFlashCategories() throws Exception {
         when(imageCategoryService.getAllImageCategories()).thenReturn(List.of());
         when(imageCategoryService.filterImageCategoriesWithoutFlashImages(Mockito.anyList())).thenReturn(List.of());
-        when(imageCategoryService.convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(Mockito.anyList())).thenReturn(List.of());
+        when(imageCategoryService.convertImageCategoryListToImageCategoryDtoList(Mockito.anyList())).thenReturn(List.of());
 
         mockMvc.perform(get("/flash"))
                 .andExpect(status().isOk())
@@ -129,7 +129,7 @@ class CustomerPageControllerTest {
 
         when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
         when(flashImageService.getFlashImagesByCategory(imageCategory)).thenReturn(List.of(new FlashImage()));
-        when(flashImageService.convertFlashImageListToFlashImagesOnlyUrlDTO(Mockito.anyList())).thenReturn(List.of());
+        when(flashImageService.convertFlashImageListToFlashImagesUrlDto(Mockito.anyList())).thenReturn(List.of());
 
         mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
                 .andExpect(status().isOk())
@@ -168,7 +168,7 @@ class CustomerPageControllerTest {
     void viewProductCategories_returnsProductCategoriesPage() throws Exception {
         when(productCategoryService.getAllProductCategories()).thenReturn(List.of());
         when(productCategoryService.filterOutProductCategoriesWithoutProducts(Mockito.anyList())).thenReturn(List.of());
-        when(productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(Mockito.anyList())).thenReturn(List.of());
+        when(productCategoryService.convertProductCategoryListToProductCategoryDtoList(Mockito.anyList())).thenReturn(List.of());
 
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
@@ -182,11 +182,11 @@ class CustomerPageControllerTest {
                 .name("testCategory")
                 .products(List.of(new Product()))
                 .build();
-        List<ProductWithNameDescriptionPriceImageUrlDto> productDTOs =
-                List.of(new ProductWithNameDescriptionPriceImageUrlDto());
+        List<ProductCustomerViewDto> productDTOs =
+                List.of(new ProductCustomerViewDto());
 
         when(productCategoryService.getProductCategoryByName("testCategory")).thenReturn(productCategory);
-        when(productService.convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
+        when(productService.convertProductListToProductCustomerViewDtoList(
                 productCategory.getProducts())).thenReturn(productDTOs);
 
         mockMvc.perform(get("/products/" + productCategory.getName()))

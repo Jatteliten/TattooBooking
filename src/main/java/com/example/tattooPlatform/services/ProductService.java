@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.productdtos.ProductWithNameDescriptionPriceImageUrlDto;
+import com.example.tattooPlatform.dto.product.ProductCustomerViewDto;
 import com.example.tattooPlatform.model.Product;
 import com.example.tattooPlatform.model.ProductCategory;
 import com.example.tattooPlatform.repos.ProductRepo;
@@ -63,9 +63,9 @@ public class ProductService {
         }
     }
 
-    public ProductWithNameDescriptionPriceImageUrlDto convertProductToProductWithNameDescriptionPriceImageUrlDto(
+    public ProductCustomerViewDto convertProductToProductCustomerViewDto(
             Product product){
-        return ProductWithNameDescriptionPriceImageUrlDto.builder()
+        return ProductCustomerViewDto.builder()
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())
@@ -73,8 +73,8 @@ public class ProductService {
                 .build();
     }
 
-    public List <ProductWithNameDescriptionPriceImageUrlDto> convertProductListToProductWithNameDescriptionPriceImageUrlDtoList(
+    public List <ProductCustomerViewDto> convertProductListToProductCustomerViewDtoList(
             List<Product> products){
-        return products.stream().map(this::convertProductToProductWithNameDescriptionPriceImageUrlDto).toList();
+        return products.stream().map(this::convertProductToProductCustomerViewDto).toList();
     }
 }

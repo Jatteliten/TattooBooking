@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class CustomizeWebPageController {
     private final CustomerPageTextService customerPageTextService;
     private final InstagramEmbedService instagramEmbedService;
+    private final static String FAQ = "frequently-asked-questions";
 
     public CustomizeWebPageController(CustomerPageTextService customerPageTextService, InstagramEmbedService instagramEmbedService){
         this.customerPageTextService = customerPageTextService;
@@ -104,24 +106,44 @@ public class CustomizeWebPageController {
     @PostMapping("/add-frequently-asked-question")
     public String saveFrequentlyAskedQuestion(@RequestParam String question, @RequestParam String answer, Model model){
         customerPageTextService.saveCustomerPageText(CustomerPageText.builder()
-                .page("frequently-asked-questions")
+                .page(FAQ)
                 .section(question)
                 .text(answer)
+                .priority(customerPageTextService.countCustomerPageTextsByPage(FAQ) + 1)
                 .build());
+
+        return populateFaqModelAndReturnPage(model);
+    }
+
+    @PostMapping("/change-frequently-asked-question-priority")
+    public String changeFrequentlyAskedQuestionPriority(@RequestParam UUID id, boolean increment, Model model){
+        int change = increment ? 1 : -1;
+
+        CustomerPageText priorityToUpdate = customerPageTextService.getCustomerPageTextById(id);
+        CustomerPageText priorityToReplace = customerPageTextService.getCustomerPageTextByPageAndPriority(
+                FAQ, priorityToUpdate.getPriority() + change);
+
+        if (priorityToReplace != null) {
+            priorityToUpdate.setPriority(priorityToUpdate.getPriority() + change);
+            priorityToReplace.setPriority(priorityToReplace.getPriority() - change);
+            customerPageTextService.saveListOfCustomerPageTexts(List.of(priorityToUpdate, priorityToReplace));
+        }
 
         return populateFaqModelAndReturnPage(model);
     }
 
     @PostMapping("/delete-frequently-asked-question")
     public String deleteFrequentlyAskedQuestion(@RequestParam UUID id, Model model){
-        customerPageTextService.deleteCustomerPageText(customerPageTextService.getCustomerPageTextById(id));
+        customerPageTextService.reassignPrioritiesOnDelete(
+                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(FAQ),
+                customerPageTextService.getCustomerPageTextById(id));
 
         return populateFaqModelAndReturnPage(model);
     }
 
     private String populateFaqModelAndReturnPage(Model model) {
         model.addAttribute("questions" ,
-                customerPageTextService.getCustomerPageTextListByPage(
+                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(
                         "frequently-asked-questions"));
 
         return "admin/customize-frequently-asked-questions";

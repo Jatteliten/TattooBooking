@@ -22,8 +22,9 @@ public class CustomerPageText {
     @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
-    String text;
-    String page;
-    String section;
-    LocalDateTime created;
+    private String text;
+    private String page;
+    private String section;
+    private Integer priority;
+    private LocalDateTime created;
 }

@@ -9,4 +9,7 @@ import java.util.UUID;
 public interface CustomerPageTextRepo extends JpaRepository<CustomerPageText, UUID> {
     CustomerPageText findTopByPageAndSectionOrderByCreatedDesc(String page, String section);
     List<CustomerPageText> findByPage(String page);
+    List<CustomerPageText> findByPageOrderByPriorityAsc(String page);
+    CustomerPageText findByPageAndPriority(String page, int priority);
+    int countByPage(String page);
 }

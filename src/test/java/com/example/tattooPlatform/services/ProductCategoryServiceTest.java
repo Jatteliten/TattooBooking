@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.productcategorydtos.ProductCategoryOnlyName;
+import com.example.tattooPlatform.dto.productcategory.ProductCategoryDto;
 import com.example.tattooPlatform.model.Product;
 import com.example.tattooPlatform.model.ProductCategory;
 import com.example.tattooPlatform.repos.ProductCategoryRepo;
@@ -71,18 +71,18 @@ class ProductCategoryServiceTest {
     }
 
     @Test
-    void convertProductCategoryToProductCategoryOnlyName_shouldConvertCorrectly() {
+    void convertProductCategoryToProductCategoryDto_shouldConvertCorrectly() {
         String name = "test";
         ProductCategory productCategory = ProductCategory.builder()
                 .name(name)
                 .build();
 
         assertEquals(name,
-                productCategoryService.convertProductCategoryToProductCategoryOnlyNameDTO(productCategory).getName());
+                productCategoryService.convertProductCategoryToProductCategoryDto(productCategory).getName());
     }
 
     @Test
-    void convertProductCategoryListToProductCategoryOnlyNameDTOList_shouldConvertCorrectly() {
+    void convertProductCategoryListToProductCategoryDtoList_shouldConvertCorrectly() {
         String nameOne = "test1";
         ProductCategory productCategoryOne = ProductCategory.builder()
                 .name(nameOne)
@@ -92,8 +92,8 @@ class ProductCategoryServiceTest {
                 .name(nameTwo)
                 .build();
 
-        List<ProductCategoryOnlyName> dtoList =
-                productCategoryService.convertProductCategoryListToProductCategoryOnlyNameDTOList(
+        List<ProductCategoryDto> dtoList =
+                productCategoryService.convertProductCategoryListToProductCategoryDtoList(
                 List.of(productCategoryOne, productCategoryTwo));
         assertEquals(nameOne, dtoList.getFirst().getName());
         assertEquals(nameTwo, dtoList.getLast().getName());

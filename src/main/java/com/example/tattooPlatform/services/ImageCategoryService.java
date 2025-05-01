@@ -1,6 +1,6 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.imagecategorydtos.ImageCategoryWithOnlyCategoryDto;
+import com.example.tattooPlatform.dto.imagecategory.ImageCategoryDto;
 import com.example.tattooPlatform.model.FlashImage;
 import com.example.tattooPlatform.model.ImageCategory;
 import com.example.tattooPlatform.model.TattooImage;
@@ -76,16 +76,16 @@ public class ImageCategoryService {
         return imageCategoryRepo.findAll().stream().filter(category -> !category.getTattooImages().isEmpty()).toList();
     }
 
-    public ImageCategoryWithOnlyCategoryDto convertImageCategoryToImageCategoryWithOnlyCategory(ImageCategory imageCategory){
-        return ImageCategoryWithOnlyCategoryDto.builder()
+    public ImageCategoryDto convertImageCategoryToImageCategoryDto(ImageCategory imageCategory){
+        return ImageCategoryDto.builder()
                 .category(imageCategory.getCategory())
                 .build();
     }
 
-    public List<ImageCategoryWithOnlyCategoryDto> convertImageCategoryListToImageCategoryWithOnlyCategoryDtoList(
+    public List<ImageCategoryDto> convertImageCategoryListToImageCategoryDtoList(
             List<ImageCategory> imageCategories){
         return imageCategories.stream()
-                .map(this::convertImageCategoryToImageCategoryWithOnlyCategory)
+                .map(this::convertImageCategoryToImageCategoryDto)
                 .collect(Collectors.toList());
     }
 

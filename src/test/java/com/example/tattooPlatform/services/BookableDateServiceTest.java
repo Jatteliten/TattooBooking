@@ -1,8 +1,8 @@
 package com.example.tattooPlatform.services;
 
-import com.example.tattooPlatform.dtos.bookabledatedtos.BookableDateForCalendarDto;
-import com.example.tattooPlatform.dtos.bookabledatedtos.DateEntry;
-import com.example.tattooPlatform.dtos.bookabledatedtos.DateForm;
+import com.example.tattooPlatform.dto.bookabledate.BookableDateCalendarDto;
+import com.example.tattooPlatform.dto.bookabledate.DateEntry;
+import com.example.tattooPlatform.dto.bookabledate.DateForm;
 import com.example.tattooPlatform.model.BookableDate;
 import com.example.tattooPlatform.model.BookableHour;
 import com.example.tattooPlatform.model.Booking;
@@ -262,7 +262,7 @@ class BookableDateServiceTest {
     }
 
     @Test
-    void convertBookableDateToBookableDateForCalendarDto_shouldSetCorrectProperties_fromBookableDate(){
+    void convertBookableDateToBookableDateCalendarDto_shouldSetCorrectProperties_fromBookableDate(){
         BookableDate bookableDate = BookableDate.builder()
                 .date(TODAY)
                 .fullyBooked(false)
@@ -274,18 +274,18 @@ class BookableDateServiceTest {
                         .build()))
                 .build();
 
-        BookableDateForCalendarDto bookableDateForCalendarDto =
-                bookableDateService.convertBookableDateToBookableDateForCalendarDto(bookableDate);
+        BookableDateCalendarDto bookableDateCalendarDto =
+                bookableDateService.convertBookableDateToBookableDateCalendarDto(bookableDate);
 
-        assertEquals(bookableDate.getDate(), bookableDateForCalendarDto.getDate());
-        assertEquals(bookableDate.isFullyBooked(), bookableDateForCalendarDto.isFullyBooked());
-        assertEquals(bookableDate.isDropIn(), bookableDateForCalendarDto.isDropIn());
-        assertEquals(bookableDate.isTouchUp(), bookableDateForCalendarDto.isTouchUp());
-        assertEquals(bookableDate.getBookableHours().size(), bookableDateForCalendarDto.getHours().size());
+        assertEquals(bookableDate.getDate(), bookableDateCalendarDto.getDate());
+        assertEquals(bookableDate.isFullyBooked(), bookableDateCalendarDto.isFullyBooked());
+        assertEquals(bookableDate.isDropIn(), bookableDateCalendarDto.isDropIn());
+        assertEquals(bookableDate.isTouchUp(), bookableDateCalendarDto.isTouchUp());
+        assertEquals(bookableDate.getBookableHours().size(), bookableDateCalendarDto.getHours().size());
     }
 
     @Test
-    void convertBookableDateToBookableDateForCalendarDto_shouldSortCorrectly_andBuildCorrectHourStrings(){
+    void convertBookableDateToBookableDateCalendarDto_shouldSortCorrectly_andBuildCorrectHourStrings(){
         BookableDate bookableDate = BookableDate.builder()
                 .date(TODAY)
                 .fullyBooked(false)
@@ -304,12 +304,12 @@ class BookableDateServiceTest {
                                 .build()))
                 .build();
 
-        BookableDateForCalendarDto bookableDateForCalendarDto =
-                bookableDateService.convertBookableDateToBookableDateForCalendarDto(bookableDate);
+        BookableDateCalendarDto bookableDateCalendarDto =
+                bookableDateService.convertBookableDateToBookableDateCalendarDto(bookableDate);
 
-        assertEquals("10:00-false",bookableDateForCalendarDto.getHours().get(0));
-        assertEquals("11:00-true",bookableDateForCalendarDto.getHours().get(1));
-        assertEquals("12:00-false",bookableDateForCalendarDto.getHours().get(2));
+        assertEquals("10:00-false", bookableDateCalendarDto.getHours().get(0));
+        assertEquals("11:00-true", bookableDateCalendarDto.getHours().get(1));
+        assertEquals("12:00-false", bookableDateCalendarDto.getHours().get(2));
     }
 
     @Test

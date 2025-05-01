@@ -1,4 +1,4 @@
-package com.example.tattooPlatform.dtos.imagecategorydtos;
+package com.example.tattooPlatform.dto.productcategory;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImageCategoryWithOnlyCategoryDto {
-    private String category;
+public class ProductCategoryDto {
+    private String name;
 }

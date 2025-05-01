@@ -46,7 +46,7 @@ public class ImageController {
     @PostMapping("/save-image-category")
     public String saveImageCategory(@RequestParam String category, Model model){
         if(imageCategoryService.getImageCategoryByCategoryName(category) != null){
-            model.addAttribute("categoryError", "Category " + category + " already exists!");
+            model.addAttribute("errorMessage", "Category " + category + " already exists!");
         }else{
             ImageCategory imageCategory = ImageCategory.builder()
                     .category(category)
@@ -54,9 +54,9 @@ public class ImageController {
 
             if(imageCategory != null){
                 imageCategoryService.saveImageCategory(imageCategory);
-                model.addAttribute("savedCategory", "Category saved: " + category + "!");
+                model.addAttribute("successMessage", "Category saved: " + category + "!");
             }else{
-                model.addAttribute("categoryError", "Something went wrong when saving " + category + "!");
+                model.addAttribute("errorMessage", "Something went wrong when saving " + category + "!");
             }
         }
 
@@ -70,7 +70,7 @@ public class ImageController {
         imageCategoryService.deleteImageCategory(
                 imageCategoryService.getImageCategoryByCategoryName(category));
         model.addAttribute("categories", imageCategoryService.getAllImageCategories());
-        model.addAttribute("deletedCategory", "Category deleted: " + category + "!");
+        model.addAttribute("successMessage", "Category deleted: " + category + "!");
         return "admin/image-categories";
     }
 

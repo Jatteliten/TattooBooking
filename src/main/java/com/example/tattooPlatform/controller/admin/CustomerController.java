@@ -50,7 +50,7 @@ public class CustomerController {
         if(!customerList.isEmpty()){
             model.addAttribute("customerList", customerList);
         }else{
-            model.addAttribute("customerFindError",
+            model.addAttribute("errorMessage",
                     "No customer with \"" + searchInput + "\" in their name found.");
         }
 
@@ -72,7 +72,7 @@ public class CustomerController {
             model.addAttribute("customer", customer);
             model.addAttribute("totalPaid", customerService.calculateCustomersTotalPaid(customer));
         }else{
-            model.addAttribute("customerFindError", errorMessage);
+            model.addAttribute("errorMessage", errorMessage);
         }
 
         return "admin/customer";

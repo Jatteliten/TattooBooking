@@ -9,8 +9,8 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<p th:if="${error != null}" th:text="${error}" class="text-danger"></p>
-<p th:if="${success != null}" th:text="${success}" class="text-success"></p>
+<p th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></p>
+<p th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></p>
 
 <div class="card-body">
     <div th:if="${!categories.isEmpty()}" class="card">

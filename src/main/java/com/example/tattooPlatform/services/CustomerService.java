@@ -49,26 +49,29 @@ public class CustomerService {
     }
 
     public Customer getCustomerIfAtLeastOneContactMethodMatches(Customer customer) {
-        Customer customerToFind;
-        String phone = customer.getPhone();
-        String instagram = customer.getInstagram();
-        String email = customer.getEmail();
-        if (phone != null && !phone.isEmpty()) {
-            customerToFind = customerRepo.findByPhone(phone);
+        if (isNotBlank(customer.getPhone())) {
+            Customer customerToFind = customerRepo.findByPhone(customer.getPhone());
             if (customerToFind != null){
                 return customerToFind;
             }
         }
-        if (instagram != null && !instagram.isEmpty()) {
-            customerToFind = customerRepo.findByInstagram(instagram);
+
+        if (isNotBlank(customer.getInstagram())) {
+            Customer customerToFind = customerRepo.findByInstagram(customer.getInstagram());
             if (customerToFind != null){
                 return customerToFind;
             }
         }
-        if (email != null && !email.isEmpty()) {
+
+        if (isNotBlank(customer.getEmail())) {
             return customerRepo.findByEmail(customer.getEmail());
         }
+
         return null;
+    }
+
+    private boolean isNotBlank(String value){
+        return value != null && !value.isEmpty();
     }
 
     public Customer getCustomerByAnyField(String input) {

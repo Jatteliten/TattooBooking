@@ -36,10 +36,10 @@ public class ProductController {
     public String saveCategory(@RequestParam String name, Model model){
         name = name.trim().substring(0, 1).toUpperCase() + name.trim().substring(1).toLowerCase();
         if(productCategoryService.getProductCategoryByName(name) != null){
-            model.addAttribute("error", "Category already exists.");
+            model.addAttribute("errorMessage", "Category already exists.");
         }else{
             productCategoryService.saveProductCategory(ProductCategory.builder().name(name).build());
-            model.addAttribute("success", "Category " + name + " added!");
+            model.addAttribute("successMessage", "Category " + name + " added!");
         }
 
         return populateProductCategoriesAndReturnManageProductCategories(model);
@@ -50,12 +50,12 @@ public class ProductController {
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(name);
 
         if(productCategory == null){
-            model.addAttribute("error", "Category " + name + " does not exist.");
+            model.addAttribute("errorMessage", "Category " + name + " does not exist.");
         }else if(productCategory.getProducts().isEmpty()){
             productCategoryService.deleteProductCategory(productCategory);
-            model.addAttribute("success", "Category " + name + " deleted.");
+            model.addAttribute("successMessage", "Category " + name + " deleted.");
         }else{
-            model.addAttribute("error", "Category " + name + " still has products associated with it.");
+            model.addAttribute("errorMessage", "Category " + name + " still has products associated with it.");
         }
 
         return populateProductCategoriesAndReturnManageProductCategories(model);
@@ -81,12 +81,12 @@ public class ProductController {
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
         Product product = productService.createAndSaveProductWithAllAttributes(productCategory, name, description, price, file);
         if(product == null) {
-            model.addAttribute("error", "Could not save product.");
+            model.addAttribute("errorMessage", "Could not save product.");
             return populateProductCategoriesAndReturnManageProductCategories(model);
         }else{
             productCategory.getProducts().add(product);
             productCategoryService.saveProductCategory(productCategory);
-            model.addAttribute("success", name + " saved!");
+            model.addAttribute("successMessage", name + " saved!");
         }
 
         model.addAttribute("category", productCategory);
@@ -99,7 +99,7 @@ public class ProductController {
         product.setDescription(description);
         productService.saveProduct(product);
 
-        model.addAttribute("success", product.getName() + " description changed.");
+        model.addAttribute("successMessage", product.getName() + " description changed.");
         model.addAttribute("category", product.getCategory());
         return "/admin/manage-products-by-category";
     }
@@ -110,7 +110,7 @@ public class ProductController {
         product.setPrice(price);
         productService.saveProduct(product);
 
-        model.addAttribute("success", product.getName() + " price changed.");
+        model.addAttribute("successMessage", product.getName() + " price changed.");
         model.addAttribute("category", product.getCategory());
         return "/admin/manage-products-by-category";
     }
@@ -119,7 +119,7 @@ public class ProductController {
     public String deleteProduct(@RequestParam UUID id, Model model){
         Product product = productService.getProductById(id);
         if(product == null){
-            model.addAttribute("error", "Could not delete product.");
+            model.addAttribute("errorMessage", "Could not delete product.");
             return populateProductCategoriesAndReturnManageProductCategories(model);
         }else{
             ProductCategory category = product.getCategory();
@@ -127,7 +127,7 @@ public class ProductController {
             productCategoryService.saveProductCategory(category);
             String productName = product.getName();
             productService.deleteProduct(productService.getProductById(id));
-            model.addAttribute("success", productName + " deleted.");
+            model.addAttribute("successMessage", productName + " deleted.");
             model.addAttribute("category", category);
             return "/admin/manage-products-by-category";
         }

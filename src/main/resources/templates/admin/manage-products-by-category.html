@@ -9,8 +9,8 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <h3 th:text="${category.name}"></h3>
-<p th:if="${error != null}" th:text="${error}" class="text-danger"></p>
-<p th:if="${success != null}" th:text="${success}" class="text-success"></p>
+<p th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></p>
+<p th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></p>
 <div class="card">
   <div class="card-header">Add new product</div>
   <div class="card-body">

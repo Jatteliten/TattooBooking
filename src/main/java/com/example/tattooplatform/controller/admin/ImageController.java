@@ -47,6 +47,7 @@ public class ImageController {
 
     @PostMapping("/save-image-category")
     public String saveImageCategory(@RequestParam String category, Model model){
+        category = category.substring(0, 1).toUpperCase() + category.substring(1);
         if(imageCategoryService.getImageCategoryByCategoryName(category) != null){
             model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Category " + category + " already exists!");
         }else{

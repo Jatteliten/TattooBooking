@@ -32,11 +32,11 @@
     </form>
 </div>
 
-<div th:if="${successFeedback != null}">
-    <h4 th:text="${successFeedback}" class="text-success fifteen-px-margin-top-bottom"></h4>
+<div th:if="${successMessage != null}">
+    <h4 th:text="${successMessage}" class="text-success fifteen-px-margin-top-bottom"></h4>
 </div>
-<div th:if="${failFeedback != null}">
-    <h4 th:text="${failFeedback}" class="text-danger fifteen-px-margin-top-bottom"></h4>
+<div th:if="${errorMessage != null}">
+    <h4 th:text="${errorMessage}" class="text-danger fifteen-px-margin-top-bottom"></h4>
 </div>
 
 <div class="d-flex flex-wrap gap-2 mt-3">

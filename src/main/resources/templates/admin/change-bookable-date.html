@@ -45,11 +45,11 @@
     <div class="card">
         <h3 class="card-header">Bookable hours</h3>
         <div class="card-body">
-            <p th:if="${negativeFeedback} != null"
-               th:text="${negativeFeedback}"
+            <p th:if="${errorMessage} != null"
+               th:text="${errorMessage}"
                class="text-danger"></p>
-            <p th:if="${positiveFeedback} != null"
-               th:text="${positiveFeedback}"
+            <p th:if="${successMessage} != null"
+               th:text="${successMessage}"
                class="text-success"></p>
             <div th:if="${bookableDate} != null">
                 <div th:if="${bookableDate.getBookableHours()} != null"

@@ -37,8 +37,12 @@
 </div>
 <p th:if="${booking.touchUp == true and booking.previousBooking.tattooImage == null}" class="text-danger">No image uploaded.</p>
 
-<p th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></p>
-<p th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></p>
+<div th:if="${successMessage != null}" class="alert alert-success mt-4">
+    <span th:text="${successMessage}"></span>
+</div>
+<div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
+    <span th:text="${errorMessage}"></span>
+</div>
 
 <div th:if="${booking.touchUp == true and booking.previousBooking.tattooImage != null}">
     <a data-bs-toggle="modal"

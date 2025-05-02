@@ -23,8 +23,8 @@
 
 <br>
 
-<div th:if="${errorMessage != null}">
-    <p th:text="${errorMessage}" class="text-danger"></p>
+<div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
+    <span th:text="${errorMessage}"></span>
 </div>
 <div th:if="${upcomingBookings != null}" class="card">
     <h4 class="card-header">Bookings</h4>

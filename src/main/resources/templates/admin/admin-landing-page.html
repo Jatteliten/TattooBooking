@@ -9,8 +9,12 @@
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 
-<h5 th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></h5>
-<h5 th:if="${successMessage != null}" th:text="${successMessage}" class="text-success"></h5>
+<div th:if="${successMessage != null}" class="alert alert-success mt-4">
+    <span th:text="${successMessage}"></span>
+</div>
+<div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
+    <span th:text="${errorMessage}"></span>
+</div>
 
 <div th:if="${bookableDates != null}">
     <div class="card">

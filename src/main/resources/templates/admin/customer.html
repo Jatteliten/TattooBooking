@@ -37,7 +37,9 @@
         </div>
     </form>
 
-    <h4 th:if="${errorMessage != null}" th:text="${errorMessage}" class="text-danger"></h4>
+    <div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
+        <span th:text="${errorMessage}"></span>
+    </div>
 
     <div th:if="${customerList} != null" class="card">
         <div class="card-header">Customers found</div>

@@ -120,7 +120,7 @@ public class CustomerPageController {
     public String viewFrequentlyAskedQuestions(Model model){
         model.addAttribute("questions",
                 customerPageTextService.convertCustomerPageTextListToCustomerPageTextPrioritizedDtoList(
-                customerPageTextService.getCustomerPageTextListByPageSortedByPriority("frequently-asked-questions")));
+                customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority("frequently-asked-questions")));
 
         return "customer/frequently-asked-questions";
     }

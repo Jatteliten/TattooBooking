@@ -116,17 +116,20 @@ public class CustomizeWebPageController {
     }
 
     @PostMapping("/change-frequently-asked-question-priority")
-    public String changeFrequentlyAskedQuestionPriority(@RequestParam UUID id, boolean increment, Model model){
-        int change = increment ? 1 : -1;
-
+    public String changeFrequentlyAskedQuestionPriority(@RequestParam UUID id, boolean decrement, Model model){
         CustomerPageText priorityToUpdate = customerPageTextService.getCustomerPageTextById(id);
-        CustomerPageText priorityToReplace = customerPageTextService.getCustomerPageTextByPageAndPriority(
-                FAQ, priorityToUpdate.getPriority() + change);
 
-        if (priorityToReplace != null) {
-            priorityToUpdate.setPriority(priorityToUpdate.getPriority() + change);
-            priorityToReplace.setPriority(priorityToReplace.getPriority() - change);
-            customerPageTextService.saveListOfCustomerPageTexts(List.of(priorityToUpdate, priorityToReplace));
+        if(priorityToUpdate == null){
+            return populateFaqModelAndReturnPage(model);
+        }
+
+        int change = decrement ? -1 : 1;
+        List<CustomerPageText> updatedPriorities = customerPageTextService.switchPriorities(decrement, priorityToUpdate,
+                customerPageTextService.getCustomerPageTextByPageAndPriority(
+                        FAQ, priorityToUpdate.getPriority() + change));
+
+        if(updatedPriorities != null){
+            customerPageTextService.saveListOfCustomerPageTexts(updatedPriorities);
         }
 
         return populateFaqModelAndReturnPage(model);
@@ -135,7 +138,7 @@ public class CustomizeWebPageController {
     @PostMapping("/delete-frequently-asked-question")
     public String deleteFrequentlyAskedQuestion(@RequestParam UUID id, Model model){
         customerPageTextService.reassignPrioritiesOnDelete(
-                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(FAQ),
+                customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority(FAQ),
                 customerPageTextService.getCustomerPageTextById(id));
 
         return populateFaqModelAndReturnPage(model);
@@ -143,7 +146,7 @@ public class CustomizeWebPageController {
 
     private String populateFaqModelAndReturnPage(Model model) {
         model.addAttribute("questions" ,
-                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(
+                customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority(
                         "frequently-asked-questions"));
 
         return "admin/customize-frequently-asked-questions";

@@ -125,7 +125,7 @@ class CustomerPageTextServiceTest {
         customerPageTextRepo.saveAll(List.of(customerPageTextOne, customerPageTextTwo));
 
         List<CustomerPageText> savedCustomerPageTextList =
-                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(TEST_PAGE);
+                customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority(TEST_PAGE);
 
         assertEquals(2, savedCustomerPageTextList.size());
         assertEquals(savedCustomerPageTextList.get(0), customerPageTextTwo);
@@ -145,7 +145,7 @@ class CustomerPageTextServiceTest {
         customerPageTextRepo.saveAll(List.of(customerPageTextOne, customerPageTextTwo));
 
         List<CustomerPageText> savedCustomerPageTextList =
-                customerPageTextService.getCustomerPageTextListByPageSortedByPriority(TEST_PAGE);
+                customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority(TEST_PAGE);
 
         assertEquals(1, savedCustomerPageTextList.size());
         assertTrue(savedCustomerPageTextList.contains(customerPageTextOne));
@@ -258,5 +258,75 @@ class CustomerPageTextServiceTest {
         assertEquals(1, reorderedList.get(0).getPriority());
         assertEquals(2, reorderedList.get(1).getPriority());
         assertEquals(3, reorderedList.get(2).getPriority());
+    }
+
+    @Test
+    void switchPriorities_shouldDecrement_whenSetToDecrement(){
+        CustomerPageText customerPageTextToIncrement = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .section("decremented")
+                .priority(2)
+                .build();
+        CustomerPageText customerPageTextToReplace = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .section("incremented")
+                .priority(1)
+                .build();
+
+        List<CustomerPageText> switchedPrioritiesList = customerPageTextService.switchPriorities(
+                true, customerPageTextToIncrement, customerPageTextToReplace);
+
+        assertTrue(switchedPrioritiesList.get(0).getSection().equals(customerPageTextToIncrement.getSection()) &&
+                switchedPrioritiesList.get(0).getPriority().equals(1));
+        assertTrue(switchedPrioritiesList.get(1).getSection().equals(customerPageTextToReplace.getSection()) &&
+                switchedPrioritiesList.get(1).getPriority().equals(2));
+    }
+
+    @Test
+    void switchPriorities_shouldIncrement_whenSetToIncrement(){
+        CustomerPageText customerPageTextToIncrement = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .section("incremented")
+                .priority(1)
+                .build();
+        CustomerPageText customerPageTextToReplace = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .section("decremented")
+                .priority(2)
+                .build();
+
+        List<CustomerPageText> switchedPrioritiesList = customerPageTextService.switchPriorities(
+                false, customerPageTextToIncrement, customerPageTextToReplace);
+
+        assertTrue(switchedPrioritiesList.get(0).getSection().equals(customerPageTextToIncrement.getSection()) &&
+                switchedPrioritiesList.get(0).getPriority().equals(2));
+        assertTrue(switchedPrioritiesList.get(1).getSection().equals(customerPageTextToReplace.getSection()) &&
+                switchedPrioritiesList.get(1).getPriority().equals(1));
+    }
+
+    @Test
+    void switchPriorities_shouldReturnNull_ifCustomerPageTextsAreNotNextToEachOtherInPriority(){
+        CustomerPageText customerPageTextToIncrement = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .priority(1)
+                .build();
+        CustomerPageText customerPageTextToReplace = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .priority(5)
+                .build();
+        assertNull(customerPageTextService.switchPriorities(true, customerPageTextToIncrement, customerPageTextToReplace));
+    }
+
+    @Test
+    void switchPriorities_shouldReturnNull_ifCustomerPageTextsAreNotFromTheSamePage(){
+        CustomerPageText customerPageTextToIncrement = CustomerPageText.builder()
+                .page(TEST_PAGE)
+                .priority(1)
+                .build();
+        CustomerPageText customerPageTextToReplace = CustomerPageText.builder()
+                .page(TEST_PAGE + 2)
+                .priority(5)
+                .build();
+        assertNull(customerPageTextService.switchPriorities(true, customerPageTextToIncrement, customerPageTextToReplace));
     }
 }

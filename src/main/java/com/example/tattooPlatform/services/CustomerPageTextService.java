@@ -67,7 +67,7 @@ public class CustomerPageTextService {
     }
 
     @Cacheable
-    public List<CustomerPageText> getCustomerPageTextListByPageSortedByPriority(String page){
+    public List<CustomerPageText> getCustomerPageTextListByPageSortedByAscendingPriority(String page){
         return customerPageTextRepo.findByPageOrderByPriorityAsc(page);
     }
 
@@ -100,6 +100,24 @@ public class CustomerPageTextService {
     public List<CustomerPageTextPrioritizedDto> convertCustomerPageTextListToCustomerPageTextPrioritizedDtoList(
             List<CustomerPageText> customerPageTexts){
         return customerPageTexts.stream().map(this::convertCustomerPageTextToCustomerPageTextPrioritizedDto).toList();
+    }
+
+    public List<CustomerPageText> switchPriorities(boolean decrement,
+                                 CustomerPageText first, CustomerPageText second){
+        if(first == null || second == null){
+            return null;
+        }
+
+        int firstNewPriority = decrement ? -1 : 1;
+
+        if (first.getPriority() + firstNewPriority == second.getPriority() &&
+                first.getPage().equals(second.getPage())) {
+            first.setPriority(first.getPriority() + firstNewPriority);
+            second.setPriority(second.getPriority() - firstNewPriority);
+            return List.of(first, second);
+        }
+
+        return null;
     }
 
     public List<CustomerPageText> reassignPrioritiesInList(List<CustomerPageText> customerPageTexts){

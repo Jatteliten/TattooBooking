@@ -46,12 +46,12 @@
         <div class="arrow-buttons">
           <form th:if="${!iterStat.first}" th:action="@{/admin/customize/change-frequently-asked-question-priority}" method="post">
             <input type="hidden" name="id" th:value="${question.id}">
-            <input type="hidden" name="increment" value="false">
+            <input type="hidden" name="decrement" value="true">
             <button type="submit" class="btn btn-sm btn-primary" title="Move Up">&#8679;</button>
           </form>
           <form th:if="${!iterStat.last}" th:action="@{/admin/customize/change-frequently-asked-question-priority}" method="post">
             <input type="hidden" name="id" th:value="${question.id}">
-            <input type="hidden" name="increment" value="true">
+            <input type="hidden" name="decrement" value="false">
             <button type="submit" class="btn btn-sm btn-primary" title="Move Down">&#8681;</button>
           </form>
         </div>

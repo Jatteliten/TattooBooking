@@ -31,10 +31,23 @@
 <div th:if="${booking.touchUp != true}" class="card" style="margin-bottom: 10px;">
     <span class="card-header">Deposit paid</span>
     <div class="card-body">
-        <p th:text="(${booking.depositPaid} ? 'Yes' : 'No')"></p>
         <form th:action="@{/admin/booking/change-booking-deposit-state}" method="post">
-            <input type="hidden" name="id" th:value="${booking.id}">
-            <button type="submit" class="btn btn-warning">Change</button>
+            <input type="hidden" name="id" th:value="${booking.id}" />
+
+            <div class="btn-group" role="group">
+                <button
+                        type="submit"
+                        class="btn"
+                        th:classappend="${booking.depositPaid} ? 'btn-success' : 'btn-outline-success'">
+                    Yes
+                </button>
+                <button
+                        type="submit"
+                        class="btn"
+                        th:classappend="${booking.depositPaid} ? 'btn-outline-danger' : 'btn-danger'">
+                    No
+                </button>
+            </div>
         </form>
     </div>
 </div>

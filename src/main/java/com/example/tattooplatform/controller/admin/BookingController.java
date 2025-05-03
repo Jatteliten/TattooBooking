@@ -111,8 +111,9 @@ public class BookingController {
         Booking booking = bookingService.getBookingById(id);
         booking.setDepositPaid(!booking.isDepositPaid());
         bookingService.saveBooking(booking);
+        String newValue = booking.isDepositPaid() ? "Yes" : "No";
 
-        return populateModelOnBookingUpdate(model, booking, "Booking deposit changed.");
+        return populateModelOnBookingUpdate(model, booking, "Booking deposit changed to \"" + newValue + "\".");
     }
 
     @PostMapping("/cancel-appointment")

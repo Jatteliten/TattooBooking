@@ -11,12 +11,9 @@
 <h2 th:text="${booking.date.getDayOfMonth()} + ' ' + ${booking.date.getMonth()} + ' ' + ${booking.date.getYear()}"></h2>
 <h4 th:if="${booking.touchUp == true}" class="text-success">Touch up</h4>
 <p th:text="${'Time: ' + #temporals.format(booking.date, 'HH:mm')} + ' - ' + ${#temporals.format(booking.endTime, 'HH:mm')}"></p>
-<div th:if="${successMessage != null}" class="alert alert-success mt-4">
-    <span th:text="${successMessage}"></span>
-</div>
-<div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
-    <span th:text="${errorMessage}"></span>
-</div>
+
+<div th:replace="~{layouts/admin-layout :: feedback-full}"></div>
+
 <div class="card" style="margin-bottom: 10px;">
     <span class="card-header">Customer:</span>
     <div class="card-body">

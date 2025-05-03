@@ -37,9 +37,7 @@
         </div>
     </form>
 
-    <div th:if="${errorMessage != null}" class="alert alert-danger mt-4">
-        <span th:text="${errorMessage}"></span>
-    </div>
+    <div th:replace="~{layouts/admin-layout :: feedback-error}"></div>
 
     <div th:if="${customerList} != null" class="card">
         <div class="card-header">Customers found</div>

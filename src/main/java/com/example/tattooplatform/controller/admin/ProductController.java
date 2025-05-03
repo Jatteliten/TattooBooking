@@ -41,7 +41,7 @@ public class ProductController {
             model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Category already exists.");
         }else{
             productCategoryService.saveProductCategory(ProductCategory.builder().name(name).build());
-            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Category " + name + " added!");
+            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), generateCategoryUpdateFeedback(name, "added!"));
         }
 
         return populateProductCategoriesAndReturnManageProductCategories(model);
@@ -52,12 +52,12 @@ public class ProductController {
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(name);
 
         if(productCategory == null){
-            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Category " + name + " does not exist.");
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), generateCategoryUpdateFeedback(name, "does not exist."));
         }else if(productCategory.getProducts().isEmpty()){
             productCategoryService.deleteProductCategory(productCategory);
-            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Category " + name + " deleted.");
+            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), generateCategoryUpdateFeedback(name, "deleted."));
         }else{
-            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Category " + name + " still has products associated with it.");
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), generateCategoryUpdateFeedback(name, "still has products associated with it."));
         }
 
         return populateProductCategoriesAndReturnManageProductCategories(model);
@@ -135,6 +135,10 @@ public class ProductController {
     private String populateProductCategoriesAndReturnManageProductCategories(Model model){
         model.addAttribute("categories", productCategoryService.getAllProductCategories());
         return "/admin/manage-product-categories";
+    }
+
+    private String generateCategoryUpdateFeedback(String name, String feedback){
+        return "Category " + name + " " + feedback;
     }
 
 }

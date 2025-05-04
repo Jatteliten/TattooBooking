@@ -9,7 +9,11 @@
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
-<div class="centered" style="width:90%;">
+<div class="page-margin centered">
+  <div class="text-center">
+    <img src="/images/Vanliga_fragor.png" alt="Vanliga frågor" style="width: 50%;">
+    <img src="/images/Wave.png" alt="Våg" style="margin-bottom: 20px; margin-top:10px; width:100%;">
+  </div>
   <div class="accordion" id="faq">
     <div th:each="question, iterStat : ${questions}" class="accordion-item">
       <h2 class="accordion-header" th:id="'heading-' + ${iterStat.index}">

@@ -58,7 +58,7 @@
 <br>
 <form th:action="@{/admin/images/save-image-category}" method="post">
     <label>
-        <input type="text" name="category">
+        <input type="text" name="category" maxlength="255">
     </label>
     <button type="submit" class="btn btn-success btn-sm">Add category</button>
 </form>

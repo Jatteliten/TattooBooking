@@ -17,6 +17,7 @@
             Latest news
         </div>
         <div class="card-body">
+            <small>(max 1000 characters)</small>
             <form th:action="@{/admin/customize/update-latest-news}" method="post">
                 <div class="mb-3">
                     <label for="latestNewsText"></label>
@@ -25,7 +26,8 @@
                               class="form-control"
                               rows="5"
                               th:text="${frontPageNews}"
-                              required>[[${frontPageNews}]]</textarea>
+                              maxlength="1000"
+                              required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Save</button>
             </form>

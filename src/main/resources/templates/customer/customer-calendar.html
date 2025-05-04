@@ -15,6 +15,9 @@
         <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
         <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
     </div>
+    <div class="text-muted mb-3 text-center">
+        <small>Peka eller tryck på ett datum för att se lediga tider</small>
+    </div>
     <div th:replace="~{layouts/calendar-layout :: calendar}"></div>
 </div>
 

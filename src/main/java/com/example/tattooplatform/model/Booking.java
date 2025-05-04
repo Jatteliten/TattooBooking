@@ -1,5 +1,6 @@
 package com.example.tattooplatform.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Booking {
     private int finalPrice;
     private LocalDateTime date;
     private LocalDateTime endTime;
+    @Column(length = 1000)
     private String notes;
     private boolean touchUp;
 

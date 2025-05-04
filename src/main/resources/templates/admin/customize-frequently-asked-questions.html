@@ -23,13 +23,13 @@
   <p class="card-header">Add new frequently asked question</p>
   <form class="card-body" th:action="@{/admin/customize/add-frequently-asked-question}" method="post">
     <div class="form-group">
-      <label for="question">Question</label>
-      <input class="form-control" type="text" id="question" name="question" required>
+      <label for="question">Question <small>(max 255 characters)</small></label>
+      <input class="form-control" type="text" id="question" name="question" maxlength="255" required>
     </div>
     <br>
     <div class="form-group">
-      <label for="answer">Answer</label>
-      <textarea class="form-control" id="answer" name="answer" rows="4" required></textarea>
+      <label for="answer">Answer <small>(max 1000 characters)</small></label>
+      <textarea class="form-control" id="answer" name="answer" rows="4" maxlength="1000" required></textarea>
     </div>
     <br>
     <button type="submit" class="btn btn-success">Save</button>

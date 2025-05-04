@@ -1,5 +1,6 @@
 package com.example.tattooplatform.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class CustomerPageText {
     @GeneratedValue(strategy = GenerationType.UUID  )
     private UUID id;
 
+    @Column(length = 1000)
     private String text;
     private String page;
     private String section;

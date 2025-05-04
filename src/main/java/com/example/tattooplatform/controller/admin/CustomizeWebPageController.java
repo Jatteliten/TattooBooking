@@ -109,11 +109,12 @@ public class CustomizeWebPageController {
     
     @PostMapping("/add-frequently-asked-question")
     public String saveFrequentlyAskedQuestion(@RequestParam String question, @RequestParam String answer, Model model){
+        int amountOfFAQs = customerPageTextService.countCustomerPageTextsByPage(FAQ) + 1;
         customerPageTextService.saveCustomerPageText(CustomerPageText.builder()
                 .page(FAQ)
                 .section(question)
                 .text(answer)
-                .priority(customerPageTextService.countCustomerPageTextsByPage(FAQ) + 1)
+                .priority(amountOfFAQs)
                 .build());
 
         return populateFaqModelAndReturnPage(model);
@@ -141,7 +142,7 @@ public class CustomizeWebPageController {
 
     @PostMapping("/delete-frequently-asked-question")
     public String deleteFrequentlyAskedQuestion(@RequestParam UUID id, Model model){
-        customerPageTextService.reassignPrioritiesOnDelete(
+        customerPageTextService.reassignPrioritiesBeforeDelete(
                 customerPageTextService.getCustomerPageTextListByPageSortedByAscendingPriority(FAQ),
                 customerPageTextService.getCustomerPageTextById(id));
 

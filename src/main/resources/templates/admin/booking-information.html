@@ -121,11 +121,13 @@
             <p class="card-header">Notes</p>
             <div class="card-body">
                 <form th:action="@{/admin/booking/update-booking-notes}" method="post">
+                    <small>(max 1000 characters)</small>
                     <label>
                         <textarea th:text="${booking.notes}"
                                   name="notes"
                                   class="form-control"
                                   rows="5"
+                                  maxlength="1000"
                                   required></textarea>
                     </label>
                     <input type="hidden" name="id" th:value="${booking.id}">

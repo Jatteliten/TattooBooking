@@ -1,6 +1,7 @@
 package com.example.tattooplatform.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,7 @@ public class Product {
     private UUID id;
 
     private String name;
+    @Column(length = 1000)
     private String description;
     private String imageUrl;
     private double price;

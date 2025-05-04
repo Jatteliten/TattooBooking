@@ -43,11 +43,20 @@ public class CustomerPageTextService {
 
     @Transactional
     @CacheEvict(allEntries = true)
-    public void reassignPrioritiesOnDelete(
-            List<CustomerPageText> customerPageTexts, CustomerPageText customerPageTextToDelete) {
+    public void reassignPrioritiesBeforeDelete(List<CustomerPageText> customerPageTexts,
+                                               CustomerPageText customerPageTextToDelete) {
         customerPageTexts.remove(customerPageTextToDelete);
-        customerPageTexts = reassignPrioritiesInList(customerPageTexts);
-        saveListOfCustomerPageTexts(customerPageTexts);
+
+        if(customerPageTexts.size() > 2) {
+            customerPageTexts = reassignPrioritiesInList(customerPageTexts);
+        }else if(customerPageTexts.size() == 2){
+            customerPageTexts.getFirst().setPriority(1);
+        }
+
+        if(!customerPageTexts.isEmpty()){
+            saveListOfCustomerPageTexts(customerPageTexts);
+        }
+
         deleteCustomerPageText(customerPageTextToDelete);
     }
 
@@ -76,7 +85,6 @@ public class CustomerPageTextService {
         return customerPageTextRepo.findByPageAndPriority(page, priority);
     }
 
-    @Cacheable
     public int countCustomerPageTextsByPage(String page){
         return customerPageTextRepo.countByPage(page);
     }

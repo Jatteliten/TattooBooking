@@ -1,5 +1,6 @@
 package com.example.tattooplatform.controller.admin;
 
+import com.example.tattooplatform.controller.ModelFeedback;
 import com.example.tattooplatform.model.FlashImage;
 import com.example.tattooplatform.model.ImageCategory;
 import com.example.tattooplatform.services.FlashImageService;

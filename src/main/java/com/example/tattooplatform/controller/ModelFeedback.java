@@ -1,4 +1,4 @@
-package com.example.tattooplatform.controller.admin;
+package com.example.tattooplatform.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

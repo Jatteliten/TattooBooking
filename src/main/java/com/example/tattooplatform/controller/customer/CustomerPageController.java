@@ -147,8 +147,7 @@ public class CustomerPageController {
     }
 
     @GetMapping("/mail-confirmation")
-    public String mailConfirmation(Model model, @ModelAttribute("mailSent") Boolean mailSent){
-        model.addAttribute("mailSent", mailSent);
+    public String mailConfirmation(){
         return "customer/mail-confirmation";
     }
 

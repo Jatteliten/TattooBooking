@@ -10,14 +10,14 @@
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 
-<div th:if="${mailSent}" class="centered">
+<div th:if="${successMessage != null}" class="centered">
   <h2>Bokningsförfrågan skickad!</h2>
-  <p>Tack för din förfrågan. Jag återkommer så snart jag kan.</p>
+  <p th:text="${successMessage}"></p>
 </div>
 
-<div th:if="${!mailSent}" class="centered">
+<div th:if="${errorMessage != null}" class="centered">
   <h2>Fel!</h2>
-  <p>Det gick inte att skicka din förfrågan. Var vänlig försök igen senare.</p>
+  <p th:text="${errorMessage}"></p>
 </div>
 
 <div th:replace="~{layouts/customer-layout :: footer}"></div>

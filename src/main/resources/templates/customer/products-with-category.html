@@ -11,15 +11,24 @@
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 
 <div class="page-margin">
-    <div class="card d-flex justify-content-center align-items-center">
-        <div class="card-body">
-            <p class="text-center mb-0">Kontakta mig via mejl eller instagram för köp av produkter!</p>
+    <div th:if="${categories != null}">
+        <div class="container">
+            <ul class="nav justify-content-center">
+                <li class="nav-item" th:each="category : ${categories}">
+                    <a class="nav-link front-page-link disabled"
+                       th:if="${category.name == categoryName}"
+                       th:text="${category.name}"
+                       style="font-weight: bold; text-decoration: underline"></a>
+                    <a class="nav-link front-page-link"
+                       th:if="${category.name != categoryName}"
+                       th:href="@{/products/{categoryName}(categoryName=${category.name})}"
+                       th:text="${category.name}"></a>
+                </li>
+            </ul>
         </div>
     </div>
-    <br>
-    <div class="card product-header">
-        <h5 th:text="${category}" class="card-header primary-pink-background text-center"></h5>
-    </div>
+
+    <hr>
 
     <div class="product-body">
         <div class="row justify-content-center">
@@ -47,6 +56,12 @@
                     </ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card d-flex justify-content-center align-items-center">
+        <div class="card-body">
+            <p class="text-center mb-0">Kontakta mig via mejl eller instagram för köp av produkter!</p>
         </div>
     </div>
 

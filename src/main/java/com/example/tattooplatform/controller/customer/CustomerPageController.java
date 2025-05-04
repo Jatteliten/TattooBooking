@@ -95,16 +95,14 @@ public class CustomerPageController {
 
     @GetMapping("/flash")
     public String viewFlashCategories(Model model){
-        model.addAttribute("categories",
-                imageCategoryService.convertImageCategoryListToImageCategoryDtoList(
-                        imageCategoryService.filterImageCategoriesWithoutFlashImages(
-                        imageCategoryService.getAllImageCategories())));
+        populateFlashCategories(model);
 
         return "customer/flash-categories";
     }
 
     @GetMapping("/flash/{categoryName}")
     public String viewFlashesWithCategories(@PathVariable String categoryName, Model model){
+        populateFlashCategories(model);
         ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
         if(imageCategory.getFlashImages().isEmpty()){
             return ERROR_TEMPLATE;
@@ -115,6 +113,13 @@ public class CustomerPageController {
 
             return "customer/available-flash-with-category";
         }
+    }
+
+    private void populateFlashCategories(Model model) {
+        model.addAttribute("categories",
+                imageCategoryService.convertImageCategoryListToImageCategoryDtoList(
+                        imageCategoryService.filterImageCategoriesWithoutFlashImages(
+                                imageCategoryService.getAllImageCategories())));
     }
 
     @GetMapping("/frequently-asked-questions")
@@ -128,16 +133,14 @@ public class CustomerPageController {
 
     @GetMapping("/products")
     public String viewProductCategories(Model model){
-        model.addAttribute("categories",
-                productCategoryService.convertProductCategoryListToProductCategoryDtoList(
-                productCategoryService.filterOutProductCategoriesWithoutProducts(
-                        productCategoryService.getAllProductCategories())));
+        populateProductCategories(model);
 
         return "customer/product-categories";
     }
 
     @GetMapping("/products/{categoryName}")
     public String viewProductsByCategory(@PathVariable String categoryName, Model model){
+        populateProductCategories(model);
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
 
         model.addAttribute("products",
@@ -145,6 +148,13 @@ public class CustomerPageController {
                         productCategory.getProducts()));
         model.addAttribute("category", productCategory.getName());
         return "customer/products-with-category";
+    }
+
+    private void populateProductCategories(Model model) {
+        model.addAttribute("categories",
+                productCategoryService.convertProductCategoryListToProductCategoryDtoList(
+                        productCategoryService.filterOutProductCategoriesWithoutProducts(
+                                productCategoryService.getAllProductCategories())));
     }
 
     @GetMapping("/mail-confirmation")

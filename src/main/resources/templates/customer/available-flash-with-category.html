@@ -10,20 +10,30 @@
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="page-margin">
-  <div class="card">
-    <div class="card-header secondary-pink-background" th:text="${category}"></div>
-    <div class="card-body">
-      <div class="row">
-        <div th:each="flash : ${flashes}" class="col-4 col-md-3 col-lg-2 mb-3">
-          <button type="button"
-                  class="btn p-0 border-0"
-                  data-bs-toggle="modal"
-                  data-bs-target="#imageModal"
-                  th:attr="data-bs-image=${flash.url}, data-bs-caption=${category}">
-            <img th:src="${flash.url}" class="img-fluid" alt="Flash"/>
-          </button>
-        </div>
-      </div>
+  <div class="container" style="margin-bottom: 10px;">
+    <ul class="nav justify-content-center">
+      <li class="nav-item" th:if="${categories != null}" th:each="category : ${categories}">
+        <a class="nav-link front-page-link disabled"
+           th:if="${category.category == categoryName}"
+           th:text="${category.category}"
+           style="font-weight: bold; text-decoration: underline"></a>
+        <a class="nav-link front-page-link"
+           th:if="${category.category != categoryName}"
+           th:href="@{/flash/{categoryName}(categoryName=${category.category})}"
+           th:text="${category.category}"></a>
+      </li>
+    </ul>
+  </div>
+  <hr>
+  <div class="row">
+    <div th:each="flash : ${flashes}" class="col-4 col-md-3 col-lg-2 mb-3">
+      <button type="button"
+              class="btn p-0 border-0"
+              data-bs-toggle="modal"
+              data-bs-target="#imageModal"
+              th:attr="data-bs-image=${flash.url}, data-bs-caption=${category}">
+        <img th:src="${flash.url}" class="img-fluid" alt="Flash"/>
+      </button>
     </div>
   </div>
 </div>

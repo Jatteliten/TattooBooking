@@ -11,15 +11,11 @@
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="page-margin">
   <div class="container">
-    <h5>Flashkategorier</h5>
-    <div th:if="${categories != null}" th:each="category : ${categories}">
-        <div class="card-body">
-          <a th:href="@{/flash/{categoryName}(categoryName=${category.category})}">
-            <button type="submit" class="btn primary-pink-background text-black" th:text="${category.category}" style="width:100%"></button>
-          </a>
-        </div>
-      <br>
-    </div>
+    <ul class="nav justify-content-center">
+      <li class="nav-item" th:if="${categories != null}" th:each="category : ${categories}">
+          <a class="nav-link front-page-link" th:href="@{/flash/{categoryName}(categoryName=${category.category})}" th:text="${category.category}"></a>
+      </li>
+    </ul>
   </div>
 </div>
 

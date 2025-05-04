@@ -33,6 +33,7 @@ dependencies {
     implementation("software.amazon.awssdk:s3:2.31.26")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("net.coobird:thumbnailator:0.4.14")
+    implementation("com.github.vladimir-bukhtoyarov:bucket4j-core:7.6.0")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

@@ -12,26 +12,23 @@
 
 <div class="page-margin">
     <div class="row">
-        <div class="col-md-4 col-12">
+        <div class="col-md-4 col-12" style="margin-bottom:10px;">
             <div class="card">
                 <div class="card-header secondary-pink-background">
                     Senaste nytt
                 </div>
                 <div class="card-body">
                     <p class="front-page-card-text" th:utext="${frontPageNews}">Default text here...</p>
-                    <img src="/images/Lev_i_buet_Character_1.0.PNG" class="img-fluid" alt="News">
+                    <img src="/images/Lev_i_buet_Character_1.0.PNG" class="img-fluid" alt="Lev i buet">
                 </div>
             </div>
         </div>
-        <span class="col-md-8 col-12">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, cupiditate deserunt ducimus enim, est expedita facere impedit necessitatibus neque pariatur repudiandae voluptatibus. Aperiam beatae, commodi eos non perspiciatis suscipit temporibus
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam ipsa odit, porro provident quibusdam sunt vel! Animi blanditiis consectetur dignissimos, eius error obcaecati odio quasi quidem ratione reprehenderit unde vel?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aliquid aperiam at aut cumque dignissimos esse id inventore ipsa laborum, nam placeat quas reiciendis reprehenderit repudiandae saepe sunt unde voluptate.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim fuga id illum incidunt temporibus. Aliquid labore officiis perspiciatis ratione similique! Commodi eligendi labore quam repellendus sint totam voluptatem. Expedita, fugiat.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur deserunt dicta est fuga fugit libero maxime, qui rem reprehenderit sit? Autem, beatae facere itaque iusto mollitia quidem sequi sunt voluptatem?
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias expedita facilis nihil perferendis repellat? Aliquid architecto dignissimos dolor eos hic ipsum iste maxime pariatur, reprehenderit, rerum suscipit, totam ut vitae!
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A architecto aspernatur beatae deleniti, doloremque, ea ipsam itaque non numquam officiis unde ut. Aliquam dignissimos eveniet neque nulla veritatis. Deserunt, quis.
-        </span>
+        <div class="col-md-8 col-12 centered">
+            <img src="/images/Valkommen.png" alt="Välkommen!" style="width:75%; margin-bottom:10px;">
+            <p>Här kan du se mina <a th:href="@{/calendar}" class="front-page-link">lediga tider</a>, skicka en <a th:href="@{/booking-form}" class="front-page-link">bokningsförfrågan</a> och läsa mer om hur jag arbetar.</p>
+            <p>Du hittar även min <a th:href="@{/portfolio}" class="front-page-link">portfolio</a> med tidigare verk, <a th:href="@{/flash}" class="front-page-link">tillgängliga motiv</a> samt <a th:href="@{/products}" class="front-page-link">produkter i min shop.</a></p>
+            <p>Tveka inte att höra av dig om du har några frågor – jag ser fram emot att höra från dig!</p>
+        </div>
     </div>
 </div>
 

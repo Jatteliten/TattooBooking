@@ -3,3 +3,12 @@ User-agent: *
 Disallow: /admin/
 Disallow: /login
 Disallow: /error
+Disallow: /flash/*
+Disallow: /products/*
+Disallow: /send-booking-request
+
+User-agent: *
+Allow: /images/
+Allow: /static/
+Allow: /css/
+Allow: /js/

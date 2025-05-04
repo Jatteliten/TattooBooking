@@ -3,6 +3,8 @@
     --secondary-pink: #fbf4ff;
     --tertiary-pink: #e7affa;
     --quaternary-pink: #de85fd;
+    --primary-brown: #938776;
+    --secondary-brown: #dcd2c6;
 }
 
 .primary-pink-background{
@@ -30,6 +32,13 @@
 .front-page-card-text {
     white-space: pre-line;
 }
+.front-page-link{
+    color: var(--primary-brown);
+    text-decoration: none;
+}
+.front-page-link:hover{
+    color: var(--secondary-brown);
+}
 .logo{
     padding-top: 10px;
     margin: auto;
@@ -51,6 +60,9 @@
 .booking-form-body{
     text-align: left;
     padding: 10px;
+}
+.before-your-visit-list{
+    margin-left:15px;
 }
 .info-item{
     margin-right: 8px;

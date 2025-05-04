@@ -35,6 +35,7 @@ public class CustomerPageController {
     private final ImageCategoryService imageCategoryService;
     private final ProductCategoryService productCategoryService;
     private final ProductService productService;
+    private static final String ERROR_TEMPLATE="error";
 
     public CustomerPageController(CustomerPageTextService customerPageTextService,
                                   InstagramEmbedService instagramEmbedService,
@@ -106,7 +107,7 @@ public class CustomerPageController {
     public String viewFlashesWithCategories(@PathVariable String categoryName, Model model){
         ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
         if(imageCategory.getFlashImages().isEmpty()){
-            return "error";
+            return ERROR_TEMPLATE;
         }else{
             model.addAttribute("category", categoryName);
             model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesUrlDto(

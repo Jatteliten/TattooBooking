@@ -1,146 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <title>Lev i buet - Bokning</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Lev i buet - Bokning</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous"/>
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="card page-margin booking-form-card shadow-sm">
-  <h5 class="card-header secondary-pink-background text-center">Bokningsförfrågan</h5>
-  <div class="card-body p-4">
-    <form class="booking-form" id="bookingForm" method="POST" action="/send-booking-request" enctype="multipart/form-data">
-      <input type="hidden" name="_csrf" value="${_csrf.token}" />
+    <h5 class="card-header secondary-pink-background text-center">Bokningsförfrågan</h5>
+    <div class="card-body p-4">
+        <form class="booking-form form-floating" id="bookingForm" method="POST" action="/send-booking-request"
+              enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 
-      <div class="mb-3">
-        <label for="name" class="form-label">Namn <span class="text-danger">*</span></label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-user"></i></span>
-          <input type="text" class="form-control" name="name" id="name" maxlength="255" required>
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="name" id="name" maxlength="255" required>
+                    <label for="name" class="form-label">Namn <span class="text-danger">*</span></label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="phone" class="form-label">Telefon <span class="text-danger">*</span></label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-phone"></i></span>
-          <input type="tel" class="form-control" name="phone" id="phone" required>
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="pronoun" id="pronoun">
+                    <label for="pronoun" class="form-label">Föredraget pronomen</label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-          <input type="email" class="form-control" name="email" id="email">
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                <div class="form-floating">
+                    <input type="tel" class="form-control" name="phone" id="phone" required>
+                    <label for="phone" class="form-label">Telefon <span class="text-danger">*</span></label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="instagram" class="form-label">Instagram (Ej om du har låst Instagram)</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fab fa-instagram"></i></span>
-          <input type="text" class="form-control" name="instagram" id="instagram">
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <div class="form-floating">
+                    <input type="email" class="form-control" name="email" id="email">
+                    <label for="email" class="form-label">Email</label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="pronoun" class="form-label">Föredraget pronomen</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
-          <input type="text" class="form-control" name="pronoun" id="pronoun">
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="instagram" id="instagram">
+                    <label for="instagram" class="form-label">Instagram (Ej om du har låst Instagram)</label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="size" class="form-label">Storlek</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-ruler-vertical"></i></span>
-          <input type="number" class="form-control" name="size" id="size" min="0" aria-describedby="cm">
-          <span class="input-group-text" id="cm">cm</span>
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-ruler-vertical"></i></span>
+                <div class="form-floating">
+                    <input type="number" class="form-control" name="size" id="size" min="0" aria-describedby="cm">
+                    <label for="size" class="form-label">Storlek</label>
+                </div>
+                <span class="input-group-text" id="cm">cm</span>
+            </div>
 
-      <div class="mb-3">
-        <label for="placement" class="form-label">Placering på kroppen</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-          <input type="text" class="form-control" name="placement" id="placement">
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="placement" id="placement">
+                    <label for="placement" class="form-label">Placering på kroppen</label>
+                </div>
+            </div>
 
-      <div class="mb-3">
-        <label for="inspiration" class="form-label">Länkar till inspirations-bilder</label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-link"></i></span>
-          <input type="url" class="form-control" name="inspiration" id="inspiration" placeholder="https://">
-        </div>
-      </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-link"></i></span>
+                <div class="form-floating">
+                    <input type="url" class="form-control" name="inspiration" id="inspiration">
+                    <label for="inspiration" class="form-label">Länkar till inspirations-bilder</label>
+                </div>
+            </div>
 
-      <div class="mb-4">
-        <label for="attachment" class="form-label">Ladda upp en bild (valfritt, max 5MB)</label>
-        <input type="file" class="form-control" name="attachment" id="attachment" accept="image/*">
-      </div>
+            <div class="mb-4">
+                <label for="attachment" class="form-label">Ladda upp en bild (valfritt, max 5MB)</label>
+                <input type="file" class="form-control" name="attachment" id="attachment" accept="image/*">
+            </div>
 
-      <div class="mb-3">
-        <label for="misc" class="form-label">Övrigt</label>
-        <textarea class="form-control" name="misc" id="misc" rows="3"></textarea>
-      </div>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" name="misc" id="misc"></textarea>
+                    <label for="misc" class="form-label">Övrigt</label>
+                </div>
+            </div>
 
-      <div class="text-muted mb-3">
-        <small>(<span class="text-danger">*</span>) Obligatorisk information</small>
-      </div>
+            <div class="text-muted mb-3">
+                <small>(<span class="text-danger">*</span>) Obligatorisk information</small>
+            </div>
 
-      <div class="text-center">
-        <button type="submit" class="btn btn-success px-5">Skicka</button>
-      </div>
-    </form>
-  </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success px-5">Skicka</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 
 <div class="card page-margin">
-  <h5 class="card-header secondary-pink-background">Bokningsinformation</h5>
-  <div class="card-body">
-    <p class="text-danger">Observera att ovan formulär endast är till för att starta en dialog om din tatuering.<br>
-    Bestämmelse av datum sker vid ett senare tillfälle.</p>
-    <hr>
-    <h5 class="card-title">Priser</h5>
-    <p class="card-text">
-      Vardag: 1200kr/h<br>
-      Helg/röd dag: 1500kr/h<br>
-      Drop in: 1000kr/h
-    </p>
-    <hr>
-    <h5 class="card-title">Deposition</h5>
-    <p class="card-text">
-      Vid varje bokning tas en deposition i förhand på 500kr.<br>
-      Utan betalad deposition är inte en bokning komplett och anses därav inte bekräftad.<br>
-      Betald deposition dras av på slutpriset av slutfört jobb.<br>
-      Vid avbokning mindre än 24 timmar innan bokning betalas ej deposition tillbaka.
-    </p>
-    <hr>
-    <h5 class="card-title">Touch up</h5>
-    <p class="card-text">
-      I priset för varje tatuering ingår en kostnadsfri touch up.<br>
-      Touch kan tidigast bokas tre veckor efter slutfört jobb.<br>
-      Touch up kan senast bokas tre månader efter slutfört jobb.
-    </p>
-    <hr>
-    <h5 class="card-title">Drop in</h5>
-    <p class="card-text">
-      Drop in-tider går ej att boka i förväg.<br>
-      På drop in tatuerar jag endast färdiga motiv.
-    </p>
-  </div>
+    <h5 class="card-header secondary-pink-background">Bokningsinformation</h5>
+    <div class="card-body">
+        <p class="text-danger">Observera att ovan formulär endast är till för att starta en dialog om din tatuering.<br>
+            Bestämmelse av datum sker vid ett senare tillfälle.</p>
+        <hr>
+        <h5 class="card-title">Priser</h5>
+        <p class="card-text">
+            Vardag: 1200kr/h<br>
+            Helg/röd dag: 1500kr/h<br>
+            Drop in: 1000kr/h
+        </p>
+        <hr>
+        <h5 class="card-title">Deposition</h5>
+        <p class="card-text">
+            Vid varje bokning tas en deposition i förhand på 500kr.<br>
+            Utan betalad deposition är inte en bokning komplett och anses därav inte bekräftad.<br>
+            Betald deposition dras av på slutpriset av slutfört jobb.<br>
+            Vid avbokning mindre än 24 timmar innan bokning betalas ej deposition tillbaka.
+        </p>
+        <hr>
+        <h5 class="card-title">Touch up</h5>
+        <p class="card-text">
+            I priset för varje tatuering ingår en kostnadsfri touch up.<br>
+            Touch kan tidigast bokas tre veckor efter slutfört jobb.<br>
+            Touch up kan senast bokas tre månader efter slutfört jobb.
+        </p>
+        <hr>
+        <h5 class="card-title">Drop in</h5>
+        <p class="card-text">
+            Drop in-tider går ej att boka i förväg.<br>
+            På drop in tatuerar jag endast färdiga motiv.
+        </p>
+    </div>
 </div>
 
 <div th:replace="~{layouts/customer-layout :: footer}"></div>
 
 <script src="/js/disable-booking-form-button-on-submit.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

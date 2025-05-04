@@ -1,105 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <title>Products</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/admin-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/admin-style.css">
 </head>
 <body class="container">
 <div th:replace="~{layouts/admin-layout :: header}"></div>
 <h3 th:text="${category.name}"></h3>
 <div th:replace="~{layouts/admin-layout :: feedback-full}"></div>
 <div class="card">
-  <div class="card-header">Add new product</div>
-  <div class="card-body">
-    <form th:action="@{/admin/products/add-product}" method="post" enctype="multipart/form-data">
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <input type="hidden" th:name="categoryName" th:value="${category.name}">
-      <div class="form-group">
-        <label for="name">Name <small>(max 255 characters)</small></label>
-        <br>
-        <input type="text" id="name" name="name" class="form-control" maxlength="255" required>
-      </div>
-      <div class="form-group">
-        <label for="description">Description <small>(max 1000 characters)</small></label>
-        <br>
-        <textarea id="description" name="description" rows="4" class="form-control" maxlength="1000" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="price">Price (SEK)</label>
-        <br>
-        <input type="number" id="price" name="price" class="form-control" min="0" required>
-      </div>
-      <div class="form-group">
-        <label for="file">Choose an image</label>
-        <br>
-        <input type="file" id="file" name="file" accept="image/*" class="form-control" required>
-      </div>
-      <br>
-      <button type="submit" class="btn btn-success">Save</button>
-    </form>
-  </div>
+    <div class="card-header">Add new product</div>
+    <div class="card-body">
+        <form th:action="@{/admin/products/add-product}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" th:name="categoryName" th:value="${category.name}">
+            <div class="form-group">
+                <label for="name">Name <small>(max 255 characters)</small></label>
+                <br>
+                <input type="text" id="name" name="name" class="form-control" maxlength="255" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description <small>(max 1000 characters)</small></label>
+                <br>
+                <textarea id="description" name="description" rows="4" class="form-control" maxlength="1000"
+                          required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (SEK)</label>
+                <br>
+                <input type="number" id="price" name="price" class="form-control" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="file">Choose an image</label>
+                <br>
+                <input type="file" id="file" name="file" accept="image/*" class="form-control" required>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
 </div>
 <br>
 <div th:each="product: ${category.getProducts()}">
-  <div class="card">
-    <p class="card-header" th:text="${product.name}"></p>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <div class="row">
-          <a data-bs-toggle="modal"
-             data-bs-target="#imageModal"
-             th:attr="data-bs-image=${product.imageUrl}, data-bs-caption=${product.name}"
-             class="col-4">
-            <img th:src="${product.imageUrl}"
-                 alt="Tattoo preview"
-                 class="img-fluid"
-                 style="cursor: pointer;">
-          </a>
-          <form th:action="@{/admin/products/change-product-description}"
-                method="post"
-                class="col-8 d-flex flex-column"
-                style="height: 100%;">
-            <small>(max 1000 characters)</small>
-            <label>
+    <div class="card">
+        <p class="card-header" th:text="${product.name}"></p>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="row">
+                    <a data-bs-toggle="modal"
+                       data-bs-target="#imageModal"
+                       th:attr="data-bs-image=${product.imageUrl}, data-bs-caption=${product.name}"
+                       class="col-4">
+                        <img th:src="${product.imageUrl}"
+                             alt="Tattoo preview"
+                             class="img-fluid"
+                             style="cursor: pointer;">
+                    </a>
+                    <form th:action="@{/admin/products/change-product-description}"
+                          method="post"
+                          class="col-8 d-flex flex-column"
+                          style="height: 100%;">
+                        <small>(max 1000 characters)</small>
+                        <label>
               <textarea th:text="${product.description}"
                         name="description"
                         class="form-control h-100"
                         rows="6"
                         maxlength="1000"
                         required></textarea>
-            </label>
-            <input type="hidden" name="id" th:value="${product.id}">
-            <button type="submit" class="btn btn-success">Change description</button>
-          </form>
-        </div>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <form th:action="@{/admin/products/change-product-price}"
-                method="post"
-                class="col-6 justify-content-start">
-            <label>
-              <input type="number" name="price" min="0" th:placeholder="${product.price}" required>
-            </label>
-            <input type="hidden" name="id" th:value="${product.id}">
-            <button type="submit" class="btn btn-success btn-sm">Change price</button>
-          </form>
-          <form th:action="@{/admin/products/delete-product(id=${product.id})}"
-                method="post"
-                class="col-6 d-flex justify-content-end align-items-center">
-            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </div>
-      </li>
-    </ul>
-  </div>
+                        </label>
+                        <input type="hidden" name="id" th:value="${product.id}">
+                        <button type="submit" class="btn btn-success">Change description</button>
+                    </form>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row">
+                    <form th:action="@{/admin/products/change-product-price}"
+                          method="post"
+                          class="col-6 justify-content-start">
+                        <label>
+                            <input type="number" name="price" min="0" th:placeholder="${product.price}" required>
+                        </label>
+                        <input type="hidden" name="id" th:value="${product.id}">
+                        <button type="submit" class="btn btn-success btn-sm">Change price</button>
+                    </form>
+                    <form th:action="@{/admin/products/delete-product(id=${product.id})}"
+                          method="post"
+                          class="col-6 d-flex justify-content-end align-items-center">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <div th:replace="~{layouts/image-modal :: image-modal}"></div>
 
-<script src="/js/display-image-modal.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

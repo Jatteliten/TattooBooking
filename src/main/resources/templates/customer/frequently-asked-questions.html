@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <title>Lev i buet - Vanliga frågor</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Lev i buet - Vanliga frågor</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous"/>
 </head>
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="page-margin centered">
-  <div class="text-center">
-    <img src="/images/Vanliga_fragor.png" alt="Vanliga frågor" style="width: 50%;">
-    <img src="/images/Wave.png" alt="Våg" style="margin-bottom: 20px; margin-top:10px; width:100%;">
-  </div>
-  <div class="accordion" id="faq">
-    <div th:each="question, iterStat : ${questions}" class="accordion-item">
-      <h2 class="accordion-header" th:id="'heading-' + ${iterStat.index}">
-        <button class="accordion-button collapsed primary-pink-background"
-                type="button"
-                data-bs-toggle="collapse"
-                th:attr="data-bs-target='#collapse-' + ${iterStat.index}, aria-controls='collapse-' + ${iterStat.index}"
-                aria-expanded="false"
-                th:text="${question.section}">
-        </button>
-      </h2>
-      <div th:id="'collapse-' + ${iterStat.index}"
-           class="accordion-collapse collapse secondary-pink-background"
-           th:attr="aria-labelledby='heading-' + ${iterStat.index}"
-           style="text-align:left">
-        <div class="accordion-body">
-          <p style="white-space: pre-line;" th:text="${question.text}"></p>
-        </div>
-      </div>
+    <div class="text-center">
+        <img src="/images/Vanliga_fragor.png" alt="Vanliga frågor" style="width: 50%;">
+        <img src="/images/Wave.png" alt="Våg" style="margin-bottom: 20px; margin-top:10px; width:100%;">
     </div>
-  </div>
+    <div class="accordion" id="faq">
+        <div th:each="question, iterStat : ${questions}" class="accordion-item">
+            <h2 class="accordion-header" th:id="'heading-' + ${iterStat.index}">
+                <button class="accordion-button collapsed primary-pink-background"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        th:attr="data-bs-target='#collapse-' + ${iterStat.index}, aria-controls='collapse-' + ${iterStat.index}"
+                        aria-expanded="false"
+                        th:text="${question.section}">
+                </button>
+            </h2>
+            <div th:id="'collapse-' + ${iterStat.index}"
+                 class="accordion-collapse collapse secondary-pink-background"
+                 th:attr="aria-labelledby='heading-' + ${iterStat.index}"
+                 style="text-align:left">
+                <div class="accordion-body">
+                    <p style="white-space: pre-line;" th:text="${question.text}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <div th:replace="~{layouts/customer-layout :: footer}"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

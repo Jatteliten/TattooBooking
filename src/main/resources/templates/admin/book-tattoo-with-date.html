@@ -48,7 +48,7 @@
                 <td>
                     <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
                        th:text="${#temporals.format(booking.date, 'HH:mm')} + '-' + ${#temporals.format(booking.endTime, 'HH:mm')}"
-                        target="_blank">
+                       target="_blank">
                     </a>
                 </td>
                 <td th:if="${booking.customer != null}">
@@ -163,6 +163,7 @@
 
 <script src="/js/uncheck-and-remove-deposit-paid-when-checking-touch-up-box.js"></script>
 <script src="/js/force-one-required-alternative-when-creating-customer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

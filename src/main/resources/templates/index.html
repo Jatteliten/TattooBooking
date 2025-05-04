@@ -5,7 +5,9 @@
     <title>Lev i Buet</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+          crossorigin="anonymous"/>
 </head>
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <body class="container">
@@ -25,8 +27,13 @@
         </div>
         <div class="col-md-8 col-12 centered">
             <img src="/images/Valkommen.png" alt="Välkommen!" style="width:75%; margin-bottom:10px;">
-            <p>Här kan du se mina <a th:href="@{/calendar}" class="front-page-link">lediga tider</a>, skicka en <a th:href="@{/booking-form}" class="front-page-link">bokningsförfrågan</a> och läsa mer om hur jag arbetar.</p>
-            <p>Du hittar även min <a th:href="@{/portfolio}" class="front-page-link">portfolio</a> med tidigare verk, <a th:href="@{/flash}" class="front-page-link">tillgängliga motiv</a> samt <a th:href="@{/products}" class="front-page-link">produkter i min shop.</a></p>
+            <p>Här kan du se mina <a th:href="@{/calendar}" class="front-page-link">lediga tider</a>, skicka en <a
+                    th:href="@{/booking-form}" class="front-page-link">bokningsförfrågan</a> och läsa mer om hur jag
+                arbetar.</p>
+            <p>Du hittar även min <a th:href="@{/portfolio}" class="front-page-link">portfolio</a> med tidigare verk, <a
+                    th:href="@{/flash}" class="front-page-link">tillgängliga motiv</a> samt <a th:href="@{/products}"
+                                                                                               class="front-page-link">produkter
+                i min shop.</a></p>
             <p>Tveka inte att höra av dig om du har några frågor – jag ser fram emot att höra från dig!</p>
         </div>
     </div>
@@ -34,6 +41,7 @@
 
 <div th:replace="~{layouts/customer-layout :: footer}"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -15,23 +15,23 @@
         <h3 class="card-header">Bookings</h3>
         <table th:if="${bookings.size()} > 0" class="table">
             <thead>
-                <tr>
-                    <th scope="col">Hours</th>
-                    <th scope="col">Customer</th>
-                </tr>
+            <tr>
+                <th scope="col">Hours</th>
+                <th scope="col">Customer</th>
+            </tr>
             </thead>
             <tbody>
-                <tr th:each="booking : ${bookings}">
-                    <td>
-                        <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
-                           th:text="${#temporals.format(booking.date, 'HH:mm')} + '-' + ${#temporals.format(booking.endTime, 'HH:mm')}">
-                        </a>
-                    </td>
-                    <td th:if="${booking.customer != null}">
-                        <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
-                            th:text="${booking.customer.name}"></a>
-                    </td>
-                </tr>
+            <tr th:each="booking : ${bookings}">
+                <td>
+                    <a th:href="@{/admin/booking/booking-information(id=${booking.id})}"
+                       th:text="${#temporals.format(booking.date, 'HH:mm')} + '-' + ${#temporals.format(booking.endTime, 'HH:mm')}">
+                    </a>
+                </td>
+                <td th:if="${booking.customer != null}">
+                    <a th:href="@{/admin/customers/customer(id=${booking.customer.id})}"
+                       th:text="${booking.customer.name}"></a>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div th:if="${bookings.size()} == 0" class="card-body">
@@ -49,7 +49,8 @@
             <div th:if="${bookableDate} != null">
                 <div th:if="${bookableDate.getBookableHours()} != null"
                      th:each="time : ${bookableDate.getBookableHours()}">
-                    <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/make-hour-unavailable}" method="post"
+                    <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/make-hour-unavailable}"
+                          method="post"
                           style="display: inline;">
                         <input type="hidden" name="hour" th:value="${time.hour}">
                         <input type="hidden" name="date" th:value="${bookableDate.date}">
@@ -143,6 +144,7 @@
 </div>
 
 <script src="/js/add-or-remove-hours.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,51 +1,55 @@
 <div th:fragment="header">
-  <header>
-    <div>
-      <nav class="navbar navbar-expand-md w-100 navbar-light bg-light" style="margin-bottom:20px">
-          <div class="navbar-nav justify-content-between w-100">
-            <ul class="navbar-nav w-100 justify-content-between">
-              <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
-              <li class="nav-item"><a class="nav-link" th:href="@{/admin/customize/}">Customize Site</a></li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                  Booking
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                  <li><a class="dropdown-item" th:href="@{/admin/add-dates/}">Bookable dates</a></li>
-                  <li><a class="dropdown-item" th:href="@{/admin/booking/book-tattoo}">Book Tattoo</a></li>
-                  <li><a class="dropdown-item" th:href="@{/admin/booking/bookings}">View Bookings</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                  Images
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                  <li><a class="dropdown-item" th:href="@{/admin/images/image-categories}">Categories</a></li>
-                  <li><a class="dropdown-item" th:href="@{/admin/images/view-flash-images}">Flash</a></li>
-                  <li><a class="dropdown-item" th:href="@{/admin/images/view-tattoo-images}">Tattoos</a></li>
-                </ul>
-              </li>
-              <li class="nav-item"><a class="nav-link" th:href="@{/admin/customers/}">Customer Information</a></li>
-              <li class="nav-item"><a class="nav-link" th:href="@{/admin/products/}">Products</a></li>
-            </ul>
-          </div>
-      </nav>
-    </div>
-  </header>
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-md w-100 navbar-light bg-light" style="margin-bottom:20px">
+                <div class="navbar-nav justify-content-between w-100">
+                    <ul class="navbar-nav w-100 justify-content-between">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/customize/}">Customize Site</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Booking
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" th:href="@{/admin/add-dates/}">Bookable dates</a></li>
+                                <li><a class="dropdown-item" th:href="@{/admin/booking/book-tattoo}">Book Tattoo</a>
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/admin/booking/bookings}">View Bookings</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Images
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" th:href="@{/admin/images/image-categories}">Categories</a>
+                                </li>
+                                <li><a class="dropdown-item" th:href="@{/admin/images/view-flash-images}">Flash</a></li>
+                                <li><a class="dropdown-item" th:href="@{/admin/images/view-tattoo-images}">Tattoos</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/customers/}">Customer Information</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/admin/products/}">Products</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
 </div>
 
 <div th:fragment="feedback-full">
-  <div th:if="${successMessage != null or errorMessage != null}"
-       th:class="'alert mt-4 ' + (successMessage != null ? 'alert-success' : 'alert-danger')">
-    <span th:text="${successMessage != null ? successMessage : errorMessage}"></span>
-  </div>
+    <div th:if="${successMessage != null or errorMessage != null}"
+         th:class="'alert mt-4 ' + (successMessage != null ? 'alert-success' : 'alert-danger')">
+        <span th:text="${successMessage != null ? successMessage : errorMessage}"></span>
+    </div>
 </div>
 
 <div th:fragment="feedback-error">
-  <div th:if="${errorMessage != null}" class="alert mt-4 alert-danger">
-    <span th:text="${errorMessage}"></span>
-  </div>
+    <div th:if="${errorMessage != null}" class="alert mt-4 alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
 </div>

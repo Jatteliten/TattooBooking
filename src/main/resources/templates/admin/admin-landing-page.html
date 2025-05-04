@@ -17,28 +17,28 @@
         <div class="card-body">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Hours</th>
-                        <th scope="col">Touch up</th>
-                        <th scope="col">Drop in</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Hours</th>
+                    <th scope="col">Touch up</th>
+                    <th scope="col">Drop in</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="date: ${bookableDates}">
-                        <td>
-                            <a th:href="@{/admin/add-dates/change-bookable-date}" th:text="${date.date}"></a>
-                        </td>
-                        <td>
-                            <span th:each="hour: ${date.bookableHours}" th:text="${hour.hour} + ' '"></span>
-                        </td>
-                        <td>
-                            <span th:if="${date.touchUp}">&#10003;</span>
-                        </td>
-                        <td>
-                            <span th:if="${date.dropIn}">&#10003;</span>
-                        </td>
-                    </tr>
+                <tr th:each="date: ${bookableDates}">
+                    <td>
+                        <a th:href="@{/admin/add-dates/change-bookable-date}" th:text="${date.date}"></a>
+                    </td>
+                    <td>
+                        <span th:each="hour: ${date.bookableHours}" th:text="${hour.hour} + ' '"></span>
+                    </td>
+                    <td>
+                        <span th:if="${date.touchUp}">&#10003;</span>
+                    </td>
+                    <td>
+                        <span th:if="${date.dropIn}">&#10003;</span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -63,6 +63,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 package com.example.tattooplatform.controller.customer;
 
-import com.example.tattooplatform.dto.customerpagetext.CustomerPageTextDto;
+import com.example.tattooplatform.model.CustomerPageText;
 import com.example.tattooplatform.model.ImageCategory;
 import com.example.tattooplatform.model.InstagramEmbed;
 import com.example.tattooplatform.model.ProductCategory;
@@ -53,13 +53,13 @@ public class CustomerPageController {
 
     @GetMapping("/")
     public String frontPage(Model model){
-        CustomerPageTextDto currentText = customerPageTextService.convertCustomerPageTextToCustomerPageTextDto(
-                customerPageTextService.getLatestCustomerPageTextByPageAndSection(
-                "index", "latest-news"));
+        CustomerPageText currentText = customerPageTextService.getLatestCustomerPageTextByPageAndSection(
+                "index", "latest-news");
         if(currentText == null){
             model.addAttribute("frontPageNews", "No news to report");
         }else{
-            model.addAttribute("frontPageNews", currentText.getText());
+            model.addAttribute("frontPageNews",
+                    customerPageTextService.convertCustomerPageTextToCustomerPageTextDto(currentText).getText());
         }
         return "index";
     }
@@ -86,8 +86,8 @@ public class CustomerPageController {
         if(latestInstagramPost == null){
             model.addAttribute("noEmbedLink", "No instagram post exists with portfolio..");
         }else{
-            String instagramEmbedHtml = instagramEmbedService.generateEmbedHtmlFromUrl(latestInstagramPost.getEmbeddedLink());
-            model.addAttribute("embedHtml", instagramEmbedHtml);
+            model.addAttribute("embedHtml",
+                    instagramEmbedService.generateEmbedHtmlFromUrl(latestInstagramPost.getEmbeddedLink()));
         }
 
         return "customer/portfolio";

@@ -12,13 +12,14 @@
 <body class="container">
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="page-margin">
+    <img src="/images/Sarah.png" alt="Sarah" class="artist-image">
     <p>Jag heter Sarah och är personen bakom Lev i buet.</p>
     <p>Min resa som tatuerare började 2021, då jag inledde min lärlingsperiod på True Tattoo – Stockholms äldsta
         tatueringsstudio, grundad av branschlegenden Doc Forest. Jag avslutade min lärlingstid på studion Krets och fick
         under perioden handledning av flera olika tatuerare, främst under ledning av Linda Gau.</p>
     <p>Innan jag började tatuera har jag studerat konst i olika former. Jag har en bakgrund inom keramik från
         Nyckelviksskolan, samt ett fördjupningsår med inriktning på grafisk design och illustration på Konstskolan
-        Basis. Jag har även läst kurser inom Ädellab Corpus på Konstfack, bland annat.</p>
+        Basis. Jag har även läst kurser inom Ädellabb Corpus på Konstfack, bland annat.</p>
     <p>Min konstnärliga bakgrund och mitt intresse för form, material och berättande är grunden i mitt uttryck – både på
         papper och på huden.</p>
     <p>Jag har alltid dragits till illustration. Jag har format ett eget konstnärligt uttryck som känns både personligt
@@ -41,7 +42,9 @@
         aldrig kännas forcerat eller otryggt. Mitt mål är att du som kommer till mig ska känna dig lugn i processen –
         och såklart nöjd med resultatet.</p>
 
+
     <div class="row">
+        <hr>
         <a data-bs-toggle="modal"
            data-bs-target="#imageModal"
            th:attr="data-bs-image=${'/images/Examensbevis.PNG'}, data-bs-caption=${'Examensbevis'}"

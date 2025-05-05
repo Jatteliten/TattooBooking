@@ -14,19 +14,19 @@
 
 <div class="page-margin">
     <div class="row">
-        <div class="col-md-4 col-12" style="margin-bottom:10px;">
+        <div class="col-md-4 col-12">
             <div class="card">
                 <div class="card-header secondary-pink-background">
                     Senaste nytt
                 </div>
                 <div class="card-body">
                     <p class="front-page-card-text" th:utext="${frontPageNews}">Default text here...</p>
-                    <img src="/images/Lev_i_buet_Character_1.0.png" class="img-fluid" alt="Lev i buet">
+                    <img src="/images/Lev_i_buet_Character_1.0.png" class="img-fluid float-end" alt="Lev i buet" style="width:90%">
                 </div>
             </div>
         </div>
         <div class="col-md-8 col-12 centered">
-            <img src="/images/Valkommen.png" alt="Välkommen!" style="width:75%; margin-bottom:10px;">
+            <img src="/images/Valkommen.png" alt="Välkommen!" style="width:75%; margin-bottom:25px; margin-top:20px;">
             <p>Här kan du se mina <a th:href="@{/calendar}" class="front-page-link">lediga tider</a>, skicka en <a
                     th:href="@{/booking-form}" class="front-page-link">bokningsförfrågan</a> och läsa mer om hur jag
                 arbetar.</p>

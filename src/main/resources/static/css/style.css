@@ -44,6 +44,27 @@
     padding-top: 10px;
     margin: auto;
 }
+.artist-image {
+    float: right;
+    margin: 0 0 1em 1em;
+    width: 300px;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .artist-image {
+        width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .artist-image {
+        width: 150px;
+        float: none;
+        display: block;
+        margin: 0 auto 1em auto;
+    }
+}
 @media (min-width: 768px) {
     .logo {
         width: 100%;

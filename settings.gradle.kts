@@ -1,1 +1,1 @@
-rootProject.name = "demo3"
+rootProject.name = "tattooplatform"

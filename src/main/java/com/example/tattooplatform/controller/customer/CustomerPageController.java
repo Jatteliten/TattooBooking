@@ -11,11 +11,13 @@ import com.example.tattooplatform.services.InstagramEmbedService;
 import com.example.tattooplatform.services.ProductCategoryService;
 import com.example.tattooplatform.services.ProductService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @Controller
@@ -35,7 +37,6 @@ public class CustomerPageController {
     private final ImageCategoryService imageCategoryService;
     private final ProductCategoryService productCategoryService;
     private final ProductService productService;
-    private static final String ERROR_TEMPLATE="error";
 
     public CustomerPageController(CustomerPageTextService customerPageTextService,
                                   InstagramEmbedService instagramEmbedService,
@@ -102,18 +103,19 @@ public class CustomerPageController {
 
     @GetMapping("/flash/{categoryName}")
     public String viewFlashesWithCategories(@PathVariable String categoryName, Model model){
-        populateFlashCategories(model);
         ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
-        if(imageCategory.getFlashImages().isEmpty()){
-            return ERROR_TEMPLATE;
-        }else{
-            model.addAttribute("category", categoryName);
-            model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesUrlDto(
-                    flashImageService.getFlashImagesByCategory(imageCategory)));
 
-            return "customer/available-flash-with-category";
+        if (imageCategory == null || imageCategory.getFlashImages().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
         }
+
+        populateFlashCategories(model);
+        model.addAttribute("category", categoryName);
+        model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesUrlDto(
+                flashImageService.getFlashImagesByCategory(imageCategory)));
+        return "customer/available-flash-with-category";
     }
+
 
     private void populateFlashCategories(Model model) {
         model.addAttribute("categories",
@@ -141,9 +143,13 @@ public class CustomerPageController {
 
     @GetMapping("/products/{categoryName}")
     public String viewProductsByCategory(@PathVariable String categoryName, Model model){
-        populateProductCategories(model);
         ProductCategory productCategory = productCategoryService.getProductCategoryByName(categoryName);
 
+        if (productCategory == null || productCategory.getProducts().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+        }
+
+        populateProductCategories(model);
         model.addAttribute("products",
                 productService.convertProductListToProductCustomerViewDtoList(
                         productCategory.getProducts()));

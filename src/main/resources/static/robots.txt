@@ -1,3 +1,5 @@
+Sitemap: https://levibuet.se/sitemap.xml
+
 User-agent: *
 Disallow: /admin/
 Disallow: /login

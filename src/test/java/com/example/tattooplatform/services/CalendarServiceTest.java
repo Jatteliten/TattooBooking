@@ -1,9 +1,10 @@
 package com.example.tattooplatform.services;
 
 import com.example.tattooplatform.dto.bookabledate.BookableDateCalendarDto;
+import com.example.tattooplatform.dto.bookablehour.BookableHourCalendarDto;
 import com.example.tattooplatform.model.BookableDate;
+import com.example.tattooplatform.model.BookableHour;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,9 +14,12 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -25,6 +29,10 @@ class CalendarServiceTest {
     private CalendarService calendarService;
     @MockBean
     private BookableDateService bookableDateService;
+    private static final LocalDate TODAY = LocalDate.now();
+    private static final LocalTime TEN_O_CLOCK = LocalTime.of(10, 0);
+    private static final LocalTime ELEVEN_O_CLOCK = LocalTime.of(11, 0);
+    private static final LocalTime TWELVE_O_CLOCK = LocalTime.of(12, 0);
     private static final String DAYS = "days";
     private static final String MONTH = "month";
     private static final String YEAR = "year";
@@ -172,32 +180,70 @@ class CalendarServiceTest {
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsTouchUp_ifTouchUpDateExists(){
-        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
-                mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(true, false, false));
+        LocalDate testDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
 
-        assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isTouchUp()));
+        when(bookableDateService.getBookableDatesBetweenTwoDates(
+                any(LocalDate.class),
+                any(LocalDate.class)
+        )).thenReturn(List.of(BookableDate.builder()
+                .date(testDate)
+                .touchUp(true)
+                .bookableHours(List.of())
+                .build()));
+
+        List<BookableDateCalendarDto> result = calendarService.createDaysInMonthFromSelectedDate(testDate);
+
+        assertTrue(result.stream()
+                .filter(dto -> dto.getDate().equals(testDate))
+                .anyMatch(BookableDateCalendarDto::isTouchUp));
     }
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsDropIn_ifDropInDateExists(){
-        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
-                mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, true, false));
+        LocalDate testDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
 
-        assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isDropIn()));
+        when(bookableDateService.getBookableDatesBetweenTwoDates(
+                any(LocalDate.class),
+                any(LocalDate.class)
+        )).thenReturn(List.of(BookableDate.builder()
+                .date(testDate)
+                .dropIn(true)
+                .bookableHours(List.of())
+                .build()));
+
+        List<BookableDateCalendarDto> result = calendarService.createDaysInMonthFromSelectedDate(testDate);
+
+        assertTrue(result.stream()
+                .filter(dto -> dto.getDate().equals(testDate))
+                .anyMatch(BookableDateCalendarDto::isDropIn));
     }
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldSetDateAsFullyBooked_ifFullyBookedDateExists(){
-        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
-                mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, false, true));
+        LocalDate testDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
 
-        assertTrue(calendar.stream().anyMatch(dto -> dto.getDate().getDayOfMonth() == 1 && dto.isFullyBooked()));
+        when(bookableDateService.getBookableDatesBetweenTwoDates(
+                any(LocalDate.class),
+                any(LocalDate.class)
+        )).thenReturn(List.of(BookableDate.builder()
+                .date(testDate)
+                .fullyBooked(true)
+                .bookableHours(List.of())
+                .build()));
+
+        List<BookableDateCalendarDto> result = calendarService.createDaysInMonthFromSelectedDate(testDate);
+
+        assertTrue(result.stream()
+                .filter(dto -> dto.getDate().equals(testDate))
+                .anyMatch(BookableDateCalendarDto::isFullyBooked));
     }
 
     @Test
     void createDaysInMonthFromSelectedDate_shouldNotSetAnyDateToDropInOrTouchUp_ifNoneSuchDatesExist(){
-        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(
-                mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(false, false, false));
+        LocalDate testDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+        bookableDateService.saveBookableDate(BookableDate.builder().date(testDate).build());
+
+        List<BookableDateCalendarDto> calendar = calendarService.createDaysInMonthFromSelectedDate(testDate);
 
         assertFalse(calendar.stream().anyMatch(BookableDateCalendarDto::isDropIn));
         assertFalse(calendar.stream().anyMatch(BookableDateCalendarDto::isTouchUp));
@@ -214,34 +260,78 @@ class CalendarServiceTest {
         return model;
     }
 
-    private LocalDate mockFutureJanuaryFirstWithTouchUpDropInOrFullyBooked(
-            boolean touchUp, boolean dropIn, boolean fullyBooked){
-        LocalDate testDate = LocalDate.now().withMonth(1).withDayOfMonth(1);
-        if (!LocalDate.now().isBefore(testDate)) {
-            testDate = testDate.plusYears(1);
-        }
 
-        LocalDate startOfMonth = testDate.withDayOfMonth(1);
-        LocalDate endOfMonth = testDate.withDayOfMonth(testDate.lengthOfMonth());
+    @Test
+    void convertBookableDateToBookableDateCalendarDto_shouldSetCorrectProperties_fromBookableDate(){
+        BookableDate bookableDate = BookableDate.builder()
+                .date(TODAY)
+                .fullyBooked(false)
+                .dropIn(false)
+                .touchUp(false)
+                .bookableHours(List.of(BookableHour.builder()
+                        .hour(TEN_O_CLOCK)
+                        .booked(false)
+                        .build()))
+                .build();
 
-        List<BookableDate> fakeBookableDates = List.of(BookableDate.builder()
-                .date(testDate)
-                .touchUp(touchUp)
-                .dropIn(dropIn)
-                .fullyBooked(fullyBooked)
-                .build());
+        BookableDateCalendarDto bookableDateCalendarDto =
+                calendarService.convertBookableDateToBookableDateCalendarDto(bookableDate);
 
-        Mockito.when(bookableDateService.getBookableDatesBetweenTwoDates(startOfMonth, endOfMonth))
-                .thenReturn(fakeBookableDates);
-
-        Mockito.when(bookableDateService.convertListOfBookableDatesToBookableDateCalendarDto(fakeBookableDates))
-                .thenReturn(List.of(BookableDateCalendarDto.builder()
-                        .date(testDate)
-                        .touchUp(touchUp)
-                        .dropIn(dropIn)
-                        .fullyBooked(fullyBooked)
-                        .build()));
-
-        return testDate;
+        assertEquals(bookableDate.getDate(), bookableDateCalendarDto.getDate());
+        assertEquals(bookableDate.isFullyBooked(), bookableDateCalendarDto.isFullyBooked());
+        assertEquals(bookableDate.isDropIn(), bookableDateCalendarDto.isDropIn());
+        assertEquals(bookableDate.isTouchUp(), bookableDateCalendarDto.isTouchUp());
+        assertEquals(bookableDate.getBookableHours().size(), bookableDateCalendarDto.getHours().size());
     }
+
+    @Test
+    void convertBookableDateToBookableDateCalendarDto_shouldSortCorrectly_andBuildCorrectHourStrings(){
+        BookableDate bookableDate = BookableDate.builder()
+                .date(TODAY)
+                .fullyBooked(false)
+                .bookableHours(List.of(
+                        BookableHour.builder()
+                                .hour(TEN_O_CLOCK)
+                                .booked(false)
+                                .build(),
+                        BookableHour.builder()
+                                .hour(ELEVEN_O_CLOCK)
+                                .booked(true)
+                                .build(),
+                        BookableHour.builder()
+                                .hour(TWELVE_O_CLOCK)
+                                .booked(false)
+                                .build()))
+                .build();
+
+        BookableDateCalendarDto bookableDateCalendarDto =
+                calendarService.convertBookableDateToBookableDateCalendarDto(bookableDate);
+
+        assertEquals("10:00-false", bookableDateCalendarDto.getHours().get(0));
+        assertEquals("11:00-true", bookableDateCalendarDto.getHours().get(1));
+        assertEquals("12:00-false", bookableDateCalendarDto.getHours().get(2));
+    }
+
+    @Test
+    void convertBookableHourToBookableHourCalendarDto_shouldConvertAttributesCorrectly(){
+        BookableHour bookableHourOne = BookableHour.builder()
+                .hour(TEN_O_CLOCK)
+                .booked(false)
+                .build();
+        BookableHour bookableHourTwo = BookableHour.builder()
+                .hour(ELEVEN_O_CLOCK)
+                .booked(true)
+                .build();
+
+        BookableHourCalendarDto bookableHourCalendarDtoOne =
+                calendarService.convertBookableHourToBookableHourCalendarDto(bookableHourOne);
+        BookableHourCalendarDto bookableHourCalendarDtoTwo =
+                calendarService.convertBookableHourToBookableHourCalendarDto(bookableHourTwo);
+
+        assertEquals(TEN_O_CLOCK, bookableHourCalendarDtoOne.getHour());
+        assertEquals(ELEVEN_O_CLOCK, bookableHourCalendarDtoTwo.getHour());
+        assertFalse(bookableHourCalendarDtoOne.isBooked());
+        assertTrue(bookableHourCalendarDtoTwo.isBooked());
+    }
+
 }

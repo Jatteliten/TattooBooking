@@ -1,6 +1,5 @@
 package com.example.tattooplatform.services;
 
-import com.example.tattooplatform.dto.bookabledate.BookableDateCalendarDto;
 import com.example.tattooplatform.dto.bookabledate.DateEntry;
 import com.example.tattooplatform.dto.bookabledate.DateForm;
 import com.example.tattooplatform.model.BookableDate;
@@ -259,57 +258,6 @@ class BookableDateServiceTest {
 
         assertEquals(1, bookableDateList.size());
         assertEquals(bookableDateOne.getId(), bookableDateList.get(0).getId());
-    }
-
-    @Test
-    void convertBookableDateToBookableDateCalendarDto_shouldSetCorrectProperties_fromBookableDate(){
-        BookableDate bookableDate = BookableDate.builder()
-                .date(TODAY)
-                .fullyBooked(false)
-                .dropIn(false)
-                .touchUp(false)
-                .bookableHours(List.of(BookableHour.builder()
-                        .hour(TEN_O_CLOCK)
-                        .booked(false)
-                        .build()))
-                .build();
-
-        BookableDateCalendarDto bookableDateCalendarDto =
-                bookableDateService.convertBookableDateToBookableDateCalendarDto(bookableDate);
-
-        assertEquals(bookableDate.getDate(), bookableDateCalendarDto.getDate());
-        assertEquals(bookableDate.isFullyBooked(), bookableDateCalendarDto.isFullyBooked());
-        assertEquals(bookableDate.isDropIn(), bookableDateCalendarDto.isDropIn());
-        assertEquals(bookableDate.isTouchUp(), bookableDateCalendarDto.isTouchUp());
-        assertEquals(bookableDate.getBookableHours().size(), bookableDateCalendarDto.getHours().size());
-    }
-
-    @Test
-    void convertBookableDateToBookableDateCalendarDto_shouldSortCorrectly_andBuildCorrectHourStrings(){
-        BookableDate bookableDate = BookableDate.builder()
-                .date(TODAY)
-                .fullyBooked(false)
-                .bookableHours(List.of(
-                        BookableHour.builder()
-                                .hour(TEN_O_CLOCK)
-                                .booked(false)
-                                .build(),
-                        BookableHour.builder()
-                                .hour(ELEVEN_O_CLOCK)
-                                .booked(true)
-                                .build(),
-                        BookableHour.builder()
-                                .hour(TWELVE_O_CLOCK)
-                                .booked(false)
-                                .build()))
-                .build();
-
-        BookableDateCalendarDto bookableDateCalendarDto =
-                bookableDateService.convertBookableDateToBookableDateCalendarDto(bookableDate);
-
-        assertEquals("10:00-false", bookableDateCalendarDto.getHours().get(0));
-        assertEquals("11:00-true", bookableDateCalendarDto.getHours().get(1));
-        assertEquals("12:00-false", bookableDateCalendarDto.getHours().get(2));
     }
 
     @Test

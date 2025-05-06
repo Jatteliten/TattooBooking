@@ -6,6 +6,7 @@ import com.example.tattooplatform.model.BookableDate;
 import com.example.tattooplatform.model.BookableHour;
 import com.example.tattooplatform.model.Booking;
 import com.example.tattooplatform.services.BookableDateService;
+import com.example.tattooplatform.services.BookableHourService;
 import com.example.tattooplatform.services.BookingService;
 import com.example.tattooplatform.services.CalendarService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,11 +27,14 @@ import java.util.List;
 @PreAuthorize("hasAuthority('Admin')")
 public class BookableDateController {
     private final BookableDateService bookableDateService;
+    private final BookableHourService bookableHourService;
     private final CalendarService calendarService;
     private final BookingService bookingService;
+    private static final String CANNOT_CHANGE_HOUR = "Cannot change hour.";
 
-    public BookableDateController(BookableDateService bookableDateService, CalendarService calendarService, BookingService bookingService){
+    public BookableDateController(BookableDateService bookableDateService, BookableHourService bookableHourService, CalendarService calendarService, BookingService bookingService){
         this.bookableDateService = bookableDateService;
+        this.bookableHourService = bookableHourService;
         this.calendarService = calendarService;
         this.bookingService = bookingService;
     }
@@ -115,6 +119,26 @@ public class BookableDateController {
         return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
 
+    @PostMapping ("/delete-hour")
+    String deleteHour(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
+        BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
+        BookableHour bookableHour = bookableDate.getBookableHours().stream()
+                .filter(bh -> bh.getHour().equals(hour))
+                .findFirst()
+                .orElse(null);
+
+        if(bookableHour != null && !bookableHour.isBooked()){
+            bookableDate.getBookableHours().remove(bookableHour);
+            bookableDateService.saveBookableDate(bookableDate);
+            bookableHourService.deleteBookableHour(bookableHour);
+            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), hour + " deleted.");
+        }else{
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), CANNOT_CHANGE_HOUR);
+        }
+
+        return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
+    }
+
     @PostMapping("/make-hour-unavailable")
     public String setHourToBooked(@RequestParam LocalTime hour, @RequestParam LocalDate date, Model model){
         BookableDate bookableDate = bookableDateService.getBookableDateByDate(date);
@@ -125,12 +149,11 @@ public class BookableDateController {
 
         if(bookableHour != null){
             bookableHour.setBooked(true);
+            bookableDateService.saveBookableDate(bookableDate);
             model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), hour + " set as unavailable.");
         }else{
-            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Cannot change hour.");
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), CANNOT_CHANGE_HOUR);
         }
-
-        bookableDateService.saveBookableDate(bookableDate);
 
         return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);
     }
@@ -147,13 +170,12 @@ public class BookableDateController {
             if(bookableDateService.checkIfHourIsAvailable(
                     hour, bookingService.sortBookingsByStartDateAndTime(bookingService.getBookingsByDate(date)))){
                 bookableDateService.setBookableDateAndBookableHourToAvailable(bookableDate, bookableHour);
-
                 model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), hour + " set as available.");
             }else{
                 model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), hour + " is booked");
             }
         }else{
-            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Cannot change hour.");
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), CANNOT_CHANGE_HOUR);
         }
 
         return addBookableDateAndBookingsToModelAndReturnBookableDateView(bookableDate, date, model);

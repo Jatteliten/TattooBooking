@@ -4,8 +4,6 @@ import com.example.tattooplatform.dto.bookabledate.DateEntry;
 import com.example.tattooplatform.dto.bookabledate.DateForm;
 import com.example.tattooplatform.model.BookableDate;
 import com.example.tattooplatform.model.BookableHour;
-import com.example.tattooplatform.dto.bookablehour.BookableHourCalendarDto;
-import com.example.tattooplatform.dto.bookabledate.BookableDateCalendarDto;
 import com.example.tattooplatform.model.Booking;
 import com.example.tattooplatform.repos.BookableDateRepo;
 import jakarta.transaction.Transactional;
@@ -15,7 +13,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -23,11 +20,9 @@ import java.util.List;
 public class BookableDateService {
 
     private final BookableDateRepo bookableDateRepo;
-    private final BookableHourService bookableHourService;
 
-    public BookableDateService(BookableDateRepo bookableDateRepo, BookableHourService bookableHourService){
+    public BookableDateService(BookableDateRepo bookableDateRepo){
         this.bookableDateRepo = bookableDateRepo;
-        this.bookableHourService = bookableHourService;
     }
 
     public void saveBookableDate(BookableDate bookableDate){
@@ -106,36 +101,6 @@ public class BookableDateService {
             bookabledate.setFullyBooked(true);
             saveBookableDate(bookabledate);
         }
-    }
-
-    public BookableDateCalendarDto convertBookableDateToBookableDateCalendarDto(BookableDate bookableDate){
-        List<String> bookableHoursStringsForCalendarList = new ArrayList<>();
-
-        for(BookableHour bookableHour: bookableDate.getBookableHours()){
-            BookableHourCalendarDto bookableHourCalendarDto =
-                    bookableHourService.convertBookableHourToBookableHourCalendarDto(bookableHour);
-            bookableHoursStringsForCalendarList.add(bookableHourCalendarDto.getHour() + "-"
-                    + bookableHourCalendarDto.isBooked());
-        }
-
-        Collections.sort(bookableHoursStringsForCalendarList);
-
-        return BookableDateCalendarDto.builder()
-                .date(bookableDate.getDate())
-                .bookable(true)
-                .hours(bookableHoursStringsForCalendarList)
-                .currentMonth(true)
-                .fullyBooked(bookableDate.isFullyBooked())
-                .dropIn(bookableDate.isDropIn())
-                .touchUp(bookableDate.isTouchUp())
-                .build();
-    }
-
-    public List<BookableDateCalendarDto> convertListOfBookableDatesToBookableDateCalendarDto(
-            List<BookableDate> bookableDateList){
-        return bookableDateList.stream()
-                .map(this::convertBookableDateToBookableDateCalendarDto)
-                .toList();
     }
 
     public void setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(BookableDate bookableDate, List<Booking> bookingsAtDate){

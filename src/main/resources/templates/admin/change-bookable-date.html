@@ -54,7 +54,7 @@
                           style="display: inline;">
                         <input type="hidden" name="hour" th:value="${time.hour}">
                         <input type="hidden" name="date" th:value="${bookableDate.date}">
-                        <button type="submit" class="btn btn-xs btn-danger">Close</button>
+                        <button type="submit" class="btn btn-xs btn-warning">Close</button>
                     </form>
                     <form th:if="${time.isBooked()}" th:action="@{/admin/add-dates/make-hour-available}" method="post"
                           style="display: inline;">
@@ -65,6 +65,13 @@
                     <span th:text="${time.hour} + ' '"
                           th:classappend="${time.booked} ? 'text-danger text-decoration-line-through' : 'text-success'">
                     </span>
+                    <form th:if="${!time.isBooked()}" th:action="@{/admin/add-dates/delete-hour}"
+                          method="post"
+                          style="display: inline;">
+                        <input type="hidden" name="hour" th:value="${time.hour}">
+                        <input type="hidden" name="date" th:value="${bookableDate.date}">
+                        <button type="submit" class="btn btn-xs btn-danger">Delete</button>
+                    </form>
                 </div>
 
                 <div th:if="${bookableDate.getBookableHours()} != null">

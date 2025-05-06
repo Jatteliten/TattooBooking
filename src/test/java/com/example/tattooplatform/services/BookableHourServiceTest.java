@@ -1,6 +1,5 @@
 package com.example.tattooplatform.services;
 
-import com.example.tattooplatform.dto.bookablehour.BookableHourCalendarDto;
 import com.example.tattooplatform.model.BookableDate;
 import com.example.tattooplatform.model.BookableHour;
 import com.example.tattooplatform.repos.BookableHourRepo;
@@ -43,7 +42,15 @@ class BookableHourServiceTest {
         bookableHourService.saveAllBookableHours(List.of(bookableHourOne, bookableHourTwo, bookableHourThree));
 
         assertEquals(3, bookableHourRepo.findAll().size());
-        bookableHourRepo.deleteAll();
+    }
+
+    @Test
+    void deleteBookableHour_shouldDeleteBookableHour() {
+        BookableHour bookableHour = BookableHour.builder().build();
+        bookableHourRepo.save(bookableHour);
+
+        bookableHourService.deleteBookableHour(bookableHour);
+        assertEquals(0, bookableHourRepo.findAll().size());
     }
 
     @Test
@@ -86,27 +93,5 @@ class BookableHourServiceTest {
 
         assertFalse(bookableHourOne.isBooked());
         assertFalse(bookableHourTwo.isBooked());
-    }
-
-    @Test
-    void convertBookableHourToBookableHourCalendarDto_shouldConvertAttributesCorrectly(){
-        BookableHour bookableHourOne = BookableHour.builder()
-                .hour(TEN_O_CLOCK)
-                .booked(false)
-                .build();
-        BookableHour bookableHourTwo = BookableHour.builder()
-                .hour(ELEVEN_O_CLOCK)
-                .booked(true)
-                .build();
-
-        BookableHourCalendarDto bookableHourCalendarDtoOne =
-                bookableHourService.convertBookableHourToBookableHourCalendarDto(bookableHourOne);
-        BookableHourCalendarDto bookableHourCalendarDtoTwo =
-                bookableHourService.convertBookableHourToBookableHourCalendarDto(bookableHourTwo);
-
-        assertEquals(TEN_O_CLOCK, bookableHourCalendarDtoOne.getHour());
-        assertEquals(ELEVEN_O_CLOCK, bookableHourCalendarDtoTwo.getHour());
-        assertFalse(bookableHourCalendarDtoOne.isBooked());
-        assertTrue(bookableHourCalendarDtoTwo.isBooked());
     }
 }

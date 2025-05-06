@@ -1,12 +1,16 @@
 package com.example.tattooplatform.services;
 
 import com.example.tattooplatform.dto.bookabledate.BookableDateCalendarDto;
+import com.example.tattooplatform.dto.bookablehour.BookableHourCalendarDto;
+import com.example.tattooplatform.model.BookableDate;
+import com.example.tattooplatform.model.BookableHour;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,9 +51,9 @@ public class CalendarService {
         LocalDate date = firstDayOfCalendar;
 
         Map<LocalDate, BookableDateCalendarDto> dateToBookableDateForCalendarDto =
-                bookableDateService.convertListOfBookableDatesToBookableDateCalendarDto(
-                                bookableDateService.getBookableDatesBetweenTwoDates(
-                                        firstDayOfMonth, lastDayOfMonth))
+                convertListOfBookableDatesToBookableDateCalendarDto(
+                        bookableDateService.getBookableDatesBetweenTwoDates(
+                                firstDayOfMonth, lastDayOfMonth))
                         .stream()
                         .collect(Collectors.toMap(BookableDateCalendarDto::getDate, dto -> dto));
 
@@ -74,5 +78,42 @@ public class CalendarService {
             date = date.plusDays(1);
         }
         return days;
+    }
+
+    public BookableDateCalendarDto convertBookableDateToBookableDateCalendarDto(BookableDate bookableDate){
+        List<String> bookableHoursStringsForCalendarList = new ArrayList<>();
+
+        for(BookableHour bookableHour: bookableDate.getBookableHours()){
+            BookableHourCalendarDto bookableHourCalendarDto =
+                    convertBookableHourToBookableHourCalendarDto(bookableHour);
+            bookableHoursStringsForCalendarList.add(bookableHourCalendarDto.getHour() + "-"
+                    + bookableHourCalendarDto.isBooked());
+        }
+
+        Collections.sort(bookableHoursStringsForCalendarList);
+
+        return BookableDateCalendarDto.builder()
+                .date(bookableDate.getDate())
+                .bookable(true)
+                .hours(bookableHoursStringsForCalendarList)
+                .currentMonth(true)
+                .fullyBooked(bookableDate.isFullyBooked())
+                .dropIn(bookableDate.isDropIn())
+                .touchUp(bookableDate.isTouchUp())
+                .build();
+    }
+
+    public List<BookableDateCalendarDto> convertListOfBookableDatesToBookableDateCalendarDto(
+            List<BookableDate> bookableDateList){
+        return bookableDateList.stream()
+                .map(this::convertBookableDateToBookableDateCalendarDto)
+                .toList();
+    }
+
+    public BookableHourCalendarDto convertBookableHourToBookableHourCalendarDto(BookableHour bookableHour){
+        return BookableHourCalendarDto.builder()
+                .hour(bookableHour.getHour())
+                .booked(bookableHour.isBooked())
+                .build();
     }
 }

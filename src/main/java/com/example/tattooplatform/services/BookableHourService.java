@@ -2,7 +2,6 @@ package com.example.tattooplatform.services;
 
 import com.example.tattooplatform.model.BookableDate;
 import com.example.tattooplatform.model.BookableHour;
-import com.example.tattooplatform.dto.bookablehour.BookableHourCalendarDto;
 import com.example.tattooplatform.repos.BookableHourRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,10 @@ public class BookableHourService {
         bookableHourRepo.saveAll(hourList);
     }
 
+    public void deleteBookableHour(BookableHour bookableHour){
+        bookableHourRepo.delete(bookableHour);
+    }
+
     public void setBookableHoursInBookableDateToBookedBetweenStartAndEndTime(
             BookableDate bookableDate, LocalTime startTime, LocalTime endTime){
         for(BookableHour bookableHour: bookableDate.getBookableHours()){
@@ -31,13 +34,6 @@ public class BookableHourService {
                 bookableHour.setBooked(true);
             }
         }
-    }
-
-    public BookableHourCalendarDto convertBookableHourToBookableHourCalendarDto(BookableHour bookableHour){
-        return BookableHourCalendarDto.builder()
-                .hour(bookableHour.getHour())
-                .booked(bookableHour.isBooked())
-                .build();
     }
 
 }

@@ -1,13 +1,11 @@
 User-agent: *
-
 Disallow: /admin/
 Disallow: /login
 Disallow: /error
 Disallow: /flash/*
 Disallow: /products/*
 Disallow: /send-booking-request
-
-User-agent: *
+Disallow: /calendar
 Allow: /images/
 Allow: /static/
 Allow: /css/

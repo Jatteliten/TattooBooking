@@ -6,10 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import java.time.OffsetDateTime;
 
 @RestController
 public class SitemapController {
@@ -44,7 +45,7 @@ public class SitemapController {
 
         for (String url : URLS) {
             sitemapBuilder.append("  <url>\n");
-            sitemapBuilder.append("    <loc>").append(url).append("</loc>\n");
+            sitemapBuilder.append("    <loc>").append(xmlEscape(url)).append("</loc>\n");
             sitemapBuilder.append("    <lastmod>").append(now).append("</lastmod>\n");
             sitemapBuilder.append("    <priority>").append(url.equals("https://levibuet.se/") ? "1.00" : "0.80").append("</priority>\n");
             sitemapBuilder.append("  </url>\n");
@@ -53,7 +54,7 @@ public class SitemapController {
         productCategoryService.filterOutProductCategoriesWithoutProducts(
                 productCategoryService.getAllProductCategories()).forEach(category -> {
             sitemapBuilder.append("  <url>\n");
-            sitemapBuilder.append("    <loc>https://levibuet.se/products/").append(category.getName()).append("</loc>\n");
+            sitemapBuilder.append("    <loc>").append(safeUrl("https://levibuet.se/products/", category.getName())).append("</loc>\n");
             sitemapBuilder.append("    <lastmod>").append(now).append("</lastmod>\n");
             sitemapBuilder.append("    <priority>0.80</priority>\n");
             sitemapBuilder.append("  </url>\n");
@@ -62,7 +63,7 @@ public class SitemapController {
         imageCategoryService.filterImageCategoriesWithoutFlashImages(
                 imageCategoryService.getAllImageCategories()).forEach(category -> {
             sitemapBuilder.append("  <url>\n");
-            sitemapBuilder.append("    <loc>https://levibuet.se/flash/").append(category.getCategory()).append("</loc>\n");
+            sitemapBuilder.append("    <loc>").append(safeUrl("https://levibuet.se/flash/", category.getCategory())).append("</loc>\n");
             sitemapBuilder.append("    <lastmod>").append(now).append("</lastmod>\n");
             sitemapBuilder.append("    <priority>0.80</priority>\n");
             sitemapBuilder.append("  </url>\n");
@@ -71,5 +72,22 @@ public class SitemapController {
         sitemapBuilder.append("</urlset>");
 
         return sitemapBuilder.toString();
+    }
+
+    private String encodePathSegment(String segment) {
+        return URLEncoder.encode(segment, StandardCharsets.UTF_8)
+                .replace("+", "%20");
+    }
+
+    private String xmlEscape(String input) {
+        return input.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;");
+    }
+
+    private String safeUrl(String baseUrl, String pathSegment) {
+        return xmlEscape(baseUrl + encodePathSegment(pathSegment));
     }
 }

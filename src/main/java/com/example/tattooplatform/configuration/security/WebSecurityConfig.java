@@ -48,6 +48,7 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/js/**", "/css/**", "/images/**", "/login/**", "/send-booking-request").permitAll()
+                        .requestMatchers("/sitemap.xml").permitAll()
                         .requestMatchers("/admin/**").authenticated()
                         .anyRequest().permitAll()
                 )

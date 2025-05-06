@@ -1,13 +1,19 @@
 <div th:fragment="image-modal">
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content position-relative">
                 <div class="modal-header primary-pink-background">
-                    <h5 id="modalCaption"></h5>
+                    <h5 id="modalCaption" class="modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center position-relative">
                     <img id="modalImage" src="" alt="Larger" class="img-fluid"/>
+                    <button id="prevImage" type="button" class="btn btn-light position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%);">
+                        &#10094;
+                    </button>
+                    <button id="nextImage" type="button" class="btn btn-light position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                        &#10095;
+                    </button>
                 </div>
             </div>
         </div>

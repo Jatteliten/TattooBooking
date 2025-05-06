@@ -8,6 +8,7 @@ import com.example.tattooplatform.repos.ImageCategoryRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,6 +87,12 @@ public class ImageCategoryService {
 
     public List<ImageCategory> filterImageCategoriesWithoutFlashImages(List<ImageCategory> imageCategories){
         return imageCategories.stream().filter(imageCategory -> !imageCategory.getFlashImages().isEmpty()).toList();
+    }
+
+    public List<ImageCategory> sortImageCategoriesByName(List<ImageCategory> imageCategories){
+        return imageCategories.stream()
+                .sorted(Comparator.comparing(ImageCategory::getCategory))
+                .toList();
     }
 
 }

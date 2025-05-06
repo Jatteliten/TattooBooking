@@ -41,7 +41,8 @@ public class ImageController {
 
     @GetMapping("/image-categories")
     public String showImageCategories(Model model){
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
         return IMAGE_CATEGORIES_TEMPLATE;
     }
 
@@ -63,7 +64,8 @@ public class ImageController {
             }
         }
 
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
 
         return IMAGE_CATEGORIES_TEMPLATE;
     }
@@ -72,7 +74,8 @@ public class ImageController {
     public String deleteImageCategory(@RequestParam String category, Model model){
         imageCategoryService.deleteImageCategory(
                 imageCategoryService.getImageCategoryByCategoryName(category));
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
         model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Category deleted: " + category + "!");
         return IMAGE_CATEGORIES_TEMPLATE;
     }
@@ -161,7 +164,8 @@ public class ImageController {
     }
 
     private String populateFlashImageCategories(Model model){
-        List<ImageCategory> imageCategories = imageCategoryService.getAllImageCategories();
+        List<ImageCategory> imageCategories =
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories());
         model.addAttribute(CATEGORIES, imageCategories);
         model.addAttribute("categoriesWithImages",
                 imageCategoryService.filterImageCategoriesWithoutFlashImages(imageCategories));

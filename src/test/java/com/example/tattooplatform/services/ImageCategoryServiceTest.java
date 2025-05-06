@@ -210,4 +210,15 @@ class ImageCategoryServiceTest {
         assertFalse(imageCategoryService.filterImageCategoriesWithoutFlashImages(
                 List.of(imageCategory)).contains(imageCategory));
     }
+
+    @Test
+    void sortImageCategoriesByName_shouldSortCorrectly(){
+        ImageCategory imageCategoryOne = ImageCategory.builder().category("b").build();
+        ImageCategory imageCategoryTwo = ImageCategory.builder().category("a").build();
+
+        List<ImageCategory> sortedImageCategories = imageCategoryService.sortImageCategoriesByName(List.of(imageCategoryOne, imageCategoryTwo));
+
+        assertEquals(sortedImageCategories.getFirst().getCategory(), imageCategoryTwo.getCategory());
+        assertEquals(sortedImageCategories.getLast().getCategory(), imageCategoryOne.getCategory());
+    }
 }

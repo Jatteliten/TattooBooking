@@ -94,7 +94,8 @@ public class BookingController {
     @GetMapping("/booking-information")
     public String viewBookingInformation(@RequestParam UUID id, Model model){
         model.addAttribute(BOOKING, bookingService.getBookingById(id));
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
         return BOOKING_INFORMATION_TEMPLATE;
     }
 
@@ -337,13 +338,15 @@ public class BookingController {
 
     private String populateModelOnFailedBookingUpdate(Model model, Booking booking, String errorMessage){
         model.addAttribute(BOOKING, booking);
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
         model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), errorMessage);
         return BOOKING_INFORMATION_TEMPLATE;
     }
     private String populateModelOnBookingUpdate(Model model, Booking booking, String updateFeedback) {
         model.addAttribute(BOOKING, booking);
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
+        model.addAttribute(CATEGORIES,
+                imageCategoryService.sortImageCategoriesByName(imageCategoryService.getAllImageCategories()));
         model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), updateFeedback);
         return BOOKING_INFORMATION_TEMPLATE;
     }

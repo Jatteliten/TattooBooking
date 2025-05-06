@@ -119,7 +119,8 @@ public class CustomerPageController {
         model.addAttribute("categories",
                 imageCategoryService.convertImageCategoryListToImageCategoryDtoList(
                         imageCategoryService.filterImageCategoriesWithoutFlashImages(
-                                imageCategoryService.getAllImageCategories())));
+                                imageCategoryService.sortImageCategoriesByName(
+                                        imageCategoryService.getAllImageCategories()))));
     }
 
     @GetMapping("/frequently-asked-questions")

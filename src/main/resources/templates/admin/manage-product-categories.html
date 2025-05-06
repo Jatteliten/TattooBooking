@@ -11,7 +11,7 @@
 <div th:replace="~{layouts/admin-layout :: feedback-full}"></div>
 
 <div class="card-body">
-    <div th:if="${!categories.isEmpty()}" class="card">
+    <div th:if="${categories != null}" class="card">
         <div class="card-header">Categories</div>
         <div class="card-body">
             <table class="table">
@@ -51,7 +51,7 @@
         </div>
     </div>
 
-    <span th:if="${categories.isEmpty()}" class="text-danger">No categories exist..</span>
+    <span th:if="${categories == null}" class="text-danger">No categories exist..</span>
 
 
     <form th:action="@{/admin/products/add-category}" method="post" style="margin-top:30px">

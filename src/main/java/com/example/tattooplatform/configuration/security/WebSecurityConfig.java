@@ -6,6 +6,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -41,11 +42,14 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf
                         .ignoringRequestMatchers("/send-booking-request")
                 )
+                .headers(headers -> headers
+                        .cacheControl(HeadersConfigurer.CacheControlConfig::disable)
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/**", "/js/**",
-                                "/css/**", "/images/**", "/login/**")
-                        .permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/js/**", "/css/**", "/images/**", "/login/**", "/send-booking-request").permitAll()
+                        .requestMatchers("/admin/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -59,4 +63,5 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
 }

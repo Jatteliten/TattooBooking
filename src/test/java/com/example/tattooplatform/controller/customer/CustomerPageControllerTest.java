@@ -2,6 +2,7 @@ package com.example.tattooplatform.controller.customer;
 
 import com.example.tattooplatform.dto.customerpagetext.CustomerPageTextDto;
 import com.example.tattooplatform.dto.product.ProductCustomerViewDto;
+import com.example.tattooplatform.model.CustomerPageText;
 import com.example.tattooplatform.model.FlashImage;
 import com.example.tattooplatform.model.ImageCategory;
 import com.example.tattooplatform.model.InstagramEmbed;
@@ -57,6 +58,9 @@ class CustomerPageControllerTest {
         CustomerPageTextDto customerPageText = CustomerPageTextDto.builder()
                 .text("Latest news")
                 .build();
+
+        when(customerPageTextService.getLatestCustomerPageTextByPageAndSection("index", "latest-news"))
+                .thenReturn(new CustomerPageText());
 
         when(customerPageTextService.convertCustomerPageTextToCustomerPageTextDto(
                         customerPageTextService.getLatestCustomerPageTextByPageAndSection(

@@ -144,35 +144,13 @@ class ImageCategoryServiceTest {
 
     @Test
     @Transactional
-    void getAllImageCategoriesWithFlashImages_shouldReturnImageCategories_withFlashImages() {
-        ImageCategory imageCategory = ImageCategory.builder()
-                .flashImages(List.of(new FlashImage()))
-                .build();
-        imageCategoryRepo.save(imageCategory);
-
-        assertTrue(imageCategoryService.getAllImageCategoriesWithFlashImages().contains(imageCategory));
-    }
-
-    @Test
-    @Transactional
-    void getAllImageCategoriesWithFlashImages_shouldNotReturnImageCategories_withoutFlashImages() {
-        ImageCategory imageCategory = ImageCategory.builder()
-                .flashImages(List.of())
-                .build();
-        imageCategoryRepo.save(imageCategory);
-
-        assertFalse(imageCategoryService.getAllImageCategoriesWithFlashImages().contains(imageCategory));
-    }
-
-    @Test
-    @Transactional
     void getAllImageCategoriesWithTattooImages_shouldReturnImageCategories_withTattooImages() {
         ImageCategory imageCategory = ImageCategory.builder()
                 .tattooImages(List.of(new TattooImage()))
                 .build();
         imageCategoryRepo.save(imageCategory);
 
-        assertTrue(imageCategoryService.getAllImageCategoriesWithTattooImages().contains(imageCategory));
+        assertTrue(imageCategoryService.filterAllImageCategoriesWithTattooImages().contains(imageCategory));
     }
 
     @Test
@@ -183,7 +161,7 @@ class ImageCategoryServiceTest {
                 .build();
         imageCategoryRepo.save(imageCategory);
 
-        assertFalse(imageCategoryService.getAllImageCategoriesWithTattooImages().contains(imageCategory));
+        assertFalse(imageCategoryService.filterAllImageCategoriesWithTattooImages().contains(imageCategory));
     }
 
     @Test

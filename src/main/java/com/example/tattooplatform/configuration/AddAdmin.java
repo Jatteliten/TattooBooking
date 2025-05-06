@@ -23,9 +23,6 @@ public class AddAdmin implements CommandLineRunner {
     @Value("${admin.password}")
     private String adminPassword;
 
-    @Value("${admin.role.name}")
-    private String adminRoleName;
-
     public AddAdmin(RoleService roleService, UserService userService){
         this.roleService = roleService;
         this.userService = userService;
@@ -33,7 +30,7 @@ public class AddAdmin implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        roleService.saveRoleByGivenName(adminRoleName);
+        roleService.saveRoleByGivenName("Admin");
         addAdminUser();
     }
 
@@ -43,7 +40,7 @@ public class AddAdmin implements CommandLineRunner {
                 .enabled(true)
                 .password(encoder.encode(adminPassword))
                 .username(adminUsername)
-                .roles(List.of(roleService.findRoleByName(adminRoleName)))
+                .roles(List.of(roleService.findRoleByName("Admin")))
                 .build());
     }
 

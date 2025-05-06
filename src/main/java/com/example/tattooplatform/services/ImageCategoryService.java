@@ -67,11 +67,7 @@ public class ImageCategoryService {
         return imageCategoryRepo.findByCategory(category);
     }
 
-    public List<ImageCategory> getAllImageCategoriesWithFlashImages(){
-        return imageCategoryRepo.findAll().stream().filter(category -> !category.getFlashImages().isEmpty()).toList();
-    }
-
-    public List<ImageCategory> getAllImageCategoriesWithTattooImages(){
+    public List<ImageCategory> filterAllImageCategoriesWithTattooImages(){
         return imageCategoryRepo.findAll().stream().filter(category -> !category.getTattooImages().isEmpty()).toList();
     }
 

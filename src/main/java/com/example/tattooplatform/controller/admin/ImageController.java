@@ -29,7 +29,6 @@ public class ImageController {
     private final TattooImageService tattooImageService;
     private final S3ImageService s3ImageService;
     private static final String CATEGORIES = "categories";
-    private static final String FLASH_IMAGES_TEMPLATE = "admin/flash-images";
     private static final String IMAGE_CATEGORIES_TEMPLATE = "admin/image-categories";
 
     public ImageController(ImageCategoryService imageCategoryService, FlashImageService flashImageService,
@@ -80,8 +79,7 @@ public class ImageController {
 
     @GetMapping("/view-flash-images")
     public String viewFlashImages(Model model){
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategoriesWithFlashImages());
-        return FLASH_IMAGES_TEMPLATE;
+        return populateFlashImageCategories(model);
     }
 
     @GetMapping("/view-flash-images-by-category")
@@ -117,9 +115,7 @@ public class ImageController {
             }
         }
 
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategories());
-
-        return FLASH_IMAGES_TEMPLATE;
+        return populateFlashImageCategories(model);
     }
 
     @PostMapping("/delete-flash")
@@ -140,7 +136,7 @@ public class ImageController {
 
     @GetMapping("/view-tattoo-images")
     public String viewTattooImages(Model model){
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategoriesWithTattooImages());
+        model.addAttribute(CATEGORIES, imageCategoryService.filterAllImageCategoriesWithTattooImages());
         return "admin/tattoo-images";
     }
 
@@ -157,20 +153,26 @@ public class ImageController {
         model.addAttribute("currentPage", page);
         model.addAttribute("pages", pages);
         model.addAttribute("amountOfImagesInCategory", amountOfImages);
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategoriesWithTattooImages());
+        model.addAttribute(CATEGORIES, imageCategoryService.filterAllImageCategoriesWithTattooImages());
         model.addAttribute("categoryName", categoryName);
         model.addAttribute("images", tattooImageService.getPageOrderedByLatestBookingDate(
                 imageCategoryService.getImageCategoryByCategoryName(categoryName), page, 20));
         return "admin/tattoo-images";
     }
 
+    private String populateFlashImageCategories(Model model){
+        List<ImageCategory> imageCategories = imageCategoryService.getAllImageCategories();
+        model.addAttribute(CATEGORIES, imageCategories);
+        model.addAttribute("categoriesWithImages",
+                imageCategoryService.filterImageCategoriesWithoutFlashImages(imageCategories));
+        return "admin/flash-images";
+    }
+
     private String populateFlashImagesModelByCategory(String category, Model model) {
-        model.addAttribute(CATEGORIES, imageCategoryService.getAllImageCategoriesWithFlashImages());
         model.addAttribute("category", category);
         model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
                 imageCategoryService.getImageCategoryByCategoryName(category)));
-
-        return FLASH_IMAGES_TEMPLATE;
+        return populateFlashImageCategories(model);
     }
 
 }

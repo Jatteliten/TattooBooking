@@ -23,7 +23,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductCategoryService productCategoryService;
     private static final String CATEGORY = "category";
-    private static final String MANAGE_PRODUCTS_BY_CATEGORY_TEMPLATE = "/admin/manage-products-by-category";
+    private static final String MANAGE_PRODUCTS_BY_CATEGORY_TEMPLATE = "admin/manage-products-by-category";
 
     public ProductController(ProductService productService, ProductCategoryService productCategoryService) {
         this.productService = productService;
@@ -135,7 +135,7 @@ public class ProductController {
 
     private String populateProductCategoriesAndReturnManageProductCategories(Model model){
         model.addAttribute("categories", productCategoryService.getAllProductCategories());
-        return "/admin/manage-product-categories";
+        return "admin/manage-product-categories";
     }
 
     private String generateCategoryUpdateFeedback(String name, String feedback){

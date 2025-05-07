@@ -4,6 +4,8 @@ package com.example.tattooplatform.controller.admin;
 import com.example.tattooplatform.controller.ModelFeedback;
 import com.example.tattooplatform.model.Customer;
 import com.example.tattooplatform.services.CustomerService;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private static final String CUSTOMER = "customer";
     private static final String CUSTOMER_TEMPLATE = "admin/customer";
 
     public CustomerController(CustomerService customerService) {
@@ -61,30 +64,32 @@ public class CustomerController {
 
     @GetMapping("/edit-customer")
     public String editCustomerInformation(@RequestParam UUID id, Model model){
-        model.addAttribute("customer", customerService.getCustomerById(id));
+        model.addAttribute(CUSTOMER, customerService.getCustomerById(id));
 
         return "admin/edit-customer-information";
     }
 
     @PostMapping("/save-customer-changes")
     public String saveCustomerChanges(@RequestParam UUID id,
-                                      @RequestParam(required = false) String email,
-                                      @RequestParam(required = false) String phone,
-                                      @RequestParam(required = false) String instagram, Model model){
+                                      @RequestParam String email,
+                                      @RequestParam String phone,
+                                      @RequestParam String instagram, Model model){
         Customer customerToChange = customerService.getCustomerById(id);
-        if(email != null){
-            customerToChange.setEmail(email);
-        }
-        if(phone != null){
-            customerToChange.setPhone(phone);
-        }
-        if(instagram != null){
-            customerToChange.setInstagram(instagram);
-        }
-        customerService.saveCustomer(customerToChange);
-        model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Customer information changed.");
 
-        return populateModelIfCustomerExists(customerToChange, "Changes could not be applied.", model);
+        try {
+            customerToChange.setEmail(email.isBlank() ? null : email);
+            customerToChange.setPhone(phone.isBlank() ? null : phone);
+            customerToChange.setInstagram(instagram.isBlank() ? null : instagram);
+            customerService.saveCustomer(customerToChange);
+            model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Customer information changed.");
+            return populateModelIfCustomerExists(customerToChange, "Changes could not be applied.", model);
+        } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(),
+                    "Email, phone, or Instagram already exists for another customer.");
+            model.addAttribute(CUSTOMER, customerService.getCustomerById(id));
+            return "admin/edit-customer-information";
+        }
+
     }
 
     @PostMapping("/delete-customer")
@@ -98,8 +103,10 @@ public class CustomerController {
 
     public String populateModelIfCustomerExists(Customer customer, String errorMessage, Model model){
         if(customer != null){
-            customer.setBookings(customerService.sortCustomerBookings(customer).reversed());
-            model.addAttribute("customer", customer);
+            if(customer.getBookings() != null){
+                customer.setBookings(customerService.sortCustomerBookings(customer).reversed());
+            }
+            model.addAttribute(CUSTOMER, customer);
             model.addAttribute("totalPaid", customerService.calculateCustomersTotalPaid(customer));
         }else{
             model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), errorMessage);

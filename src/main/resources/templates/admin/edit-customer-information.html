@@ -13,6 +13,7 @@
   <div class="card-header">
     <h2 th:text="${customer.name}"></h2>
   </div>
+  <div th:replace="~{layouts/admin-layout :: feedback-error}"></div>
   <div class="card-body">
     <form th:action="@{/admin/customers/save-customer-changes}" method="post">
       <input type="hidden" name="id" th:value="${customer.id}">

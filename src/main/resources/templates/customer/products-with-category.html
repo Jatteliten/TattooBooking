@@ -34,7 +34,9 @@
 
     <div class="product-body">
         <div class="row justify-content-center">
-            <div th:each="product: ${products}" class="col-6 col-md-4 col-lg-3 mb-4">
+            <div th:each="product: ${products}"
+                 th:classappend="${#lists.size(products) == 1} ? 'col-9 col-md-6 col-lg-4' : 'col-6 col-md-4 col-lg-3'"
+                 class="mb-4">
                 <div class="card" style="width: 100%;">
                     <a data-bs-toggle="modal"
                        data-bs-target="#imageModal"

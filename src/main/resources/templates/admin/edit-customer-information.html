@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Edit customer</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/admin-style.css">
+</head>
+<body class="container">
+<div th:replace="~{layouts/admin-layout :: header}"></div>
+
+<div th:if="${customer != null}" class="card">
+  <div class="card-header">
+    <h2 th:text="${customer.name}"></h2>
+  </div>
+  <div class="card-body">
+    <form th:action="@{/admin/customers/save-customer-changes}" method="post">
+      <input type="hidden" name="id" th:value="${customer.id}">
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" class="form-control" th:value="${customer.email}" name="email" id="email">
+      </div>
+
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" class="form-control" th:value="${customer.phone}" name="phone" id="phone">
+      </div>
+
+      <div class="mb-3">
+        <label for="instagram" class="form-label">Instagram</label>
+        <input type="text" class="form-control" th:value="${customer.instagram}" name="instagram" id="instagram">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

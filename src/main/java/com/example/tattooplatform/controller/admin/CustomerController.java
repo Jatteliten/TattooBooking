@@ -59,6 +59,34 @@ public class CustomerController {
         return CUSTOMER_TEMPLATE;
     }
 
+    @GetMapping("/edit-customer")
+    public String editCustomerInformation(@RequestParam UUID id, Model model){
+        model.addAttribute("customer", customerService.getCustomerById(id));
+
+        return "admin/edit-customer-information";
+    }
+
+    @PostMapping("/save-customer-changes")
+    public String saveCustomerChanges(@RequestParam UUID id,
+                                      @RequestParam(required = false) String email,
+                                      @RequestParam(required = false) String phone,
+                                      @RequestParam(required = false) String instagram, Model model){
+        Customer customerToChange = customerService.getCustomerById(id);
+        if(email != null){
+            customerToChange.setEmail(email);
+        }
+        if(phone != null){
+            customerToChange.setPhone(phone);
+        }
+        if(instagram != null){
+            customerToChange.setInstagram(instagram);
+        }
+        customerService.saveCustomer(customerToChange);
+        model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(), "Customer information changed.");
+
+        return populateModelIfCustomerExists(customerToChange, "Changes could not be applied.", model);
+    }
+
     @PostMapping("/delete-customer")
     public String deleteCustomer(@RequestParam UUID customerId, Model model){
         String customerName = customerService.deleteCustomerAndChangeAssociatedBookings(

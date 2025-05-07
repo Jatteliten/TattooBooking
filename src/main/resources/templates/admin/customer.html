@@ -37,7 +37,7 @@
         </div>
     </form>
 
-    <div th:replace="~{layouts/admin-layout :: feedback-error}"></div>
+    <div th:replace="~{layouts/admin-layout :: feedback-full}"></div>
 
     <div th:if="${customerList} != null" class="card">
         <div class="card-header">Customers found</div>
@@ -75,6 +75,24 @@
     <div th:if="${customer != null}" class="card">
         <h5 class="card-header" th:text="${customer.name}"></h5>
         <div class="card-body">
+            <h5>Information</h5>
+            <p>
+                Email: <span th:if="${customer.email != null}" th:text="${customer.email}"></span>
+            </p>
+            <p>
+                Phone: <span th:if="${customer.phone != null}" th:text="${customer.phone}"></span>
+            </p>
+            <p>
+                Instagram: <a th:if="${customer.instagram != null}"
+                              th:href="'https://www.instagram.com/' + ${customer.instagram}"
+                              th:text="${customer.instagram}"
+                              target="_blank"></a>
+            </p>
+            <form th:action="@{/admin/customers/edit-customer}">
+                <input type="hidden" name="id" th:value="${customer.id}">
+                <button type="submit" class="btn btn-warning">Change information</button>
+            </form>
+            <hr>
             <h5>Bookings</h5>
             <div th:if="${customer.bookings.size()} > 0">
                 <table class="table table-striped">

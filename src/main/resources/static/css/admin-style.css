@@ -27,13 +27,6 @@
     gap: 10px;
     margin-bottom: 10px;
 }
-.confirm-date-button{
-    margin-top: 20px;
-}
-#dateInputs{
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
 .no-available-hours {
     color: #860000;
     background-color: #fabcbc;

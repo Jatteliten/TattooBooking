@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerRepo extends JpaRepository<Customer, UUID> {
-    @Query("SELECT c FROM Customer c WHERE c.phone = :input OR c.instagram = :input OR c.email = :input")
+    @Query("SELECT c FROM Customer c WHERE c.phone ILIKE :input OR c.instagram ILIKE :input OR c.email ILIKE :input")
     Optional<Customer> findByAnyContactMethod(@Param("input") String input);
 
     List<Customer> findByNameContainingIgnoreCase(String input);

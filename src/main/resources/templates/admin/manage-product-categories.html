@@ -12,9 +12,11 @@
 
 <div class="card-body">
     <div th:if="${categories != null}" class="card">
-        <div class="card-header">Categories</div>
+        <div class="card-header">
+            Product Categories
+        </div>
         <div class="card-body">
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">Name</th>
@@ -35,14 +37,14 @@
                     </td>
                     <td>
                         <a th:href="@{/admin/products/products-by-category(category=${category.name})}">
-                            <button class="btn btn-outline-secondary">Manage products</button>
+                            <button class="btn btn-primary btn-sm">Manage products</button>
                         </a>
                     </td>
                     <td>
                         <form th:if="${category.getProducts() == null or category.getProducts().isEmpty()}"
                               th:action="@{/admin/products/delete-category}" method="post" style="margin: 0;">
                             <input type="hidden" name="name" th:value="${category.name}">
-                            <button type="submit" class="btn btn-danger" style="margin-left: 8px;">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -55,10 +57,12 @@
 
 
     <form th:action="@{/admin/products/add-category}" method="post" style="margin-top:30px">
-        <label>
-            <input type="text" name="name" placeholder="Enter category name..">
-        </label>
-        <button type="submit" class="btn btn-success">Add category</button>
+        <div class="input-group">
+            <label>
+                <input type="text" class="form-control" name="name" placeholder="Enter category name..">
+            </label>
+            <button type="submit" class="btn btn-success">Add category</button>
+        </div>
     </form>
 </div>
 

@@ -31,6 +31,7 @@ public class BookableDateController {
     private final CalendarService calendarService;
     private final BookingService bookingService;
     private static final String CANNOT_CHANGE_HOUR = "Cannot change hour.";
+    private static final String ADD_DATES_TEMPLATE = "admin/add-available-dates";
 
     public BookableDateController(BookableDateService bookableDateService, BookableHourService bookableHourService, CalendarService calendarService, BookingService bookingService){
         this.bookableDateService = bookableDateService;
@@ -44,7 +45,7 @@ public class BookableDateController {
                            @RequestParam(name = "month", required = false) Integer month,
                            Model model){
         calendarService.createCalendarModel(model, year, month);
-        return "admin/add-available-dates";
+        return ADD_DATES_TEMPLATE;
     }
 
     @GetMapping("/confirm-dates")
@@ -54,13 +55,23 @@ public class BookableDateController {
         LocalDate to = LocalDate.parse(toDate);
 
         if(from.isAfter(to)){
-            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "From date must be before To date");
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(),
+                    "From date must be before To date");
             calendarService.createCalendarModel(model, null, null);
 
-            return "admin/add-available-dates";
+            return ADD_DATES_TEMPLATE;
+        }
+        List<LocalDate> availableDates = bookableDateService.getAvailableDatesBetweenTwoDates(from, to);
+
+        if(availableDates.isEmpty()){
+            model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(),
+                    "All dates have already been published.");
+            calendarService.createCalendarModel(model, null, null);
+
+            return ADD_DATES_TEMPLATE;
         }
 
-        model.addAttribute("dates", bookableDateService.getAvailableDatesBetweenTwoDates(from, to));
+        model.addAttribute("dates", availableDates);
         model.addAttribute("times", time);
         return "admin/confirm-dates";
     }

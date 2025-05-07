@@ -12,9 +12,10 @@
 
 <div class="container centered top-padded-body">
     <h2>Book Tattoo on - <span th:text="${selectedDate}"></span></h2>
+    <hr>
 </div>
 
-<div class="container customer-entry">
+<div class="container" style="margin-bottom: 10px;">
     <h3>Find Customer</h3>
     <form th:action="@{/admin/booking/search-customer}" method="get" class="mb-4">
         <div class="input-group">
@@ -30,10 +31,11 @@
     <div th:if="${searchResult == 'No customer found'}">
         <p class="text-danger">No customer found. You can create a new customer below.</p>
     </div>
+    <hr>
 
     <div class="card" style="width: 18rem;">
         <div class="card-header">
-            Bookings on this date
+            Bookings
         </div>
 
         <table th:if="${bookingsAtDate != null} and ${!bookingsAtDate.isEmpty()}" class="table">
@@ -64,7 +66,7 @@
 
     <div class="card" style="width: 18rem; margin-top:10px; margin-bottom:10px">
         <div class="card-header">
-            Published hours on this date
+            Published hours
         </div>
         <span class="text-center" th:each="time : ${bookableHours}"
               th:text="${time.hour} + ' '"
@@ -135,29 +137,40 @@
         </form>
     </div>
 
-
     <div th:if="${searchResult == null || searchResult == 'No customer found'}">
-        <h3>Create New Customer</h3>
-        <form id="createCustomerForm" th:action="@{/admin/booking/create-customer}" method="post">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+        <div class="accordion col-12 col-md-9 col-lg-6" id="createCustomerAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingCreateCustomer">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreateCustomer" aria-expanded="false" aria-controls="collapseCreateCustomer">
+                        Create New Customer
+                    </button>
+                </h2>
+                <div id="collapseCreateCustomer" class="accordion-collapse collapse" aria-labelledby="headingCreateCustomer" data-bs-parent="#createCustomerAccordion">
+                    <div class="accordion-body">
+                        <form id="createCustomerForm" th:action="@{/admin/booking/create-customer}" method="post">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="instagram" class="form-label">Instagram</label>
+                                <input type="text" class="form-control" id="instagram" name="instagram">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <input type="hidden" name="date" th:value="${selectedDate}">
+                            <button type="submit" class="btn btn-success">Create Customer</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="instagram" class="form-label">Instagram</label>
-                <input type="text" class="form-control" id="instagram" name="instagram">
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email">
-            </div>
-            <input type="hidden" name="date" th:value="${selectedDate}">
-            <button type="submit" class="btn btn-success">Create Customer</button>
-        </form>
+        </div>
     </div>
 </div>
 

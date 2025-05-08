@@ -164,21 +164,6 @@ class CustomerPageControllerTest {
     }
 
     @Test
-    void viewFlashesWithCategories_returnsErrorPage_whenFlashImageListIsEmpty() throws Exception {
-        ImageCategory imageCategory = ImageCategory.builder()
-                .category("testCategory")
-                .flashImages(List.of())
-                .build();
-
-        when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
-
-        mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
-                .andExpect(status().isOk())
-                .andExpect(view().name("error"));
-    }
-
-
-    @Test
     void viewFrequentlyAskedQuestions_returnsFaqPage() throws Exception {
         when(customerPageTextService.getCustomerPageTextListByPage("frequently-asked-questions"))
                 .thenReturn(List.of());

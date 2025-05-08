@@ -181,6 +181,10 @@ public class BookingController {
                                     @RequestParam(required = false) String phone,
                                     @RequestParam(required = false) String instagram,
                                     @RequestParam(required = false) String email, Model model) {
+        phone = trimAndNull(phone);
+        instagram = trimAndNull(instagram);
+        email = trimAndNull(email);
+
         Customer customer = Customer.builder()
                 .name(name)
                 .phone(phone)
@@ -198,6 +202,14 @@ public class BookingController {
 
         model.addAttribute("selectedDate", date);
         return addBookableHoursToModelIfBookableDateExistsByDate(date, model);
+    }
+
+    private String trimAndNull(String value) {
+        if (value == null) {
+            return null;
+        }
+        value = value.trim();
+        return value.isEmpty() ? null : value;
     }
 
     @PostMapping("/book-tattoo-with-customer")

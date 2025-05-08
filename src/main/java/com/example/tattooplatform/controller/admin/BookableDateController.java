@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin/add-dates")
@@ -79,12 +82,19 @@ public class BookableDateController {
     @PostMapping("/save-dates")
     public String saveDates(@ModelAttribute DateForm dateForm, Model model) {
         List<BookableDate> bookableDates = bookableDateService.createBookableDatesFromDateForm(dateForm);
+        Map<LocalDate, List<Booking>> bookingsByDate = bookingService.getBookingsBetweenTwoGivenDates(
+                bookableDates.getFirst().getDate().atStartOfDay(),
+                bookableDates.getLast().getDate().atTime(23, 59))
+                    .stream()
+                    .collect(Collectors.groupingBy(booking -> booking.getDate().toLocalDate()));
 
-        for(BookableDate bookableDate: bookableDates){
-            bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(bookableDate,
-                    bookingService.sortBookingsByStartDateAndTime(
-                            bookingService.getBookingsByDate(bookableDate.getDate())));
+        for (BookableDate bookableDate : bookableDates) {
+            List<Booking> bookingsForThisDate = bookingsByDate.getOrDefault(bookableDate.getDate(), Collections.emptyList());
+
+            bookableDateService.setBookableDateAndHoursToAvailableIfAllHoursAreNotFullyBooked(
+                    bookableDate, bookingService.sortBookingsByStartDateAndTime(bookingsForThisDate));
         }
+
         bookableDateService.saveListOfBookableDates(bookableDates);
 
         model.addAttribute(ModelFeedback.SUCCESS_MESSAGE.getAttributeKey(),

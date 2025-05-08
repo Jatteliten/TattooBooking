@@ -42,9 +42,11 @@
 </div>
 
 <div th:fragment="feedback-full">
-    <div th:if="${successMessage != null or errorMessage != null}"
-         th:class="'alert mt-4 ' + (successMessage != null ? 'alert-success' : 'alert-danger')">
-        <span th:text="${successMessage != null ? successMessage : errorMessage}"></span>
+    <div th:if="${successMessage != null}" class="alert mt-4 alert-success">
+        <span th:text="${successMessage}"></span>
+    </div>
+    <div th:if="${errorMessage != null}" class="alert mt-4 alert-danger">
+        <span th:text="${errorMessage}"></span>
     </div>
 </div>
 

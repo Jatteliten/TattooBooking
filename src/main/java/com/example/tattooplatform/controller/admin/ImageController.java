@@ -7,6 +7,7 @@ import com.example.tattooplatform.services.FlashImageService;
 import com.example.tattooplatform.services.ImageCategoryService;
 import com.example.tattooplatform.services.S3ImageService;
 import com.example.tattooplatform.services.TattooImageService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -86,8 +87,10 @@ public class ImageController {
     }
 
     @GetMapping("/view-flash-images-by-category")
-    public String viewFlashImagesByCategory(@RequestParam String category, Model model){
-        return populateFlashImagesModelByCategory(category, model);
+    public String viewFlashImagesByCategory(@RequestParam String category,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            Model model){
+        return populateFlashImagesModelByCategory(category, page, model);
     }
 
     @PostMapping("/upload-flash")
@@ -134,7 +137,7 @@ public class ImageController {
             model.addAttribute(ModelFeedback.ERROR_MESSAGE.getAttributeKey(), "Image could not be deleted");
         }
 
-        return populateFlashImagesModelByCategory(category, model);
+        return populateFlashImagesModelByCategory(category, 0, model);
     }
 
     @GetMapping("/view-tattoo-images")
@@ -172,10 +175,10 @@ public class ImageController {
         return "admin/flash-images";
     }
 
-    private String populateFlashImagesModelByCategory(String category, Model model) {
+    private String populateFlashImagesModelByCategory(String category, int page, Model model) {
         model.addAttribute("category", category);
-        model.addAttribute("flashes", flashImageService.getFlashImagesByCategory(
-                imageCategoryService.getImageCategoryByCategoryName(category)));
+        model.addAttribute("flashes", flashImageService.getFlashImagesByCategoryPaginated(
+                imageCategoryService.getImageCategoryByCategoryName(category), PageRequest.of(page, 12)));
         return populateFlashImageCategories(model);
     }
 

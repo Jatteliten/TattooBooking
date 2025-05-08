@@ -28,7 +28,7 @@
     </div>
     <hr>
     <div class="row">
-        <div th:each="flash : ${flashes}" class="col-4 col-md-3 col-lg-2 mb-3">
+        <div th:each="flash : ${flashes.content}" class="col-4 col-md-3 col-lg-2 mb-3">
             <button type="button"
                     class="btn p-0 border-0"
                     data-bs-toggle="modal"
@@ -38,6 +38,40 @@
             </button>
         </div>
     </div>
+    <nav aria-label="Page navigation" class="mt-3" th:if="${flashes.totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${flashes.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="${flashes.number == 1} ? @{/flash/{categoryName}(categoryName=${categoryName})} : @{/flash/{categoryName}(categoryName=${categoryName}, page=${flashes.number - 1})}"
+                   aria-label="Previous">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, flashes.totalPages - 1)}"
+                th:classappend="${flashes.number == i} ? 'active'">
+                <th:block th:if="${i == 0}">
+                    <a class="page-link"
+                       th:href="@{/flash/{categoryName}(categoryName=${categoryName})}"
+                       th:text="${i + 1}">1</a>
+                </th:block>
+                <th:block th:if="${i != 0}">
+                    <a class="page-link"
+                       th:href="@{/flash/{categoryName}(categoryName=${categoryName}, page=${i})}"
+                       th:text="${i + 1}">1</a>
+                </th:block>
+            </li>
+
+            <li class="page-item" th:classappend="${flashes.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/flash/{categoryName}(categoryName=${categoryName}, page=${flashes.number + 1})}"
+                   aria-label="Next">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 </div>
 
 <div th:replace="~{layouts/image-modal :: image-modal}"></div>

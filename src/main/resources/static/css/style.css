@@ -265,3 +265,24 @@
     color: inherit;
     box-shadow: none;
 }
+
+.pagination .page-link {
+    background-color: white;
+    color: var(--quaternary-pink);
+    border: 1px solid var(--primary-brown);
+}
+
+.pagination .page-link:hover {
+    background-color: var(--tertiary-pink);
+    color: black;
+}
+
+.pagination .active .page-link {
+    background-color: var(--tertiary-pink);
+    border-color: var(--primary-brown);
+    color: #ffffff;
+}
+
+.pagination .disabled .page-link {
+    color: lightgray;
+}

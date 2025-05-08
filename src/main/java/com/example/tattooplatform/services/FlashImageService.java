@@ -4,6 +4,8 @@ import com.example.tattooplatform.dto.flashimage.FlashImageUrlDto;
 import com.example.tattooplatform.model.FlashImage;
 import com.example.tattooplatform.model.ImageCategory;
 import com.example.tattooplatform.repos.FlashImageRepo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,20 +35,19 @@ public class FlashImageService {
         return flashImageRepo.findById(id).orElse(null);
     }
 
-    public List<FlashImage> getFlashImagesByCategory(ImageCategory imageCategory){
-        return flashImageRepo.findByCategoriesContaining(imageCategory);
+    public Page<FlashImage> getFlashImagesByCategoryPaginated(ImageCategory imageCategory, Pageable pageable){
+        return flashImageRepo.findByCategoriesContaining(imageCategory, pageable);
+    }
+
+    public Page<FlashImageUrlDto> getFlashImageUrlDTOssByCategoryPaginated(ImageCategory imageCategory, Pageable pageable) {
+        return flashImageRepo.findByCategoriesContaining(imageCategory, pageable)
+                .map(this::convertFlashImageToFlashImageUrlDto);
     }
 
     public FlashImageUrlDto convertFlashImageToFlashImageUrlDto(FlashImage flashImage){
         return FlashImageUrlDto.builder()
                 .url(flashImage.getUrl())
                 .build();
-    }
-
-    public List<FlashImageUrlDto> convertFlashImageListToFlashImagesUrlDto(List<FlashImage> flashImages){
-        return flashImages.stream()
-                .map(this::convertFlashImageToFlashImageUrlDto)
-                .toList();
     }
 
 }

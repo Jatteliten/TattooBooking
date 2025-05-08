@@ -11,12 +11,14 @@ import com.example.tattooplatform.services.InstagramEmbedService;
 import com.example.tattooplatform.services.ProductCategoryService;
 import com.example.tattooplatform.services.ProductService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -102,7 +104,9 @@ public class CustomerPageController {
     }
 
     @GetMapping("/flash/{categoryName}")
-    public String viewFlashesWithCategories(@PathVariable String categoryName, Model model){
+    public String viewFlashesWithCategories(@PathVariable String categoryName,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            Model model){
         ImageCategory imageCategory = imageCategoryService.getImageCategoryByCategoryName(categoryName);
 
         if (imageCategory == null || imageCategory.getFlashImages().isEmpty()) {
@@ -111,8 +115,8 @@ public class CustomerPageController {
 
         populateFlashCategories(model);
         model.addAttribute("category", categoryName);
-        model.addAttribute("flashes", flashImageService.convertFlashImageListToFlashImagesUrlDto(
-                flashImageService.getFlashImagesByCategory(imageCategory)));
+        model.addAttribute("flashes",
+                flashImageService.getFlashImageUrlDTOssByCategoryPaginated(imageCategory, PageRequest.of(page, 12)));
         return "customer/available-flash-with-category";
     }
 

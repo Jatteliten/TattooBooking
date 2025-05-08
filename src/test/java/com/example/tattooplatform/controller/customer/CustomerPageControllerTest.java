@@ -1,6 +1,7 @@
 package com.example.tattooplatform.controller.customer;
 
 import com.example.tattooplatform.dto.customerpagetext.CustomerPageTextDto;
+import com.example.tattooplatform.dto.flashimage.FlashImageUrlDto;
 import com.example.tattooplatform.dto.product.ProductCustomerViewDto;
 import com.example.tattooplatform.model.CustomerPageText;
 import com.example.tattooplatform.model.FlashImage;
@@ -20,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -152,9 +156,12 @@ class CustomerPageControllerTest {
                 .flashImages(List.of(new FlashImage()))
                 .build();
 
+        FlashImageUrlDto flashImageUrlDTO = new FlashImageUrlDto();
+        Page<FlashImageUrlDto> flashImageUrlDTOPage = new PageImpl<>(List.of(flashImageUrlDTO), PageRequest.of(0, 12), 1);
+
         when(imageCategoryService.getImageCategoryByCategoryName("testCategory")).thenReturn(imageCategory);
-        when(flashImageService.getFlashImagesByCategory(imageCategory)).thenReturn(List.of(new FlashImage()));
-        when(flashImageService.convertFlashImageListToFlashImagesUrlDto(Mockito.anyList())).thenReturn(List.of());
+        when(flashImageService.getFlashImageUrlDTOssByCategoryPaginated(imageCategory, PageRequest.of(0, 12)))
+                .thenReturn(flashImageUrlDTOPage);
 
         mockMvc.perform(get("/flash/" + imageCategory.getCategory()))
                 .andExpect(status().isOk())

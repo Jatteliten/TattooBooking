@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
@@ -62,7 +63,7 @@ class FlashImageServiceTest {
     }
 
     @Test
-    void getFlashImagesByCategory_shouldGetCorrectFlashImage() {
+    void getFlashImagesByCategoryPageable_shouldGetCorrectFlashImage() {
         ImageCategory imageCategory = ImageCategory.builder()
                 .category("test")
                 .build();
@@ -73,14 +74,15 @@ class FlashImageServiceTest {
                 .build();
         flashImageRepo.save(flashImage);
 
-        List<FlashImage> result = flashImageService.getFlashImagesByCategory(imageCategory);
+        List<FlashImage> foundFlashImages = flashImageService.getFlashImagesByCategoryPaginated(
+                imageCategory, PageRequest.of(0, 1)).stream().toList();
 
-        assertFalse(result.isEmpty());
-        assertEquals("testImage", result.get(0).getName());
+        assertFalse(foundFlashImages.isEmpty());
+        assertEquals("testImage", foundFlashImages.get(0).getName());
     }
 
     @Test
-    void getFlashImagesByCategory_shouldNotGetFlashImage_ifItDoesNotHaveCorrectCategory() {
+    void getFlashImagesByCategoryPageable_shouldNotGetFlashImage_ifItDoesNotHaveCorrectCategory() {
         ImageCategory imageCategoryOne = ImageCategory.builder()
                 .category("testOne")
                 .build();
@@ -98,7 +100,8 @@ class FlashImageServiceTest {
                 .build();
         flashImageRepo.saveAll(List.of(flashImageOne, flashImageTwo));
 
-        List<FlashImage> foundFlashImages = flashImageService.getFlashImagesByCategory(imageCategoryOne);
+        List<FlashImage> foundFlashImages = flashImageService.getFlashImagesByCategoryPaginated(
+                imageCategoryOne, PageRequest.of(0, 1)).stream().toList();
 
         assertEquals(foundFlashImages.getFirst().getName(), flashImageOne.getName());
         assertEquals(1, foundFlashImages.size());
@@ -113,21 +116,5 @@ class FlashImageServiceTest {
         FlashImageUrlDto dto = flashImageService.convertFlashImageToFlashImageUrlDto(flashImage);
 
         assertEquals(flashImage.getUrl(), dto.getUrl());
-    }
-
-    @Test
-    void convertFlashImageListToFlashImagesUrlDto_shouldConvertCorrectly() {
-        FlashImage flashImageOne = FlashImage.builder()
-                .url("test1")
-                .build();
-        FlashImage flashImageTwo = FlashImage.builder()
-                .url("test2")
-                .build();
-
-        List<FlashImageUrlDto> dtos = flashImageService.convertFlashImageListToFlashImagesUrlDto(
-                List.of(flashImageOne, flashImageTwo));
-
-        assertEquals(flashImageOne.getUrl(), dtos.get(0).getUrl());
-        assertEquals(flashImageTwo.getUrl(), dtos.get(1).getUrl());
     }
 }

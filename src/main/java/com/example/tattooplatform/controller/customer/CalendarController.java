@@ -33,6 +33,7 @@ public class CalendarController {
         }
 
         model.addAttribute("currentYear", todayYear);
+        model.addAttribute("currentMonth", LocalDate.now().getMonthValue());
         calendarService.createCalendarModel(model, year, month);
 
         return "customer/customer-calendar";

@@ -22,17 +22,17 @@ public class CalendarController {
     public String getCalendar(@RequestParam(name = "year", required = false) Integer year,
                               @RequestParam(name = "month", required = false) Integer month,
                               Model model) {
-        if (year != null) {
-            int currentYear = LocalDate.now().getYear();
-            if (year < currentYear - 2 || year > currentYear + 2) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid year");
-            }
+        int todayYear = LocalDate.now().getYear();
+
+        if (year != null && (year < todayYear - 2 || year > todayYear + 2)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid year");
         }
 
         if (month != null && (month < 1 || month > 12)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid month");
         }
 
+        model.addAttribute("currentYear", todayYear);
         calendarService.createCalendarModel(model, year, month);
 
         return "customer/customer-calendar";

@@ -13,10 +13,10 @@
 <div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
 <div class="page-margin">
     <div class="month-picker">
-        <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
+        <a th:if="${currentYear != year or currentMonth != month}" th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
         <h2 th:text="${#strings.capitalize(#temporals.format(T(java.time.LocalDate).of(year, month, 1),
          'MMMM yyyy', T(java.util.Locale).forLanguageTag('sv')))}"></h2>
-        <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
+        <a th:if="${year != currentYear+1 or month != 12}" th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
     </div>
     <div class="text-muted mb-3 text-center">
         <small>Peka eller tryck på ett datum för att se lediga tider</small>

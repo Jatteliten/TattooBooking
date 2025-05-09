@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <title>Lev i Buet - Integritetspolicy</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous"/>
+</head>
+<body class="container">
+<div th:replace="~{layouts/customer-layout :: nav-bar}"></div>
+<div class="page-margin">
+  <h2 style="margin-bottom:20px;">Integritetspolicy</h2>
+
+  <div class="page-margin">
+    <h6><strong>1. Vem jag är</strong></h6>
+    <p>Jag är Sarah Wrengler och driver levibuet.se.</p>
+    <p th:text="|Vid frågor om dataskydd kan du kontakta mig på ${artistMail}.|"></p>
+
+    <h6><strong>2. Vilka uppgifter jag samlar in</strong></h6>
+    <ul>
+      <li><b>Identifikationsuppgifter</b>: Ditt namn.</li>
+      <li><b>Kontaktuppgifter</b> <i>(om angivna)</i>: Din e-postadress, telefonnummer, Instagram-användarnamn.</li>
+      <li><b>Bokningsuppgifter</b>: Datum och tid för bokningar, information om betalning av deposition, okänsliga anteckningar kopplade till din bokning.</li>
+      <li><b>Tatueringsbilder</b> <i>(om tagen)</i>: Bild på färdig tatuering.</li>
+    </ul>
+
+    <h6><strong>3. Varför jag samlar in dina uppgifter</strong></h6>
+    <p>Jag behandlar dina uppgifter för att:</p>
+    <ul>
+      <li><b>Fullgöra avtal</b> (hantera bokningar och utföra tatueringstjänster).</li>
+      <li><b>Berättigat intresse</b> (administrera och förbättra min verksamhet).</li>
+      <li><b>Samtycke</b> (för användning av bilder eller om känsliga uppgifter hanteras).</li>
+    </ul>
+
+    <h6><strong>4. Hur jag lagrar dina uppgifter</strong></h6>
+    <p>Jag lagrar dina uppgifter säkert i en krypterad databas.</p>
+    <p>Jag behåller dina uppgifter i 3 år efter din senaste kontakt, om du inte begär att jag raderar dem tidigare.</p>
+
+    <h6><strong>5. Dina rättigheter</strong></h6>
+    <p>Du har rätt att:</p>
+    <ul>
+      <li>Få tillgång till dina personuppgifter</li>
+      <li>Rätta felaktiga uppgifter</li>
+      <li>Begära radering ("rätten att bli bortglömd")</li>
+      <li>Invända mot eller begränsa behandling</li>
+      <li>Begära dataportabilitet</li>
+    </ul>
+    <p th:text="|För att utöva dina rättigheter, kontakta mig på ${artistMail}.|"></p>
+
+    <h6><strong>6. Delning av dina uppgifter</strong></h6>
+    <p>Jag säljer inte dina personuppgifter.</p>
+    <p>Jag delar endast information med:</p>
+    <ul>
+      <li>IT-leverantörer (för säker datalagring och drift)</li>
+      <li>Myndigheter om jag är skyldig enligt lag.</li>
+    </ul>
+
+    <h6><strong>7. Samtycke till användning av tatueringsbilder</strong></h6>
+    <p>Om du samtycker kan jag använda bilder på dina tatueringar i min portfolio online, på sociala medier eller i marknadsföringsmaterial.</p>
+    <p>Du kan när som helst återkalla ditt samtycke.</p>
+  </div>
+
+</div>
+<div th:replace="~{layouts/customer-layout :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+</body>
+</html>

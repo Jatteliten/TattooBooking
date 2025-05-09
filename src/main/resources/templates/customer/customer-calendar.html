@@ -14,7 +14,8 @@
 <div class="page-margin">
     <div class="month-picker">
         <a th:href="@{/calendar(year=${prevYear}, month=${prevMonth})}"><i class="fas fa-angle-left"></i></a>
-        <h2 th:text="${#temporals.format(T(java.time.LocalDate).of(year, month, 1), 'MMMM yyyy')}"></h2>
+        <h2 th:text="${#strings.capitalize(#temporals.format(T(java.time.LocalDate).of(year, month, 1),
+         'MMMM yyyy', T(java.util.Locale).forLanguageTag('sv')))}"></h2>
         <a th:href="@{/calendar(year=${nextYear}, month=${nextMonth})}"><i class="fas fa-angle-right"></i></a>
     </div>
     <div class="text-muted mb-3 text-center">

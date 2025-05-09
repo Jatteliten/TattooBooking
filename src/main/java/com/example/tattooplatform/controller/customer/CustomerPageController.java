@@ -168,6 +168,11 @@ public class CustomerPageController {
                                 productCategoryService.getAllProductCategories())));
     }
 
+    @GetMapping("/privacy-notice")
+    public String privacyNotice() {
+        return "customer/privacy-notice";
+    }
+
     @GetMapping("/mail-confirmation")
     public String mailConfirmation(){
         return "customer/mail-confirmation";

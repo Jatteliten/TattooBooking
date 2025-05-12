@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="description" content="Tillgängliga flash bilder">
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>Lev i buet - Lediga flash</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
@@ -22,7 +23,8 @@
                 <a class="nav-link front-page-link"
                    th:if="${category.category != categoryName}"
                    th:href="@{/flash/{categoryName}(categoryName=${category.category})}"
-                   th:text="${category.category}"></a>
+                   th:text="${category.category}"
+                   th:aria-label="${category.category}"></a>
             </li>
         </ul>
     </div>

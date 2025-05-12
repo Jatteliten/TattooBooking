@@ -13,41 +13,93 @@
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar"
                     aria-controls="offcanvasNavbar"
-                    style="margin-left:-35px">
+                    style="margin-left:-35px"
+                    aria-label="View menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse d-none d-md-flex w-100 justify-content-between">
                 <ul class="navbar-nav w-100 justify-content-between">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="dropdownMenuButton1" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle"
+                           id="dropdownMenuButton1"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false"
+                           aria-label="Expand home links">
                             Hem
                         </a>
                         <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="dropdown-item" href="/">Välkommen</a></li>
-                            <li><a class="dropdown-item" href="/frequently-asked-questions">Vanliga frågor</a></li>
-                            <li><a class="dropdown-item" href="/before-your-visit">Inför ditt besök</a></li>
-                            <li><a class="dropdown-item" href="/care-advice">Skötselråd</a></li>
-                            <li><a class="dropdown-item" href="/privacy-notice">Integritetspolicy</a></li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/"
+                                   aria-label="Welcome">Välkommen</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/frequently-asked-questions"
+                                   aria-label="Frequently asked questions">Vanliga frågor</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/before-your-visit"
+                                   aria-label="Before your visit">Inför ditt besök</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/care-advice"
+                                   aria-label="Tattoo care advice">Skötselråd</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="/privacy-notice"
+                                   aria-label="Privacy notice">Integritetspolicy</a>
+                            </li>
                         </ul>
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="dropdownMenuButton2" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle"
+                           id="dropdownMenuButton2"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false"
+                           aria-label="Expand booking links">
                             Bokning
                         </a>
                         <ul class="dropdown-menu secondary-pink-background" aria-labelledby="dropdownMenuButton2">
-                            <li><a class="dropdown-item" href="/calendar">Kalender</a></li>
-                            <li><a class="dropdown-item" href="/booking-form">Bokningsförfrågan</a></li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/calendar"
+                                   aria-label="Available time slots calendar">Kalender</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="/booking-form"
+                                   aria-label="Booking request form">Bokningsförfrågan</a>
+                            </li>
                         </ul>
                     </li>
 
-                    <li class="nav-item"><a class="nav-link" href="/flash">Lediga flash</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about-me">Om mig</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/products">Produkter</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/flash"
+                           aria-label="Available flash images">Lediga flash</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/portfolio"
+                           aria-label="Portfolio">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/about-me"
+                           aria-label="About me">Om mig</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="/products"
+                           aria-label="Products">Produkter</a>
+                    </li>
                 </ul>
             </div>
 
@@ -69,16 +121,33 @@
                        href="#collapseHem"
                        role="button"
                        aria-expanded="false"
-                       aria-controls="collapseHem">
+                       aria-controls="collapseHem"
+                       aria-label="Expand home links">
                         Hem
                         <i class="fas fa-chevron-down"></i>
                     </a>
                     <div class="collapse" id="collapseHem">
                         <ul class="navbar-nav ps-3 secondary-pink-background">
-                            <li><a class="nav-link" href="/">Välkommen</a></li>
-                            <li><a class="nav-link" href="/frequently-asked-questions">Vanliga frågor</a></li>
-                            <li><a class="nav-link" href="/before-your-visit">Inför ditt besök</a></li>
-                            <li><a class="nav-link" href="/care-advice">Skötselråd</a></li>
+                            <li><a class="nav-link"
+                                   href="/"
+                                   aria-label="Welcome">Välkommen</a>
+                            </li>
+                            <li>
+                                <a class="nav-link"
+                                   href="/frequently-asked-questions"
+                                   aria-label="Frequently asked questions">
+                                    Vanliga frågor</a>
+                            </li>
+                            <li>
+                                <a class="nav-link"
+                                   href="/before-your-visit"
+                                   aria-label="Before your visit">Inför ditt besök</a>
+                            </li>
+                            <li>
+                                <a class="nav-link"
+                                   href="/care-advice"
+                                   aria-label="Tattoo care advice">Skötselråd</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -88,22 +157,38 @@
                        href="#collapseBokning"
                        role="button"
                        aria-expanded="false"
-                       aria-controls="collapseBokning">
+                       aria-controls="collapseBokning"
+                       aria-label="Expand booking links">
                         Bokning
                         <i class="fas fa-chevron-down"></i>
                     </a>
                     <div class="collapse" id="collapseBokning">
                         <ul class="navbar-nav ps-3 secondary-pink-background">
-                            <li><a class="nav-link" href="/calendar">Kalender</a></li>
-                            <li><a class="nav-link" href="/booking-form">Bokningsförfrågan</a></li>
+                            <li>
+                                <a class="nav-link"
+                                   href="/calendar"
+                                   aria-label="Available time slots calendar">Kalender</a>
+                            </li>
+                            <li><a class="nav-link"
+                                   href="/booking-form"
+                                   aria-label="Booking request form">Bokningsförfrågan</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
 
-                <li class="nav-item"><a class="nav-link" href="/flash">Lediga flash</a></li>
-                <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
-                <li class="nav-item"><a class="nav-link" href="/about-me">Om mig</a></li>
-                <li class="nav-item"><a class="nav-link" href="/products">Produkter</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/flash" aria-label="Available flash images">Lediga flash</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/portfolio" aria-label="Portfolio">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about-me" aria-label="About me">Om mig</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products" aria-label="Products">Produkter</a>
+                </li>
 
             </ul>
         </div>
@@ -117,26 +202,34 @@
     <div class="centered">
         <a target="_blank" rel="noopener noreferrer"
            class="link-dark link-offset-2 link-underline link-underline-opacity-0"
-           th:href="'https://www.instagram.com/' + ${artistInstagram}">
+           th:href="'https://www.instagram.com/' + ${artistInstagram}"
+           aria-label="Artist Instagram">
             <i class="fab fa-instagram fa-2x footer-font"></i>
         </a>
-        <a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="'mailto:' + ${artistMail}">
+        <a class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+           th:href="'mailto:' + ${artistMail}"
+           aria-label="Mail to artist">
             <i class="fa fa-envelope fa-2x footer-font"></i>
         </a>
         <a target="_blank" rel="noopener noreferrer"
            class="link-dark link-offset-2 link-underline link-underline-opacity-0"
-           th:href="'https://www.tiktok.com/@' + ${artistTiktok}">
+           th:href="'https://www.tiktok.com/@' + ${artistTiktok}"
+           aria-label="Artist Tiktok">
             <i class="fab fa-tiktok fa-2x footer-font"></i>
         </a>
         <a target="_blank" rel="noopener noreferrer"
            class="link-dark link-offset-2 link-underline link-underline-opacity-0"
-           th:href="'https://www.facebook.com/people/' + ${artistFacebookLink}">
+           th:href="'https://www.facebook.com/people/' + ${artistFacebookLink}"
+           aria-label="Artist Facebook">
             <i class="fab fa-facebook fa-2x footer-font"></i>
         </a>
         <br>
         <p class="text-center" style="color: var(--tertiary-pink); margin-top:10px;">
-            <a href="https://www.kretsdesign.se/" target="_blank" style="text-decoration: none"><span
-                    class="text-center" style="color: var(--quaternary-pink);">Krets Tattoo<br></span></a>
+            <a href="https://www.kretsdesign.se/" target="_blank" style="text-decoration: none">
+                <span class="text-center"
+                      style="color: var(--quaternary-pink);"
+                      aria-label="Artist current studio website">Krets Tattoo<br></span>
+            </a>
             Vattenledningsvägen 65<br>
             126 34 Hägersten
         </p>

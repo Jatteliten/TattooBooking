@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="description" content="Tillgängliga produktkategorier från Lev i buet">
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>Lev i buet - Produkter</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
@@ -18,7 +19,8 @@
                 <li class="nav-item" th:each="category : ${categories}">
                     <a class="nav-link front-page-link"
                        th:href="@{/products/{categoryName}(categoryName=${category.name})}"
-                       th:text="${category.name}"></a>
+                       th:text="${category.name}"
+                       th:aria-label="${category.name}"></a>
                 </li>
             </ul>
         </div>

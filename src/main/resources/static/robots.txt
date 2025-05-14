@@ -1,8 +1,6 @@
 Sitemap: https://levibuet.se/sitemap.xml
 
 User-agent: *
-Disallow: /admin/
-Disallow: /login
 Disallow: /error
 Disallow: /flash/*
 Disallow: /products/*

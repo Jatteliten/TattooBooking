@@ -25,7 +25,8 @@
                         data-bs-toggle="collapse"
                         th:attr="data-bs-target='#collapse-' + ${iterStat.index}, aria-controls='collapse-' + ${iterStat.index}"
                         aria-expanded="false"
-                        th:text="${question.section}">
+                        th:text="${question.section}"
+                        th:aria-label="'expand question ' + ${question.section}">
                 </button>
             </h2>
             <div th:id="'collapse-' + ${iterStat.index}"

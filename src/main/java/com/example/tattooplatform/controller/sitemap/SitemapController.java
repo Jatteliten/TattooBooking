@@ -32,6 +32,7 @@ public class SitemapController {
             "https://levibuet.se/flash",
             "https://levibuet.se/portfolio",
             "https://levibuet.se/about-me",
+            "https://levibuet.se/privacy-notice",
             "https://levibuet.se/products"
     );
 
